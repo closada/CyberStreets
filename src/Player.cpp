@@ -3,22 +3,21 @@
 Player::Player(float x, float y)
 {
     health = 100;
-    direction = RIGHT;
+    direction = Direction::RIGHT;
+    state = PlayerState::IDLE;
 
-
-    body.setSize(sf::Vector2f(50.f, 80.f));
+    body.setSize({50.f, 80.f});
     body.setFillColor(sf::Color::Green);
     body.setPosition(x, y);
     speed = 4.f;
 
-
-    /* configuraciones iniciales de ataque */
-    attacking = false;
-
-    attackBox.setSize(sf::Vector2f(40.f, 30.f));
+    attackBox.setSize({40.f, 30.f});
     attackBox.setFillColor(sf::Color::Transparent);
     attackBox.setOutlineColor(sf::Color::White);
     attackBox.setOutlineThickness(1.f);
+
+    /* cooldown de daño */
+    canBeDamaged = true;
 
 }
 
@@ -26,17 +25,18 @@ void Player::update()
 {
     sf::Vector2f movement(0.f, 0.f);
 
+    // movimiento
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
     {
         movement.x -= speed;
-        direction = LEFT;
+        direction = Direction::LEFT;
     }
-
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
     {
-        movement.x = speed;
-        direction = RIGHT;
+        movement.x += speed;
+        direction = Direction::RIGHT;
     }
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
         movement.y -= speed;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
@@ -44,48 +44,54 @@ void Player::update()
 
     body.move(movement);
 
-    /* si se quiere atacar */
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::J) && !attacking)
+    // estado movimiento
+    if (movement.x != 0 || movement.y != 0)
+        state = PlayerState::MOVING;
+    else if (state != PlayerState::ATTACKING)
+        state = PlayerState::IDLE;
+
+    // ataque (SPACE)
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) &&
+        state != PlayerState::ATTACKING)
     {
-        attacking = true;
+        state = PlayerState::ATTACKING;
         attackClock.restart();
     }
 
-    /* si esta atacando */
-    if (attacking)
+    // lógica de ataque
+    if (state == PlayerState::ATTACKING)
     {
-        /* tiempo */
-        if (attackClock.getElapsedTime().asMilliseconds() > 200)
+        if (attackClock.getElapsedTime() > attackDuration)
         {
-            attacking = false;
+            state = PlayerState::IDLE;
         }
 
-        /* se agrega objeto que muestra visualmente el "golpe" */
         sf::Vector2f pos = body.getPosition();
-        if (direction == RIGHT)
+
+        if (direction == Direction::RIGHT)
         {
             attackBox.setPosition(
                 pos.x + body.getSize().x,
                 pos.y + 20.f
             );
         }
-        else // LEFT
+        else
         {
             attackBox.setPosition(
                 pos.x - attackBox.getSize().x,
                 pos.y + 20.f
             );
         }
-
     }
 
+    /* para el cooldown del ataque */
+    if (!canBeDamaged && damageClock.getElapsedTime() > damageCooldown)
+    {
+        canBeDamaged = true;
+    }
 
 }
 
-void Player::move(float x, float y)
-{
-    body.move(x, y);
-}
 
 void Player::keepInside(const sf::Vector2u& windowSize)
 {
@@ -104,17 +110,25 @@ void Player::keepInside(const sf::Vector2u& windowSize)
         body.setPosition(bounds.left, windowSize.y - bounds.height);
 }
 
+bool Player::canReceiveDamage() const
+{
+    return state != PlayerState::ATTACKING && canBeDamaged;
+}
+
+
 void Player::takeDamage(int amount)
 {
+    if (!canReceiveDamage())
+        return;
+
     health -= amount;
     if (health < 0)
         health = 0;
+
+    canBeDamaged = false;
+    damageClock.restart();
 }
 
-int Player::getHealth() const
-{
-    return health;
-}
 
 void Player::setColor(const sf::Color& color)
 {
@@ -122,18 +136,25 @@ void Player::setColor(const sf::Color& color)
 }
 
 
-bool Player::isAttacking() const
+int Player::getHealth() const
 {
-    return attacking;
+    return health;
 }
+
+
 
 sf::FloatRect Player::getAttackBounds() const
 {
     return attackBox.getGlobalBounds();
 }
 
+bool Player::isAttacking() const
+{
+    return state == PlayerState::ATTACKING;
+}
+
 void Player::drawAttack(sf::RenderWindow& window)
 {
-    if (attacking)
+    if (state == PlayerState::ATTACKING)
         window.draw(attackBox);
 }

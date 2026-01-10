@@ -414,7 +414,9 @@
 1766861608 source:d:\cyberstreets\src\main.cpp
 	"Game.hpp"
 
-1766864856 source:d:\cyberstreets\src\game.cpp
+1768011900 source:d:\cyberstreets\src\game.cpp
+	<iostream>
+	<algorithm>
 	"Game.hpp"
 
 1766863373 d:\cyberstreets\src\game.hpp
@@ -423,21 +425,22 @@
 	"Enemy.hpp"
 	<vector>
 
-1766865041 d:\cyberstreets\src\player.hpp
+1768004584 d:\cyberstreets\src\player.hpp
 	"Entity.hpp"
 
-1766863200 d:\cyberstreets\src\entity.hpp
+1768008647 d:\cyberstreets\src\entity.hpp
 	<SFML/Graphics.hpp>
 
-1766864873 d:\cyberstreets\src\enemy.hpp
+1768012178 d:\cyberstreets\src\enemy.hpp
 	"Entity.hpp"
 
-1766864887 source:d:\cyberstreets\src\enemy.cpp
+1768011910 source:d:\cyberstreets\src\enemy.cpp
 	"Enemy.hpp"
+	<cmath>
 
 1766863219 source:d:\cyberstreets\src\entity.cpp
 	"Entity.hpp"
 
-1766863989 source:d:\cyberstreets\src\player.cpp
+1768004900 source:d:\cyberstreets\src\player.cpp
 	"Player.hpp"
 

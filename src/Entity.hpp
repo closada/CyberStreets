@@ -17,6 +17,12 @@ public:
 
     sf::FloatRect getBounds() const;
     sf::Vector2f getPosition() const;
+
+    void move(float x, float y)
+    {
+        body.move(x, y);
+    }
+
 };
 
 #endif

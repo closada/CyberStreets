@@ -1,3 +1,6 @@
+#include <iostream>
+#include <algorithm>
+
 #include "Game.hpp"
 
 Game::Game()
@@ -36,38 +39,89 @@ void Game::update()
     player.keepInside(window.getSize());
 
     for (auto& enemy : enemies)
-        enemy.update();
+        enemy.updateAI(player.getPosition());
 
-    /* si colisionan enemigos con player, tiene daño */
-    bool isColliding = false;
-
-    for (auto& enemy : enemies)
+    // --- SEPARACIÓN ENTRE ENEMIGOS ---
+    for (size_t i = 0; i < enemies.size(); ++i)
     {
-        if (player.getBounds().intersects(enemy.getBounds()))
+        for (size_t j = i + 1; j < enemies.size(); ++j)
         {
-            isColliding = true;
-            break;
+            sf::FloatRect a = enemies[i].getBounds();
+            sf::FloatRect b = enemies[j].getBounds();
+
+            if (a.intersects(b))
+            {
+                float overlapY = (a.top + a.height) - b.top;
+
+                if (overlapY > 0.f)
+                {
+                    enemies[i].move(0.f, -1.f);
+                    enemies[j].move(0.f, 1.f);
+                }
+            }
         }
     }
 
-    if (isColliding)
-        player.setColor(sf::Color::Yellow);
-    else
-        player.setColor(sf::Color::Green);
 
-    /* si el juegador esta atacando, analizamos si golpea a un enemigo */
+    // --- ATAQUE DEL PLAYER ---
     if (player.isAttacking())
     {
         for (auto& enemy : enemies)
         {
             if (player.getAttackBounds().intersects(enemy.getBounds()))
             {
-                // reacción simple: empujamos al enemigo
-                enemy.takeHit();
+                enemy.takeHit(player.getPosition());
+
             }
         }
     }
 
+
+
+    // --- DAÑO AL PLAYER ---
+    bool collidingWithEnemy = false;
+
+    // --- ATAQUE DEL ENEMIGO ---
+    for (auto& enemy : enemies)
+    {
+        if (enemy.isAttacking() &&
+            enemy.getAttackBounds().intersects(player.getBounds()))
+        {
+            player.takeDamage(10);
+            collidingWithEnemy = true;
+        }
+    }
+
+    // --- FEEDBACK VISUAL (solo visual) ---
+    if (collidingWithEnemy)
+        player.setColor(sf::Color::Yellow);
+    else
+        player.setColor(sf::Color::Green);
+
+
+    /* para ver por consola la vida del player */
+    static int lastHealth = -1;
+
+    if (player.getHealth() != lastHealth)
+    {
+        lastHealth = player.getHealth();
+        std::cout << "Player Health: " << lastHealth << std::endl;
+    }
+
+    /* para ver por consola la vida de los enemigos */
+    for (auto& enemy : enemies)
+        std::cout << "Enemigo Health: " << enemy.getHealth() << std::endl;
+
+
+    // limpieza de enemigos muertos
+    enemies.erase(
+        std::remove_if(enemies.begin(), enemies.end(),
+            [](const Enemy& e)
+            {
+                return e.isDead();
+            }),
+        enemies.end()
+    );
 
 }
 
@@ -81,9 +135,15 @@ void Game::render()
     player.draw(window);
     player.drawAttack(window);
 
-    for (auto& enemy : enemies)
-        enemy.draw(window);
 
+
+
+    for (auto& enemy : enemies)
+    {
+        enemy.draw(window);
+        enemy.drawAttack(window);
+
+    }
     window.display();
 }
 
