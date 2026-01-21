@@ -7,10 +7,35 @@ Menu::Menu(const sf::Vector2u& windowSize)
 : selectedIndex(0)
 {
     startGameRequested = false;
+    state = MenuState::MAIN;
+    avatarIndex = 0;
 
     if (!font.loadFromFile("assets/PressStart2P-Regular.ttf"))
         throw std::runtime_error("No se pudo cargar la fuente del menú");
 
+
+    // ---------- TITULO AVATAR ----------
+    titleText.setFont(font);
+    titleText.setString("ELIGE TU AVATAR");
+    titleText.setCharacterSize(28);
+    titleText.setFillColor(sf::Color::White);
+
+    sf::FloatRect tb = titleText.getLocalBounds();
+    titleText.setOrigin(tb.width / 2.f, tb.height / 2.f);
+    titleText.setPosition(windowSize.x / 2.f, windowSize.y / 2.f - 120.f);
+
+    // ---------- AYUDA ----------
+    hintText.setFont(font);
+    hintText.setString("ENTER confirmar - ESC volver");
+    hintText.setCharacterSize(16);
+    hintText.setFillColor(sf::Color(180, 180, 180));
+
+    sf::FloatRect hb = hintText.getLocalBounds();
+    hintText.setOrigin(hb.width / 2.f, hb.height / 2.f);
+    hintText.setPosition(windowSize.x / 2.f, windowSize.y / 2.f + 120.f);
+
+
+    // DE MENU PRINCIPAL
     sf::Text play("JUGAR", font, 32);
     sf::Text exit("SALIR", font, 32);
 
@@ -67,8 +92,9 @@ void Menu::draw(sf::RenderWindow& window)
     {
         sf::RectangleShape avatar;
         avatar.setSize({80.f, 80.f});
+        avatar.setOrigin(40.f, 40.f);
         avatar.setPosition(
-            window.getSize().x / 2.f - 40.f,
+            window.getSize().x / 2.f,
             window.getSize().y / 2.f
         );
 
@@ -76,8 +102,11 @@ void Menu::draw(sf::RenderWindow& window)
         if (avatarIndex == 1) avatar.setFillColor(sf::Color::Blue);
         if (avatarIndex == 2) avatar.setFillColor(sf::Color::Red);
 
+        window.draw(titleText);
         window.draw(avatar);
+        window.draw(hintText);
     }
+
 }
 
 

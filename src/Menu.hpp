@@ -24,6 +24,14 @@ private:
 
     bool startGameRequested;
 
+    // textos
+    sf::Text titleText;
+    sf::Text hintText;
+
+    // flechas
+    sf::Text leftArrow;
+    sf::Text rightArrow;
+
 
 public:
     Menu(const sf::Vector2u& windowSize);
