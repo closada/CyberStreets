@@ -42,6 +42,7 @@
 			<Add library="sfml-system" />
 			<Add directory="C:/SFML-2.5.1/lib" />
 		</Linker>
+		<Unit filename="src/Avatar.hpp" />
 		<Unit filename="src/Enemy.cpp" />
 		<Unit filename="src/Enemy.hpp" />
 		<Unit filename="src/Entity.cpp" />
@@ -50,6 +51,8 @@
 		<Unit filename="src/Game.hpp" />
 		<Unit filename="src/Hud.cpp" />
 		<Unit filename="src/Hud.hpp" />
+		<Unit filename="src/Menu.cpp" />
+		<Unit filename="src/Menu.hpp" />
 		<Unit filename="src/Player.cpp" />
 		<Unit filename="src/Player.hpp" />
 		<Unit filename="src/main.cpp" />
