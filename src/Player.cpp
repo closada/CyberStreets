@@ -23,42 +23,11 @@ Player::Player(float x, float y)
 
 void Player::update()
 {
-    sf::Vector2f movement(0.f, 0.f);
+    // si está muerto, no hace nada
+    if (state == PlayerState::DEAD)
+        return;
 
-    // movimiento
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-    {
-        movement.x -= speed;
-        direction = Direction::LEFT;
-    }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-    {
-        movement.x += speed;
-        direction = Direction::RIGHT;
-    }
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-        movement.y -= speed;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        movement.y += speed;
-
-    body.move(movement);
-
-    // estado movimiento
-    if (movement.x != 0 || movement.y != 0)
-        state = PlayerState::MOVING;
-    else if (state != PlayerState::ATTACKING)
-        state = PlayerState::IDLE;
-
-    // ataque (SPACE)
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) &&
-        state != PlayerState::ATTACKING)
-    {
-        state = PlayerState::ATTACKING;
-        attackClock.restart();
-    }
-
-    // lógica de ataque
+    // --- lógica de ataque ---
     if (state == PlayerState::ATTACKING)
     {
         if (attackClock.getElapsedTime() > attackDuration)
@@ -84,13 +53,13 @@ void Player::update()
         }
     }
 
-    /* para el cooldown del ataque */
+    // --- cooldown de daño ---
     if (!canBeDamaged && damageClock.getElapsedTime() > damageCooldown)
     {
         canBeDamaged = true;
     }
-
 }
+
 
 
 void Player::keepInside(const sf::Vector2u& windowSize)
@@ -118,16 +87,23 @@ bool Player::canReceiveDamage() const
 
 void Player::takeDamage(int amount)
 {
-    if (!canReceiveDamage())
+    if (!canReceiveDamage() || state == PlayerState::DEAD)
         return;
 
     health -= amount;
-    if (health < 0)
+
+    if (health <= 0)
+    {
         health = 0;
+        state = PlayerState::DEAD;
+        body.setFillColor(sf::Color(80, 80, 80)); // gris = muerto
+        return;
+    }
 
     canBeDamaged = false;
     damageClock.restart();
 }
+
 
 
 void Player::setColor(const sf::Color& color)
@@ -157,4 +133,55 @@ void Player::drawAttack(sf::RenderWindow& window)
 {
     if (state == PlayerState::ATTACKING)
         window.draw(attackBox);
+}
+
+
+bool Player::isDead() const
+{
+    return state == PlayerState::DEAD;
+}
+
+void Player::move(const sf::Vector2f& dir)
+{
+    if (state == PlayerState::DEAD || state == PlayerState::ATTACKING)
+        return;
+
+    body.move(dir * speed);
+
+    if (dir.x < 0)
+        direction = Direction::LEFT;
+    else if (dir.x > 0)
+        direction = Direction::RIGHT;
+
+    if (dir.x != 0 || dir.y != 0)
+        state = PlayerState::MOVING;
+    else
+        state = PlayerState::IDLE;
+}
+
+
+void Player::attack()
+{
+    if (state == PlayerState::ATTACKING)
+        return;
+
+    state = PlayerState::ATTACKING;
+    attackClock.restart();
+}
+
+
+void Player::setAvatar(AvatarType avatar)
+{
+    switch (avatar)
+    {
+        case AvatarType::GREEN:
+            body.setFillColor(sf::Color::Green);
+            break;
+        case AvatarType::BLUE:
+            body.setFillColor(sf::Color::Blue);
+            break;
+        case AvatarType::RED:
+            body.setFillColor(sf::Color::Red);
+            break;
+    }
 }

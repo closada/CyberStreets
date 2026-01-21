@@ -52,6 +52,10 @@ public:
 
     bool isDead() const { return state == EnemyState::DEAD; }
 
+    bool tryAttack(const sf::Vector2f& playerPos);
+
+    void move(const sf::Vector2f& dir);
+
 };
 
 #endif

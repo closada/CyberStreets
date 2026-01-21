@@ -2,6 +2,8 @@
 #define PLAYER_HPP
 
 #include "Entity.hpp"
+#include "Avatar.hpp"
+
 
 enum class Direction
 {
@@ -13,7 +15,8 @@ enum class PlayerState
 {
     IDLE,
     MOVING,
-    ATTACKING
+    ATTACKING,
+    DEAD
 };
 
 class Player : public Entity
@@ -28,16 +31,21 @@ private:
     sf::Clock attackClock;
     const sf::Time attackDuration = sf::milliseconds(200);
 
+
     // daño
     sf::Clock damageClock;
     const sf::Time damageCooldown = sf::milliseconds(500);
     bool canBeDamaged;
 
+    AvatarType avatar;
 
 public:
     Player(float x, float y);
 
     void update() override;
+    void move(const sf::Vector2f& dir);
+    void attack();
+
     void keepInside(const sf::Vector2u& windowSize);
 
     void takeDamage(int amount);
@@ -50,6 +58,11 @@ public:
     sf::FloatRect getAttackBounds() const;
     bool isAttacking() const;
     void drawAttack(sf::RenderWindow& window);
+
+    bool isDead() const;
+
+    void setAvatar(AvatarType avatar);
+
 
 
 };

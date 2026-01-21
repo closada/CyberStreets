@@ -414,33 +414,55 @@
 1766861608 source:d:\cyberstreets\src\main.cpp
 	"Game.hpp"
 
-1768011900 source:d:\cyberstreets\src\game.cpp
+1768967621 source:d:\cyberstreets\src\game.cpp
 	<iostream>
 	<algorithm>
 	"Game.hpp"
 
-1766863373 d:\cyberstreets\src\game.hpp
+1768966914 d:\cyberstreets\src\game.hpp
 	<SFML/Graphics.hpp>
 	"Player.hpp"
 	"Enemy.hpp"
+	"HUD.hpp"
+	"Menu.hpp"
 	<vector>
 
-1768004584 d:\cyberstreets\src\player.hpp
+1768965239 d:\cyberstreets\src\player.hpp
 	"Entity.hpp"
+	"Avatar.hpp"
 
 1768008647 d:\cyberstreets\src\entity.hpp
 	<SFML/Graphics.hpp>
 
-1768012178 d:\cyberstreets\src\enemy.hpp
+1768958978 d:\cyberstreets\src\enemy.hpp
 	"Entity.hpp"
 
-1768011910 source:d:\cyberstreets\src\enemy.cpp
+1768959971 source:d:\cyberstreets\src\enemy.cpp
 	"Enemy.hpp"
 	<cmath>
 
 1766863219 source:d:\cyberstreets\src\entity.cpp
 	"Entity.hpp"
 
-1768004900 source:d:\cyberstreets\src\player.cpp
+1768964560 source:d:\cyberstreets\src\player.cpp
 	"Player.hpp"
+
+1768055426 d:\cyberstreets\src\hud.hpp
+	<SFML/Graphics.hpp>
+
+1768055451 source:d:\cyberstreets\src\hud.cpp
+	"HUD.hpp"
+	<stdexcept>
+
+1768967563 d:\cyberstreets\src\menu.hpp
+	<SFML/Graphics.hpp>
+	<vector>
+	"Avatar.hpp"
+
+1768967639 source:d:\cyberstreets\src\menu.cpp
+	"Menu.hpp"
+	<stdexcept>
+	<iostream>
+
+1768965229 d:\cyberstreets\src\avatar.hpp
 

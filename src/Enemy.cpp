@@ -22,22 +22,14 @@ Enemy::Enemy(float x, float y)
 
 void Enemy::update()
 {
-    // no hace nada sola
-}
+    if (state == EnemyState::DEAD)
+        return;
 
-void Enemy::updateAI(const sf::Vector2f& playerPos)
-{
-    sf::Vector2f pos = body.getPosition();
-    sf::Vector2f delta = playerPos - pos;
-
-    /* REACTIVAR POSIBILIDAD DE RECIBIR HIT */
+    // cooldown daño
     if (!canTakeDamage && damageClock.getElapsedTime() > damageCooldown)
-    {
         canTakeDamage = true;
-    }
 
-
-    // si es golpeado
+    // estado HIT
     if (state == EnemyState::HIT)
     {
         body.move(knockbackVelocity);
@@ -50,46 +42,44 @@ void Enemy::updateAI(const sf::Vector2f& playerPos)
         return;
     }
 
-
-    // --- cooldown ataque ---
+    // cooldown ataque
     if (!canAttack && attackClock.getElapsedTime() > attackCooldown)
         canAttack = true;
 
-    // --- si está atacando ---
+    // estado ATTACKING
     if (state == EnemyState::ATTACKING)
     {
         if (attackClock.getElapsedTime() > attackDuration)
             state = EnemyState::MOVING;
-        return;
     }
+}
 
-    float distanceX = std::abs(delta.x);
 
-    // --- decide atacar ---
-    if (distanceX < 60.f && std::abs(delta.y) < 40.f && canAttack)
-    {
-        state = EnemyState::ATTACKING;
-        canAttack = false;
-        attackClock.restart();
-
-        attackBox.setPosition(
-            pos.x + (delta.x < 0 ? -attackBox.getSize().x : body.getSize().x),
-            pos.y + 20.f
-        );
+void Enemy::updateAI(const sf::Vector2f& playerPos)
+{
+    if (state != EnemyState::MOVING)
         return;
-    }
+
+    // intenta atacar
+    if (tryAttack(playerPos))
+        return;
+
+    // si no ataca, se mueve
+    sf::Vector2f pos = body.getPosition();
+    sf::Vector2f delta = playerPos - pos;
+    sf::Vector2f dir(0.f, 0.f);
 
     // --- movimiento hacia el player ---
-    float moveX = 0.f;
-    float moveY = 0.f;
+    sf::Vector2f movement(0.f, 0.f);
 
     if (std::abs(delta.x) > 5.f)
-        moveX = (delta.x < 0 ? -speed : speed);
+        movement.x = (delta.x < 0 ? -speed : speed);
 
     if (std::abs(delta.y) > 5.f)
-        moveY = (delta.y < 0 ? -speed * 0.6f : speed * 0.6f);
+        movement.y = (delta.y < 0 ? -speed * 0.6f : speed * 0.6f);
 
-    body.move(moveX, moveY);
+    move(movement);
+
 }
 
 
@@ -110,10 +100,9 @@ void Enemy::takeHit(const sf::Vector2f& attackerPos)
     health--;
 
     if (health <= 0)
-    {
         state = EnemyState::DEAD;
-    }
 }
+
 
 
 bool Enemy::isAttacking() const
@@ -136,3 +125,37 @@ int Enemy::getHealth() const
 {
     return health;
 }
+
+void Enemy::move(const sf::Vector2f& dir)
+{
+    if (state == EnemyState::DEAD)
+        return;
+
+    body.move(dir);
+}
+
+
+bool Enemy::tryAttack(const sf::Vector2f& playerPos)
+{
+    if (!canAttack || state != EnemyState::MOVING)
+        return false;
+
+    sf::Vector2f pos = body.getPosition();
+    sf::Vector2f delta = playerPos - pos;
+
+    if (std::abs(delta.x) < 60.f && std::abs(delta.y) < 40.f)
+    {
+        state = EnemyState::ATTACKING;
+        canAttack = false;
+        attackClock.restart();
+
+        attackBox.setPosition(
+            pos.x + (delta.x < 0 ? -attackBox.getSize().x : body.getSize().x),
+            pos.y + 20.f
+        );
+        return true;
+    }
+
+    return false;
+}
+

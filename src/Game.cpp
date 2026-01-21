@@ -5,8 +5,14 @@
 
 Game::Game()
 : window(sf::VideoMode(800, 600), "Cyber Streets"),
+  hud(window.getSize(), 100),
+  menu(window.getSize()),
   player(400.f, 300.f)
 {
+
+
+    gameState = GameState::MENU;
+
     window.setFramerateLimit(60);
 
     enemies.emplace_back(800.f, 300.f);
@@ -18,6 +24,7 @@ void Game::run()
     while (window.isOpen())
     {
         processEvents();
+        handleInput();
         update();
         render();
     }
@@ -30,16 +37,96 @@ void Game::processEvents()
     {
         if (event.type == sf::Event::Closed)
             window.close();
+
+        if (gameState == GameState::MENU)
+            menu.handleEvent(event);
     }
 }
 
 void Game::update()
 {
+    switch (gameState)
+    {
+        case GameState::MENU:
+            updateMenu();
+            break;
+
+        case GameState::PLAYING:
+            updatePlaying();
+            break;
+
+        case GameState::GAME_OVER:
+            updateGameOver();
+            break;
+    }
+}
+
+
+
+
+
+void Game::render()
+{
+    window.clear(sf::Color::Black);
+
+    if (gameState == GameState::MENU)
+    {
+        menu.draw(window);
+    }
+    else if (gameState == GameState::PLAYING)
+    {
+        player.draw(window);
+        player.drawAttack(window);
+
+        for (auto& enemy : enemies)
+        {
+            enemy.draw(window);
+            enemy.drawAttack(window);
+        }
+
+        hud.draw(window);
+    }
+    else if (gameState == GameState::GAME_OVER)
+    {
+        hud.draw(window);
+    }
+
+    window.display();
+}
+
+
+
+void Game::handleInput()
+{
+    sf::Vector2f dir(0.f, 0.f);
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        dir.x -= 1.f;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        dir.x += 1.f;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+        dir.y -= 1.f;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+        dir.y += 1.f;
+
+    player.move(dir);
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+        player.attack();
+}
+
+void Game::updatePlaying()
+{
     player.update();
     player.keepInside(window.getSize());
+    hud.update(player.getHealth());
 
+    // enemigos
     for (auto& enemy : enemies)
+    {
+        enemy.update();
         enemy.updateAI(player.getPosition());
+    }
 
     // --- SEPARACIÓN ENTRE ENEMIGOS ---
     for (size_t i = 0; i < enemies.size(); ++i)
@@ -51,19 +138,21 @@ void Game::update()
 
             if (a.intersects(b))
             {
+
                 float overlapY = (a.top + a.height) - b.top;
 
+                // empuje vertical suave (estilo arcade)
                 if (overlapY > 0.f)
                 {
-                    enemies[i].move(0.f, -1.f);
-                    enemies[j].move(0.f, 1.f);
+                    enemies[i].move({0.f, -0.5f});
+                    enemies[j].move({0.f,  0.5f});
                 }
             }
         }
     }
 
 
-    // --- ATAQUE DEL PLAYER ---
+    // ataque player enemy
     if (player.isAttacking())
     {
         for (auto& enemy : enemies)
@@ -71,80 +160,69 @@ void Game::update()
             if (player.getAttackBounds().intersects(enemy.getBounds()))
             {
                 enemy.takeHit(player.getPosition());
-
             }
         }
     }
 
-
-
-    // --- DAÑO AL PLAYER ---
-    bool collidingWithEnemy = false;
-
-    // --- ATAQUE DEL ENEMIGO ---
+    // ataque enemy player
     for (auto& enemy : enemies)
     {
         if (enemy.isAttacking() &&
             enemy.getAttackBounds().intersects(player.getBounds()))
         {
             player.takeDamage(10);
-            collidingWithEnemy = true;
         }
     }
 
-    // --- FEEDBACK VISUAL (solo visual) ---
-    if (collidingWithEnemy)
-        player.setColor(sf::Color::Yellow);
-    else
-        player.setColor(sf::Color::Green);
-
-
-    /* para ver por consola la vida del player */
-    static int lastHealth = -1;
-
-    if (player.getHealth() != lastHealth)
-    {
-        lastHealth = player.getHealth();
-        std::cout << "Player Health: " << lastHealth << std::endl;
-    }
-
-    /* para ver por consola la vida de los enemigos */
-    for (auto& enemy : enemies)
-        std::cout << "Enemigo Health: " << enemy.getHealth() << std::endl;
-
-
-    // limpieza de enemigos muertos
+    // eliminar enemigos muertos
     enemies.erase(
         std::remove_if(enemies.begin(), enemies.end(),
-            [](const Enemy& e)
-            {
-                return e.isDead();
-            }),
+            [](const Enemy& e) { return e.isDead(); }),
         enemies.end()
     );
 
-}
-
-
-
-
-void Game::render()
-{
-    window.clear(sf::Color::Black);
-
-    player.draw(window);
-    player.drawAttack(window);
-
-
-
-
-    for (auto& enemy : enemies)
+    if (player.isDead())
     {
-        enemy.draw(window);
-        enemy.drawAttack(window);
-
+        gameState = GameState::GAME_OVER;
+        hud.showGameOver(true);
     }
-    window.display();
 }
 
+void Game::updateGameOver()
+{
+    // por ahora no hacemos nada
+    // más adelante: ENTER para volver al menú
+}
+
+void Game::updateMenu()
+{
+    menu.update();
+
+    if (menu.wantsToStartGame())
+    {
+        selectedAvatar = menu.getSelectedAvatar();
+        startGame();
+        menu.reset();
+    }
+}
+
+
+
+
+void Game::startGame()
+{
+    player.setAvatar(selectedAvatar);
+
+    enemies.clear();
+    spawnInitialEnemies();
+
+    gameState = GameState::PLAYING;
+}
+
+void Game::spawnInitialEnemies()
+{
+    enemies.clear();
+    enemies.emplace_back(500.f, 300.f);
+    enemies.emplace_back(650.f, 300.f);
+}
 

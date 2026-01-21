@@ -4,20 +4,44 @@
 #include <SFML/Graphics.hpp>
 #include "Player.hpp"
 #include "Enemy.hpp"
+#include "HUD.hpp"
+#include "Menu.hpp"
+
 
 #include <vector>
 
 
+
+
+enum class GameState
+{
+    MENU,
+    PLAYING,
+    GAME_OVER
+};
+
 class Game
 {
 private:
+    GameState gameState;
+
     sf::RenderWindow window;
+    HUD hud;
+    Menu menu;
     Player player;
     std::vector<Enemy> enemies;
+    AvatarType selectedAvatar = AvatarType::GREEN;
 
     void processEvents();
     void update();
     void render();
+    void handleInput();
+
+    void updateMenu();
+    void updatePlaying();
+    void updateGameOver();
+    void startGame();
+    void spawnInitialEnemies();
 
 public:
     Game();

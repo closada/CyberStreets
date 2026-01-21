@@ -48,6 +48,8 @@
 		<Unit filename="src/Entity.hpp" />
 		<Unit filename="src/Game.cpp" />
 		<Unit filename="src/Game.hpp" />
+		<Unit filename="src/Hud.cpp" />
+		<Unit filename="src/Hud.hpp" />
 		<Unit filename="src/Player.cpp" />
 		<Unit filename="src/Player.hpp" />
 		<Unit filename="src/main.cpp" />
