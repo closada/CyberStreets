@@ -17,6 +17,9 @@ Game::Game()
 
     enemies.emplace_back(800.f, 300.f);
     enemies.emplace_back(900.f, 200.f);
+
+
+    menu.setSoundManager(&sound);
 }
 
 void Game::run()
@@ -160,6 +163,7 @@ void Game::updatePlaying()
             if (player.getAttackBounds().intersects(enemy.getBounds()))
             {
                 enemy.takeHit(player.getPosition());
+                sound.play(SoundID::HIT);
             }
         }
     }
@@ -170,7 +174,11 @@ void Game::updatePlaying()
         if (enemy.isAttacking() &&
             enemy.getAttackBounds().intersects(player.getBounds()))
         {
-            player.takeDamage(10);
+            if (player.canReceiveDamage())
+            {
+                player.takeDamage(10);
+                sound.play(SoundID::PLAYER_HIT);
+            }
         }
     }
 

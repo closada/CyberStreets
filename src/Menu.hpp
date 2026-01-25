@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "Avatar.hpp"
+#include "SoundManager.hpp"
+#include <array>
 
 enum class MenuState
 {
@@ -32,6 +34,16 @@ private:
     sf::Text leftArrow;
     sf::Text rightArrow;
 
+    // animacion
+    sf::Clock animClock;
+
+    //avatares
+    std::array<sf::RectangleShape, 3> avatars;
+    sf::Text avatarNameText;
+
+
+    // sfx
+    SoundManager* sound;
 
 public:
     Menu(const sf::Vector2u& windowSize);
@@ -49,6 +61,8 @@ public:
     void reset();
 
     void handleEvent(const sf::Event& event);
+
+    void setSoundManager(SoundManager* s);
 
 };
 

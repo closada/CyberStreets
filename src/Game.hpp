@@ -6,7 +6,7 @@
 #include "Enemy.hpp"
 #include "HUD.hpp"
 #include "Menu.hpp"
-
+#include "SoundManager.hpp"
 
 #include <vector>
 
@@ -42,6 +42,10 @@ private:
     void updateGameOver();
     void startGame();
     void spawnInitialEnemies();
+
+
+    // SFX
+    SoundManager sound;
 
 public:
     Game();
