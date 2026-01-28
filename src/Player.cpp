@@ -5,83 +5,93 @@ Player::Player(float x, float y)
     health = 100;
     direction = Direction::RIGHT;
     state = PlayerState::IDLE;
+    isAttackingPlayer = false;
+    hitDone = false;
 
-    body.setSize({50.f, 80.f});
-    body.setFillColor(sf::Color::Green);
+    body.setSize({48.f, 48.f});
+    body.setOrigin(body.getSize() / 2.f);
     body.setPosition(x, y);
+
     speed = 4.f;
 
-    attackBox.setSize({40.f, 30.f});
-    attackBox.setFillColor(sf::Color::Transparent);
-    attackBox.setOutlineColor(sf::Color::White);
-    attackBox.setOutlineThickness(1.f);
+    setAvatar(AvatarType::GREEN);
+    setTexture(idleTex, 4);
 
-    /* cooldown de daño */
+    sprite.setScale(3.f, 3.f);
+
     canBeDamaged = true;
 
+
+    attackBox.setSize({32.f, 20.f});
+    attackBox.setOrigin(16.f, 10.f);
+    attackBox.setFillColor(sf::Color::Transparent);
+    attackBox.setOutlineColor(sf::Color::Green);
+    attackBox.setOutlineThickness(1.f);
 }
+
 
 void Player::update()
 {
-    // si está muerto, no hace nada
     if (state == PlayerState::DEAD)
         return;
 
-    // --- lógica de ataque ---
-    if (state == PlayerState::ATTACKING)
+    // --- ATAQUE ---
+    if (isAttackingPlayer)
     {
         if (attackClock.getElapsedTime() > attackDuration)
         {
-            state = PlayerState::IDLE;
+            isAttackingPlayer = false;
         }
 
-        sf::Vector2f pos = body.getPosition();
+            float offsetX = (direction == Direction::RIGHT) ? 32.f : -32.f;
+            attackBox.setPosition(
+                body.getPosition().x + offsetX,
+                body.getPosition().y
+            );
 
-        if (direction == Direction::RIGHT)
-        {
-            attackBox.setPosition(
-                pos.x + body.getSize().x,
-                pos.y + 20.f
-            );
-        }
-        else
-        {
-            attackBox.setPosition(
-                pos.x - attackBox.getSize().x,
-                pos.y + 20.f
-            );
-        }
     }
 
-    // --- cooldown de daño ---
+    // --- cooldown daño ---
     if (!canBeDamaged && damageClock.getElapsedTime() > damageCooldown)
-    {
         canBeDamaged = true;
-    }
+
+    updateSprite();
+    updateAnimation();
 }
+
+
+
+void Player::draw(sf::RenderWindow& window)
+{
+    sprite.setScale(
+        direction == Direction::LEFT ? -3.f : 3.f,
+        3.f
+    );
+
+    sprite.setPosition(body.getPosition());
+    window.draw(sprite);
+}
+
 
 
 
 void Player::keepInside(const sf::Vector2u& windowSize)
 {
-    sf::FloatRect bounds = body.getGlobalBounds();
+    float minY = windowSize.y * 0.35f;
+    float maxY = windowSize.y - body.getSize().y;
 
-    if (bounds.left < 0)
-        body.setPosition(0, bounds.top);
+    sf::Vector2f pos = body.getPosition();
 
-    if (bounds.left + bounds.width > windowSize.x)
-        body.setPosition(windowSize.x - bounds.width, bounds.top);
+    if (pos.y < minY) pos.y = minY;
+    if (pos.y > maxY) pos.y = maxY;
 
-    if (bounds.top < 0)
-        body.setPosition(bounds.left, 0);
-
-    if (bounds.top + bounds.height > windowSize.y)
-        body.setPosition(bounds.left, windowSize.y - bounds.height);
+    body.setPosition(pos);
 }
+
 
 bool Player::canReceiveDamage() const
 {
-    return state != PlayerState::ATTACKING && canBeDamaged;
+    return !isAttacking() && canBeDamaged;
 }
 
 
@@ -126,12 +136,13 @@ sf::FloatRect Player::getAttackBounds() const
 
 bool Player::isAttacking() const
 {
-    return state == PlayerState::ATTACKING;
+    return isAttackingPlayer;
 }
+
 
 void Player::drawAttack(sf::RenderWindow& window)
 {
-    if (state == PlayerState::ATTACKING)
+    if (isAttacking())
         window.draw(attackBox);
 }
 
@@ -143,15 +154,13 @@ bool Player::isDead() const
 
 void Player::move(const sf::Vector2f& dir)
 {
-    if (state == PlayerState::DEAD || state == PlayerState::ATTACKING)
+    if (state == PlayerState::DEAD)
         return;
 
     body.move(dir * speed);
 
-    if (dir.x < 0)
-        direction = Direction::LEFT;
-    else if (dir.x > 0)
-        direction = Direction::RIGHT;
+    if (dir.x < 0) direction = Direction::LEFT;
+    else if (dir.x > 0) direction = Direction::RIGHT;
 
     if (dir.x != 0 || dir.y != 0)
         state = PlayerState::MOVING;
@@ -160,28 +169,84 @@ void Player::move(const sf::Vector2f& dir)
 }
 
 
+
 void Player::attack()
 {
-    if (state == PlayerState::ATTACKING)
+    if (isAttackingPlayer)
         return;
 
-    state = PlayerState::ATTACKING;
+    isAttackingPlayer = true;
+    hitDone = false;
+    frameTime = attackDuration.asSeconds() / ATTACK_FRAMES;
+
+    currentFrame = 0;
+
     attackClock.restart();
+
+    animationClock.restart();
 }
+
+
 
 
 void Player::setAvatar(AvatarType avatar)
 {
+    std::string basePath;
+
     switch (avatar)
     {
-        case AvatarType::GREEN:
-            body.setFillColor(sf::Color::Green);
-            break;
-        case AvatarType::BLUE:
-            body.setFillColor(sf::Color::Blue);
-            break;
-        case AvatarType::RED:
-            body.setFillColor(sf::Color::Red);
-            break;
+        case AvatarType::GREEN: basePath = "assets/sprites/player/Biker_"; break;
+        case AvatarType::BLUE:  basePath = "assets/sprites/player/Cyborg_"; break;
+        case AvatarType::RED:   basePath = "assets/sprites/player/Punk_"; break;
+    }
+
+    idleTex.loadFromFile(basePath + "idle.png");
+    runTex.loadFromFile(basePath + "run.png");
+    attackTex.loadFromFile(basePath + "attack.png");
+    runAttackTex.loadFromFile(basePath + "run_attack.png");
+
+    setTexture(idleTex, 4);
+}
+
+
+void Player::updateSprite()
+{
+    static PlayerState lastState = PlayerState::IDLE;
+    static bool lastAttack = false;
+
+    if (state == lastState && isAttackingPlayer == lastAttack)
+        return;
+
+    currentFrame = 0;
+    animationClock.restart();
+
+    if (isAttackingPlayer)
+    {
+        if (state == PlayerState::MOVING)
+            setTexture(runAttackTex, 6);
+        else
+            setTexture(attackTex, 6);
+    }
+    else
+    {
+        if (state == PlayerState::MOVING)
+            setTexture(runTex, 6);
+        else
+            setTexture(idleTex, 4);
+    }
+
+    lastState = state;
+    lastAttack = isAttackingPlayer;
+}
+
+
+void Player::onAnimationFinished()
+{
+    if (isAttackingPlayer)
+    {
+        isAttackingPlayer = false;
+        frameTime = 0.12f;   // vuelve a normal
+        currentFrame = 0;
     }
 }
+

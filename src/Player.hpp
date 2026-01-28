@@ -15,21 +15,26 @@ enum class PlayerState
 {
     IDLE,
     MOVING,
-    ATTACKING,
+    //ATTACKING,
     DEAD
 };
 
 class Player : public Entity
 {
 private:
+    static constexpr int ATTACK_FRAMES = 6;
+
     int health;
     Direction direction;
     PlayerState state;
+
+    bool isAttackingPlayer;
 
     // ataque
     sf::RectangleShape attackBox;
     sf::Clock attackClock;
     const sf::Time attackDuration = sf::milliseconds(200);
+    bool hitDone;
 
 
     // daño
@@ -39,10 +44,18 @@ private:
 
     AvatarType avatar;
 
+    // Sprites
+    sf::Texture idleTex;
+    sf::Texture runTex;
+    sf::Texture attackTex;
+    sf::Texture runAttackTex;
+
 public:
     Player(float x, float y);
 
     void update() override;
+    void draw(sf::RenderWindow& window) override;
+
     void move(const sf::Vector2f& dir);
     void attack();
 
@@ -62,8 +75,15 @@ public:
     bool isDead() const;
 
     void setAvatar(AvatarType avatar);
+    void updateState();
+    void updateTexture();
+    void updateSprite();
 
+    bool canHit() const { return isAttackingPlayer && !hitDone; }
+    void markHit() { hitDone = true; }
 
+protected:
+    void onAnimationFinished() override;
 
 };
 

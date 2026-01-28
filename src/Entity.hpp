@@ -7,7 +7,21 @@ class Entity
 {
 protected:
     sf::RectangleShape body;
-    float speed;
+    float speed = 0.f;
+
+    // Visual
+    sf::Sprite sprite;
+    sf::Texture texture;
+
+    // Animación
+    int frameWidth = 48;
+    int frameHeight = 48;
+
+    int frameCount = 1;
+    int currentFrame = 0;
+    int currentFrameCount = 1;
+    float frameTime = 0.12f;
+    sf::Clock animationClock;
 
 public:
     virtual ~Entity() = default;
@@ -23,7 +37,11 @@ public:
         body.move(x, y);
     }
 
+protected:
+    void updateAnimation();
+    void setTexture(const sf::Texture& tex, int frames);
+    virtual void onAnimationFinished() {}
+
 };
 
 #endif
-

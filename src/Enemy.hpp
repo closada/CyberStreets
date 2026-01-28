@@ -6,7 +6,7 @@
 enum class EnemyState
 {
     MOVING,
-    ATTACKING,
+    //ATTACKING,
     HIT,
     DEAD
 };
@@ -16,6 +16,9 @@ class Enemy : public Entity
 private:
     EnemyState state;
     int health;
+
+    bool isAttackingEnemy;
+    bool facingLeft;
 
     // ataque
     sf::RectangleShape attackBox;
@@ -34,13 +37,20 @@ private:
     sf::Time damageCooldown = sf::milliseconds(300);
     bool canTakeDamage;
 
+    // SPRITES
+    sf::Texture idleTex;
+    sf::Texture runTex;
+    sf::Texture attackTex;
 
 
 public:
     Enemy(float x, float y);
 
-    void update() override; // ← OBLIGATORIO
-    void updateAI(const sf::Vector2f& playerPos); // ← NUEVO
+    void update() override;
+    void updateAI(const sf::Vector2f& playerPos);
+
+    void draw(sf::RenderWindow& window) override;
+
 
     void takeHit(const sf::Vector2f& attackerPos);
 
@@ -55,6 +65,8 @@ public:
     bool tryAttack(const sf::Vector2f& playerPos);
 
     void move(const sf::Vector2f& dir);
+
+
 
 };
 

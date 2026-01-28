@@ -5,19 +5,31 @@ Enemy::Enemy(float x, float y)
 {
     health = 10;
 
-    body.setSize({50.f, 80.f});
+    body.setSize({48.f, 48.f});
     body.setFillColor(sf::Color::Red);
     body.setPosition(x, y);
+    body.setOrigin(body.getSize() / 2.f);
     speed = 2.f;
 
-    state = EnemyState::MOVING;
-    canAttack = true;
-    canTakeDamage = true; // ← NUEVO
+    idleTex.loadFromFile("assets/sprites/enemies/1_Walk.png");
+    runTex.loadFromFile("assets/sprites/enemies/1_Walk.png");
+    attackTex.loadFromFile("assets/sprites/enemies/1_Attack.png");
 
-    attackBox.setSize({40.f, 30.f});
-    attackBox.setFillColor(sf::Color::Transparent);
-    attackBox.setOutlineColor(sf::Color::Yellow);
-    attackBox.setOutlineThickness(1.f);
+    setTexture(runTex, 6);
+
+    sprite.setScale(3.f, 3.f);
+
+    attackBox.setSize({32.f, 20.f});
+    attackBox.setOrigin(16.f, 10.f);
+
+    state = EnemyState::MOVING;
+    isAttackingEnemy = false;
+    facingLeft = true;
+
+    canAttack = true;
+    canTakeDamage = true;
+
+    attackBox.setSize({32.f, 20.f});
 }
 
 void Enemy::update()
@@ -29,7 +41,7 @@ void Enemy::update()
     if (!canTakeDamage && damageClock.getElapsedTime() > damageCooldown)
         canTakeDamage = true;
 
-    // estado HIT
+    // HIT
     if (state == EnemyState::HIT)
     {
         body.move(knockbackVelocity);
@@ -42,45 +54,55 @@ void Enemy::update()
         return;
     }
 
-    // cooldown ataque
+    // ataque
+    if (isAttacking())
+    {
+        float offsetX = facingLeft ? -32.f : 32.f;
+        attackBox.setPosition(
+            body.getPosition().x + offsetX,
+            body.getPosition().y
+        );
+
+        if (attackClock.getElapsedTime() > attackDuration)
+            isAttackingEnemy = false;
+    }
+
+
     if (!canAttack && attackClock.getElapsedTime() > attackCooldown)
         canAttack = true;
 
-    // estado ATTACKING
-    if (state == EnemyState::ATTACKING)
-    {
-        if (attackClock.getElapsedTime() > attackDuration)
-            state = EnemyState::MOVING;
-    }
+    updateAnimation();
 }
+
 
 
 void Enemy::updateAI(const sf::Vector2f& playerPos)
 {
-    if (state != EnemyState::MOVING)
+    if (state == EnemyState::DEAD || state == EnemyState::HIT)
         return;
 
-    // intenta atacar
+    sf::Vector2f pos = body.getPosition();
+    sf::Vector2f delta = playerPos - pos;
+
+    facingLeft = delta.x < 0;
+
+    // intento de ataque
     if (tryAttack(playerPos))
         return;
 
-    // si no ataca, se mueve
-    sf::Vector2f pos = body.getPosition();
-    sf::Vector2f delta = playerPos - pos;
-    sf::Vector2f dir(0.f, 0.f);
-
-    // --- movimiento hacia el player ---
+    // movimiento
     sf::Vector2f movement(0.f, 0.f);
 
-    if (std::abs(delta.x) > 5.f)
+    if (std::abs(delta.x) > 10.f)
         movement.x = (delta.x < 0 ? -speed : speed);
 
-    if (std::abs(delta.y) > 5.f)
-        movement.y = (delta.y < 0 ? -speed * 0.6f : speed * 0.6f);
+    if (std::abs(delta.y) > 10.f)
+        movement.y = (delta.y < 0 ? -speed * 0.5f : speed * 0.5f);
 
     move(movement);
-
+    state = EnemyState::MOVING;
 }
+
 
 
 void Enemy::takeHit(const sf::Vector2f& attackerPos)
@@ -105,9 +127,10 @@ void Enemy::takeHit(const sf::Vector2f& attackerPos)
 
 
 
+
 bool Enemy::isAttacking() const
 {
-    return state == EnemyState::ATTACKING;
+    return isAttackingEnemy;
 }
 
 sf::FloatRect Enemy::getAttackBounds() const
@@ -117,7 +140,7 @@ sf::FloatRect Enemy::getAttackBounds() const
 
 void Enemy::drawAttack(sf::RenderWindow& window)
 {
-    if (state == EnemyState::ATTACKING)
+    if (isAttacking())
         window.draw(attackBox);
 }
 
@@ -137,25 +160,42 @@ void Enemy::move(const sf::Vector2f& dir)
 
 bool Enemy::tryAttack(const sf::Vector2f& playerPos)
 {
-    if (!canAttack || state != EnemyState::MOVING)
+    if (!canAttack || isAttacking())
         return false;
 
     sf::Vector2f pos = body.getPosition();
     sf::Vector2f delta = playerPos - pos;
 
-    if (std::abs(delta.x) < 60.f && std::abs(delta.y) < 40.f)
+    if (std::abs(delta.x) < 50.f && std::abs(delta.y) < 30.f)
     {
-        state = EnemyState::ATTACKING;
+        isAttackingEnemy = true;
         canAttack = false;
         attackClock.restart();
 
         attackBox.setPosition(
-            pos.x + (delta.x < 0 ? -attackBox.getSize().x : body.getSize().x),
-            pos.y + 20.f
+            pos.x + (facingLeft ? -32.f : 32.f),
+            pos.y
         );
+
+        setTexture(attackTex, 6);
+        currentFrame = 0;
+        animationClock.restart();
+
         return true;
     }
 
     return false;
+}
+
+
+void Enemy::draw(sf::RenderWindow& window)
+{
+    sprite.setScale(
+        facingLeft ? -3.f : 3.f,
+        3.f
+    );
+
+    sprite.setPosition(body.getPosition());
+    window.draw(sprite);
 }
 

@@ -115,7 +115,10 @@ void Game::handleInput()
     player.move(dir);
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+    {
         player.attack();
+    }
+
 }
 
 void Game::updatePlaying()
@@ -156,17 +159,20 @@ void Game::updatePlaying()
 
 
     // ataque player enemy
-    if (player.isAttacking())
+    if (player.canHit())
     {
         for (auto& enemy : enemies)
         {
             if (player.getAttackBounds().intersects(enemy.getBounds()))
             {
                 enemy.takeHit(player.getPosition());
+                player.markHit();
                 sound.play(SoundID::HIT);
+                break;
             }
         }
     }
+
 
     // ataque enemy player
     for (auto& enemy : enemies)
