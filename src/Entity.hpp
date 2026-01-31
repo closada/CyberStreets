@@ -38,7 +38,7 @@ public:
     }
 
 protected:
-    void updateAnimation();
+    virtual void updateAnimation();
     void setTexture(const sf::Texture& tex, int frames);
     virtual void onAnimationFinished() {}
 

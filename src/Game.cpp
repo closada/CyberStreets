@@ -15,6 +15,16 @@ Game::Game()
 
     window.setFramerateLimit(60);
 
+
+    // definiciones de camara
+    camera = window.getDefaultView();
+    levelLeftLimit = camera.getCenter().x - camera.getSize().x / 2.f;
+
+    // donde termina el nivel
+    levelRightEnd = 4000.f;
+
+
+
     enemies.emplace_back(800.f, 300.f);
     enemies.emplace_back(900.f, 200.f);
 
@@ -74,10 +84,14 @@ void Game::render()
 
     if (gameState == GameState::MENU)
     {
+        window.setView(window.getDefaultView());
         menu.draw(window);
     }
     else if (gameState == GameState::PLAYING)
     {
+        // ---- MUNDO ----
+        window.setView(camera);
+
         player.draw(window);
         player.drawAttack(window);
 
@@ -87,15 +101,19 @@ void Game::render()
             enemy.drawAttack(window);
         }
 
+        // ---- HUD ----
+        window.setView(window.getDefaultView());
         hud.draw(window);
     }
     else if (gameState == GameState::GAME_OVER)
     {
+        window.setView(window.getDefaultView());
         hud.draw(window);
     }
 
     window.display();
 }
+
 
 
 
@@ -124,8 +142,26 @@ void Game::handleInput()
 void Game::updatePlaying()
 {
     player.update();
-    player.keepInside(window.getSize());
+    player.keepInside(camera);
     hud.update(player.getHealth());
+
+
+    // CAMARA
+    sf::Vector2f camPos = camera.getCenter();
+
+    // dead zone horizontal
+    float deadZone = 120.f;
+
+    float dx = player.getPosition().x - camPos.x;
+
+    if (dx > deadZone)
+    {
+        camPos.x += dx - deadZone;
+    }
+
+    camera.setCenter(camPos);
+    //window.setView(camera);
+
 
     // enemigos
     for (auto& enemy : enemies)

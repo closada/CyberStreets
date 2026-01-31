@@ -414,12 +414,12 @@
 1766861608 source:d:\cyberstreets\src\main.cpp
 	"Game.hpp"
 
-1769558921 source:d:\cyberstreets\src\game.cpp
+1769808178 source:d:\cyberstreets\src\game.cpp
 	<iostream>
 	<algorithm>
 	"Game.hpp"
 
-1769379872 d:\cyberstreets\src\game.hpp
+1769803405 d:\cyberstreets\src\game.hpp
 	<SFML/Graphics.hpp>
 	"Player.hpp"
 	"Enemy.hpp"
@@ -428,11 +428,11 @@
 	"SoundManager.hpp"
 	<vector>
 
-1769562040 d:\cyberstreets\src\player.hpp
+1769889956 d:\cyberstreets\src\player.hpp
 	"Entity.hpp"
 	"Avatar.hpp"
 
-1769562533 d:\cyberstreets\src\entity.hpp
+1769890098 d:\cyberstreets\src\entity.hpp
 	<SFML/Graphics.hpp>
 
 1769557701 d:\cyberstreets\src\enemy.hpp
@@ -445,7 +445,7 @@
 1769562255 source:d:\cyberstreets\src\entity.cpp
 	"Entity.hpp"
 
-1769562112 source:d:\cyberstreets\src\player.cpp
+1769889396 source:d:\cyberstreets\src\player.cpp
 	"Player.hpp"
 
 1768055426 d:\cyberstreets\src\hud.hpp

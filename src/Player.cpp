@@ -40,7 +40,8 @@ void Player::update()
     {
         if (attackClock.getElapsedTime() > attackDuration)
         {
-            isAttackingPlayer = false;
+            //isAttackingPlayer = false;
+            hitDone = true;
         }
 
             float offsetX = (direction == Direction::RIGHT) ? 32.f : -32.f;
@@ -75,18 +76,31 @@ void Player::draw(sf::RenderWindow& window)
 
 
 
-void Player::keepInside(const sf::Vector2u& windowSize)
+void Player::keepInside(const sf::View& view)
 {
-    float minY = windowSize.y * 0.35f;
-    float maxY = windowSize.y - body.getSize().y;
-
     sf::Vector2f pos = body.getPosition();
+    sf::Vector2f half = body.getSize() / 2.f;
 
-    if (pos.y < minY) pos.y = minY;
-    if (pos.y > maxY) pos.y = maxY;
+    sf::Vector2f vc = view.getCenter();
+    sf::Vector2f vs = view.getSize();
+
+    float left   = vc.x - vs.x / 2.f + half.x;
+    float right  = vc.x + vs.x / 2.f - half.x;
+    float top    = vc.y - vs.y / 2.f + half.y;
+    float bottom = vc.y + vs.y / 2.f - half.y;
+
+    if (pos.x < left)   pos.x = left;
+    if (pos.x > right)  pos.x = right;
+
+    float minY = top + vs.y * 0.35f;
+    if (pos.y < minY)   pos.y = minY;
+    if (pos.y > bottom) pos.y = bottom;
 
     body.setPosition(pos);
 }
+
+
+
 
 
 bool Player::canReceiveDamage() const
@@ -222,6 +236,9 @@ void Player::updateSprite()
 
     if (isAttackingPlayer)
     {
+
+        frameTime = 0.11f;
+
         if (state == PlayerState::MOVING)
             setTexture(runAttackTex, 6);
         else
@@ -230,9 +247,17 @@ void Player::updateSprite()
     else
     {
         if (state == PlayerState::MOVING)
-            setTexture(runTex, 6);
+        {
+             frameTime = 0.10f;
+             setTexture(runTex, 6);
+        }
+
         else
+        {
+            frameTime = 0.14f;
             setTexture(idleTex, 4);
+        }
+
     }
 
     lastState = state;
@@ -247,6 +272,39 @@ void Player::onAnimationFinished()
         isAttackingPlayer = false;
         frameTime = 0.12f;   // vuelve a normal
         currentFrame = 0;
+    }
+}
+
+void Player::updateAnimation()
+{
+    if (animationClock.getElapsedTime().asSeconds() >= frameTime)
+    {
+        animationClock.restart();
+        currentFrame++;
+
+        if (isAttackingPlayer)
+        {
+            // ATAQUE: NO LOOP
+            if (currentFrame >= frameCount)
+            {
+                currentFrame = frameCount - 1;
+                onAnimationFinished();
+                return;
+            }
+        }
+        else
+        {
+            // IDLE / RUN: LOOP NORMAL
+            if (currentFrame >= frameCount)
+                currentFrame = 0;
+        }
+
+        sprite.setTextureRect(sf::IntRect(
+            currentFrame * frameWidth,
+            0,
+            frameWidth,
+            frameHeight
+        ));
     }
 }
 

@@ -47,6 +47,11 @@ private:
     // SFX
     SoundManager sound;
 
+    // CAMARA QUE SIGUE AL PLAYER
+    sf::View camera;
+    float levelLeftLimit;
+    float levelRightEnd;
+
 public:
     Game();
     void run();

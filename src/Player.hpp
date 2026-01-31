@@ -59,7 +59,7 @@ public:
     void move(const sf::Vector2f& dir);
     void attack();
 
-    void keepInside(const sf::Vector2u& windowSize);
+    void keepInside(const sf::View& view);
 
     void takeDamage(int amount);
     bool canReceiveDamage() const;
@@ -84,6 +84,7 @@ public:
 
 protected:
     void onAnimationFinished() override;
+    void updateAnimation() override;
 
 };
 
