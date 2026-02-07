@@ -132,3 +132,10 @@ void Player::keepInside(const sf::View& view)
     body.setPosition(pos);
 }
 
+// -------------------------------------------------
+// getter
+// -------------------------------------------------
+float Player::getMaxDistanceReached()
+{
+    return this->maxDistanceReached;
+}

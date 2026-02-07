@@ -57,6 +57,8 @@
 		<Unit filename="src/Hud.hpp" />
 		<Unit filename="src/InputController.cpp" />
 		<Unit filename="src/InputController.hpp" />
+		<Unit filename="src/LevelGoal.cpp" />
+		<Unit filename="src/LevelGoal.hpp" />
 		<Unit filename="src/Menu.cpp" />
 		<Unit filename="src/Menu.hpp" />
 		<Unit filename="src/Player.cpp" />

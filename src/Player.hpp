@@ -22,6 +22,8 @@ public:
     // --- límites ---
     void keepInside(const sf::View& view);
 
+    float getMaxDistanceReached();
+
 private:
     // helpers internos
     void updateAnimationState();

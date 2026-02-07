@@ -411,15 +411,15 @@
 	<SFML/Graphics/Drawable.hpp>
 	<SFML/Window/GlResource.hpp>
 
-1766861608 source:d:\cyberstreets\src\main.cpp
+1770435383 source:d:\cyberstreets\src\main.cpp
 	"Game.hpp"
 
-1770424061 source:d:\cyberstreets\src\game.cpp
+1770434880 source:d:\cyberstreets\src\game.cpp
 	<iostream>
 	<algorithm>
 	"Game.hpp"
 
-1770423845 d:\cyberstreets\src\game.hpp
+1770434207 d:\cyberstreets\src\game.hpp
 	<SFML/Graphics.hpp>
 	"Player.hpp"
 	"Enemy.hpp"
@@ -427,10 +427,11 @@
 	"Menu.hpp"
 	"SoundManager.hpp"
 	"InputController.hpp"
+	"LevelGoal.hpp"
 	<memory>
 	<vector>
 
-1770423995 d:\cyberstreets\src\player.hpp
+1770437513 d:\cyberstreets\src\player.hpp
 	"Character.hpp"
 
 1770422979 d:\cyberstreets\src\entity.hpp
@@ -446,14 +447,14 @@
 1770423007 source:d:\cyberstreets\src\entity.cpp
 	"Entity.hpp"
 
-1770423989 source:d:\cyberstreets\src\player.cpp
+1770437573 source:d:\cyberstreets\src\player.cpp
 	"Player.hpp"
 	<iostream>
 
-1768055426 d:\cyberstreets\src\hud.hpp
+1770437051 d:\cyberstreets\src\hud.hpp
 	<SFML/Graphics.hpp>
 
-1768055451 source:d:\cyberstreets\src\hud.cpp
+1770437221 source:d:\cyberstreets\src\hud.cpp
 	"HUD.hpp"
 	<stdexcept>
 
@@ -588,13 +589,13 @@
 1770422937 source:d:\cyberstreets\src\animationcontroller.cpp
 	"AnimationController.hpp"
 
-1770421383 source:d:\cyberstreets\src\character.cpp
+1770424275 source:d:\cyberstreets\src\character.cpp
 	"Character.hpp"
 
 1770423932 d:\cyberstreets\src\character.hpp
 	"Entity.hpp"
 
-1770422905 d:\cyberstreets\src\animationcontroller.hpp
+1770436738 d:\cyberstreets\src\animationcontroller.hpp
 	<SFML/Graphics.hpp>
 	<string>
 	<unordered_map>
@@ -606,4 +607,12 @@
 1770417056 source:d:\cyberstreets\src\inputcontroller.cpp
 	"InputController.hpp"
 	<SFML/Window/Keyboard.hpp>
+
+1770436690 source:d:\cyberstreets\src\levelgoal.cpp
+	"LevelGoal.hpp"
+	"Player.hpp"
+
+1770436598 d:\cyberstreets\src\levelgoal.hpp
+	<SFML/Graphics.hpp>
+	"AnimationController.hpp"
 

@@ -38,10 +38,72 @@ HUD::HUD(const sf::Vector2u& windowSize, int maxHealth)
     );
 
     gameOverText.setFillColor(sf::Color::Transparent);
+
+
+    // texto NIVEL COMPLETADO
+    levelCompleteText.setFont(font);
+    levelCompleteText.setString("NIVEL COMPLETADO");
+    levelCompleteText.setCharacterSize(30);
+    levelCompleteText.setFillColor(sf::Color::Red);
+    levelCompleteText.setStyle(sf::Text::Bold);
+
+    // centrar origen
+    sf::FloatRect bounds2 = levelCompleteText.getLocalBounds();
+    levelCompleteText.setOrigin(
+        bounds2.left + bounds2.width / 2.f,
+        bounds2.top + bounds2.height / 2.f
+    );
+
+    // centrar en pantalla
+    levelCompleteText.setPosition(
+        windowSize.x / 2.f,
+        windowSize.y / 2.f
+    );
+
+    levelCompleteText.setFillColor(sf::Color::Transparent);
+
+
+
+    // TEXTO DISTANCIA MAXIMA
+    distanceText.setFont(font);
+    distanceText.setCharacterSize(16);
+    distanceText.setFillColor(sf::Color::White);
+    distanceText.setString("Record: 0 m");
+
+    // centrado arriba
+    sf::FloatRect dBounds = distanceText.getLocalBounds();
+    distanceText.setOrigin(
+        dBounds.left + dBounds.width / 2.f,
+        dBounds.top
+    );
+
+    distanceText.setPosition(
+        windowSize.x / 2.f,
+        20.f
+    );
+
+
+    // TEXTO PAUSA
+    pauseHintText.setFont(font);
+    pauseHintText.setCharacterSize(14);
+    pauseHintText.setFillColor(sf::Color(180, 180, 180));
+    pauseHintText.setString("P - PAUSA");
+
+    sf::FloatRect pBounds = pauseHintText.getLocalBounds();
+    pauseHintText.setOrigin(
+        pBounds.width,
+        0.f
+    );
+
+    pauseHintText.setPosition(
+        windowSize.x - 20.f,
+        20.f
+    );
+
 }
 
 
-void HUD::update(int currentHealth)
+void HUD::update(int currentHealth, float maxDistance)
 {
     float healthPercent =
         static_cast<float>(currentHealth) / maxHealth;
@@ -61,14 +123,33 @@ void HUD::update(int currentHealth)
         healthBarFront.setFillColor(sf::Color::Yellow);
     else
         healthBarFront.setFillColor(sf::Color::Red);
+
+
+
+    // --- DISTANCIA ---
+    int meters = static_cast<int>(maxDistance / 10.f); // ajustá escala
+    distanceText.setString("Record: " + std::to_string(meters) + " m");
+
+    // re-centrar por cambio de texto
+    sf::FloatRect bounds = distanceText.getLocalBounds();
+    distanceText.setOrigin(
+        bounds.left + bounds.width / 2.f,
+        bounds.top
+    );
 }
 
 void HUD::draw(sf::RenderWindow& window)
 {
     window.draw(healthBarBack);
     window.draw(healthBarFront);
+
+    window.draw(distanceText);
+    window.draw(pauseHintText);
+
     window.draw(gameOverText);
+    window.draw(levelCompleteText);
 }
+
 
 void HUD::showGameOver(bool show)
 {
@@ -76,5 +157,14 @@ void HUD::showGameOver(bool show)
         gameOverText.setFillColor(sf::Color::Red);
     else
         gameOverText.setFillColor(sf::Color::Transparent);
+}
+
+
+void HUD::showLevelComplete(bool show)
+{
+    if (show)
+        levelCompleteText.setFillColor(sf::Color::Yellow);
+    else
+        levelCompleteText.setFillColor(sf::Color::Transparent);
 }
 

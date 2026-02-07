@@ -29,6 +29,9 @@ public:
 
     const std::string& getCurrentAnimation() const;
 
+    const sf::Sprite& getSprite() const { return sprite; }
+
+
 
 private:
     // -------------------------

@@ -16,15 +16,21 @@ private:
     // texto game over
     sf::Text gameOverText;
 
+    sf::Text levelCompleteText;
+
+    sf::Text distanceText;
+    sf::Text pauseHintText;
+
     int maxHealth;
 
 public:
     HUD(const sf::Vector2u& windowSize, int maxHealth = 100);
 
-    void update(int currentHealth);
+    void update(int currentHealth, float maxDistance);
     void draw(sf::RenderWindow& window);
 
     void showGameOver(bool show);
+    void showLevelComplete(bool show);
 };
 
 #endif

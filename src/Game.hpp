@@ -8,6 +8,7 @@
 #include "Menu.hpp"
 #include "SoundManager.hpp"
 #include "InputController.hpp"
+#include "LevelGoal.hpp"
 
 #include <memory>
 
@@ -21,7 +22,8 @@ enum class GameState
 {
     MENU,
     PLAYING,
-    GAME_OVER
+    GAME_OVER,
+    LEVEL_COMPLETED
 };
 
 class Game
@@ -51,6 +53,7 @@ private:
     void updateMenu();
     void updatePlaying(float dt);
     void updateGameOver();
+    void updateLevelCompleted();
     void startGame();
     void spawnInitialEnemies();
 
@@ -68,6 +71,12 @@ private:
     sf::Texture playerRunTex;
     sf::Texture playerAttackTex;
     sf::Texture playerRunAttackTex;
+
+
+    // LEVEL GOAL
+    std::unique_ptr<LevelGoal> levelGoal;
+    sf::Texture goalTex;
+
 
 public:
     Game();

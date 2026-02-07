@@ -9,8 +9,6 @@ Game::Game()
   hud(window.getSize(), 100),
   menu(window.getSize())
 {
-
-
     gameState = GameState::MENU;
 
     window.setFramerateLimit(60);
@@ -21,7 +19,7 @@ Game::Game()
     levelLeftLimit = camera.getCenter().x - camera.getSize().x / 2.f;
 
     // donde termina el nivel
-    levelRightEnd = 4000.f;
+    levelRightEnd = 1000.f;
 
 
     menu.setSoundManager(&sound);
@@ -39,6 +37,16 @@ Game::Game()
         playerAttackTex,
         playerRunAttackTex
     );
+
+
+    goalTex.loadFromFile("assets/sprites/goal_flag.png");
+
+    levelGoal = std::make_unique<LevelGoal>(
+        levelRightEnd,
+        300.f,                // piso
+        goalTex
+    );
+
 }
 
 void Game::run()
@@ -83,6 +91,9 @@ void Game::update()
         case GameState::GAME_OVER:
             updateGameOver();
             break;
+        case GameState::LEVEL_COMPLETED:
+            updateLevelCompleted();
+            break;
     }
 }
 
@@ -94,42 +105,42 @@ void Game::render()
 {
     window.clear(sf::Color::Black);
 
-    if (gameState == GameState::MENU)
+    switch (gameState)
     {
-        window.setView(window.getDefaultView());
-        menu.draw(window);
-    }
-    else if (gameState == GameState::PLAYING)
-    {
-        // ---- MUNDO ----
-        window.setView(camera);
-
-        if (player)
+        case GameState::MENU:
         {
-            player->draw(window);
-            player->drawAttackBox(window);
+            window.setView(window.getDefaultView());
+            menu.draw(window);
+            break;
         }
 
-
-
-        /*for (auto& enemy : enemies)
+        case GameState::PLAYING:
         {
-            enemy.draw(window);
-            enemy.drawAttack(window);
-        }*/
+            // ---- MUNDO ----
+            window.setView(camera);
 
-        // ---- HUD ----
-        window.setView(window.getDefaultView());
-        hud.draw(window);
-    }
-    else if (gameState == GameState::GAME_OVER)
-    {
-        window.setView(window.getDefaultView());
-        hud.draw(window);
+            levelGoal->draw(window);
+            player->draw(window);
+            player->drawAttackBox(window);
+
+            // ---- HUD ----
+            window.setView(window.getDefaultView());
+            hud.draw(window);
+            break;
+        }
+
+        case GameState::GAME_OVER:
+        case GameState::LEVEL_COMPLETED:
+        {
+            window.setView(window.getDefaultView());
+            hud.draw(window);
+            break;
+        }
     }
 
     window.display();
 }
+
 
 
 
@@ -152,7 +163,15 @@ void Game::updatePlaying(float dt)
 {
     player->update(dt);
     player->keepInside(camera);
-    hud.update(player->getHealth());
+    levelGoal->update(*player);
+
+    if (levelGoal->isReached())
+    {
+        gameState = GameState::LEVEL_COMPLETED;
+        hud.showLevelComplete(true);
+    }
+
+    hud.update(player->getHealth(), player->getMaxDistanceReached());
 
 
     // CAMARA
@@ -251,6 +270,12 @@ void Game::updateGameOver()
 {
     // por ahora no hacemos nada
     // más adelante: ENTER para volver al menú
+}
+
+
+void Game::updateLevelCompleted()
+{
+        // enter para volver al menu
 }
 
 void Game::updateMenu()
