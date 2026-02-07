@@ -34,7 +34,7 @@ private:
     //std::vector<Enemy> enemies;
     InputController input;
 
-    AvatarType selectedAvatar = AvatarType::GREEN;
+    AvatarType selectedAvatar = AvatarType::Biker;
 
     // para manejo de sfx en player
     bool wasPlayerAttacking = false;

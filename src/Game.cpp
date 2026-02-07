@@ -32,23 +32,26 @@ Game::Game()
 
 
 
-    // definiciones de player
-    textures.load(TextureID::PlayerIdle,      "assets/sprites/player/Biker_idle.png");
-    textures.load(TextureID::PlayerRun,       "assets/sprites/player/Biker_run.png");
-    textures.load(TextureID::PlayerAttack,    "assets/sprites/player/Biker_attack.png");
-    textures.load(TextureID::PlayerRunAttack, "assets/sprites/player/Biker_run_attack.png");
+    // definiciones de flag
     textures.load(TextureID::GoalFlag,         "assets/sprites/goal_flag.png");
 
+    // Biker
+    textures.load(TextureID::BikerIdle,      "assets/sprites/player/Biker_idle.png");
+    textures.load(TextureID::BikerRun,       "assets/sprites/player/Biker_run.png");
+    textures.load(TextureID::BikerAttack,    "assets/sprites/player/Biker_attack.png");
+    textures.load(TextureID::BikerRunAttack, "assets/sprites/player/Biker_run_attack.png");
 
-    player = std::make_unique<Player>(
-        sf::Vector2f(400.f, 300.f),
-        textures.get(TextureID::PlayerIdle),
-        textures.get(TextureID::PlayerRun),
-        textures.get(TextureID::PlayerAttack),
-        textures.get(TextureID::PlayerRunAttack)
-    );
+    // Cyborg
+    textures.load(TextureID::CyborgIdle,      "assets/sprites/player/Cyborg_idle.png");
+    textures.load(TextureID::CyborgRun,       "assets/sprites/player/Cyborg_run.png");
+    textures.load(TextureID::CyborgAttack,    "assets/sprites/player/Cyborg_attack.png");
+    textures.load(TextureID::CyborgRunAttack, "assets/sprites/player/Cyborg_run_attack.png");
 
-
+    // Punk
+    textures.load(TextureID::PunkIdle,      "assets/sprites/player/Punk_idle.png");
+    textures.load(TextureID::PunkRun,       "assets/sprites/player/Punk_run.png");
+    textures.load(TextureID::PunkAttack,    "assets/sprites/player/Punk_attack.png");
+    textures.load(TextureID::PunkRunAttack, "assets/sprites/player/Punk_run_attack.png");
 
 
     levelGoal = std::make_unique<LevelGoal>(
@@ -57,6 +60,13 @@ Game::Game()
         textures.get(TextureID::GoalFlag)
     );
 
+
+    // pasamos los sprites al menu para usarlos
+    menu.setAvatarTextures({
+        &textures.get(TextureID::BikerIdle),
+        &textures.get(TextureID::CyborgIdle),
+        &textures.get(TextureID::PunkIdle)
+    });
 
 }
 
@@ -330,9 +340,44 @@ void Game::updateMenu()
 
 void Game::startGame()
 {
-    /*player.setAvatar(selectedAvatar);
+        TextureID idle, run, attack, runAttack;
 
-    enemies.clear();
+        switch (selectedAvatar)
+        {
+            case AvatarType::Biker:
+                idle = TextureID::BikerIdle;
+                run  = TextureID::BikerRun;
+                attack = TextureID::BikerAttack;
+                runAttack = TextureID::BikerRunAttack;
+                break;
+
+            case AvatarType::Cyborg:
+                idle = TextureID::CyborgIdle;
+                run  = TextureID::CyborgRun;
+                attack = TextureID::CyborgAttack;
+                runAttack = TextureID::CyborgRunAttack;
+                break;
+
+            case AvatarType::Punk:
+                idle = TextureID::PunkIdle;
+                run  = TextureID::PunkRun;
+                attack = TextureID::PunkAttack;
+                runAttack = TextureID::PunkRunAttack;
+                break;
+        }
+
+        player = std::make_unique<Player>(
+            sf::Vector2f(400.f, 300.f),
+            textures.get(idle),
+            textures.get(run),
+            textures.get(attack),
+            textures.get(runAttack)
+        );
+
+        wasPlayerAttacking = false;
+
+
+    /*enemies.clear();
     spawnInitialEnemies();*/
 
     gameState = GameState::PLAYING;

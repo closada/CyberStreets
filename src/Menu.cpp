@@ -52,19 +52,14 @@ Menu::Menu(const sf::Vector2u& windowSize)
     // ---------- AVATARES ----------
     for (int i = 0; i < 3; ++i)
     {
-        avatars[i].setSize({70.f, 70.f});
-        avatars[i].setOrigin(35.f, 35.f);
+        //avatars[i].setSize({70.f, 70.f});
+        //avatars[i].setOrigin(35.f, 35.f);
 
         avatars[i].setPosition(
             windowSize.x / 2.f + (i - 1) * 120.f,
             windowSize.y / 2.f
         );
     }
-
-    avatars[0].setFillColor(sf::Color::Green);
-    avatars[1].setFillColor(sf::Color::Blue);
-    avatars[2].setFillColor(sf::Color::Red);
-
 
 
     // DE MENU PRINCIPAL
@@ -133,37 +128,21 @@ void Menu::draw(sf::RenderWindow& window)
             float scale = 1.15f + std::sin(t * 4.f) * 0.05f;
             avatars[i].setScale(scale, scale);
 
-            avatars[i].setOutlineThickness(4.f);
-            avatars[i].setOutlineColor(sf::Color::White);
-            avatars[i].setFillColor(
-                sf::Color(
-                    avatars[i].getFillColor().r,
-                    avatars[i].getFillColor().g,
-                    avatars[i].getFillColor().b,
-                    255
-                )
-            );
+            //avatars[i].setOutlineThickness(4.f);
+            //avatars[i].setOutlineColor(sf::Color::White);
         }
         else
         {
-            avatars[i].setScale(0.9f, 0.9f);
-            avatars[i].setOutlineThickness(0.f);
-            avatars[i].setFillColor(
-                sf::Color(
-                    avatars[i].getFillColor().r,
-                    avatars[i].getFillColor().g,
-                    avatars[i].getFillColor().b,
-                    120
-                )
-            );
+            //avatars[i].setScale(0.9f, 0.9f);
+            //avatars[i].setOutlineThickness(0.f);
         }
 
         // texto por cada avatar
         switch (avatarIndex)
         {
-            case 0: avatarNameText.setString("AGENTE VERDE"); break;
-            case 1: avatarNameText.setString("AGENTE AZUL");  break;
-            case 2: avatarNameText.setString("AGENTE ROJO");  break;
+            case 0: avatarNameText.setString("Biker"); break;
+            case 1: avatarNameText.setString("Cyborg");  break;
+            case 2: avatarNameText.setString("Punk");  break;
         }
 
         // re-centrar porque cambia el ancho
@@ -276,4 +255,18 @@ void Menu::handleEvent(const sf::Event& event)
 void Menu::setSoundManager(SoundManager* s)
 {
     sound = s;
+}
+
+
+void Menu::setAvatarTextures(const std::array<sf::Texture*, 3>& textures)
+{
+    avatarTextures = textures;
+
+    for (int i = 0; i < 3; ++i)
+    {
+        avatars[i].setTexture(*avatarTextures[i]);
+
+        sf::FloatRect bounds = avatars[i].getLocalBounds();
+        avatars[i].setOrigin(bounds.width / 2.f, bounds.height / 2.f);
+    }
 }

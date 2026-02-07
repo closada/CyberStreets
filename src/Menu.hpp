@@ -38,7 +38,8 @@ private:
     sf::Clock animClock;
 
     //avatares
-    std::array<sf::RectangleShape, 3> avatars;
+    std::array<sf::Texture*, 3> avatarTextures;
+    sf::Sprite avatars[3];
     sf::Text avatarNameText;
 
 
@@ -63,6 +64,8 @@ public:
     void handleEvent(const sf::Event& event);
 
     void setSoundManager(SoundManager* s);
+
+    void setAvatarTextures(const std::array<sf::Texture*, 3>& textures);
 
 };
 

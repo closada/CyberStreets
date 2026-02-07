@@ -4,10 +4,24 @@
 
 enum class TextureID
 {
-    PlayerIdle,
-    PlayerRun,
-    PlayerAttack,
-    PlayerRunAttack,
+    // BIKER
+    BikerIdle,
+    BikerRun,
+    BikerAttack,
+    BikerRunAttack,
+
+    // CYBORG
+    CyborgIdle,
+    CyborgRun,
+    CyborgAttack,
+    CyborgRunAttack,
+
+    // PUNK
+    PunkIdle,
+    PunkRun,
+    PunkAttack,
+    PunkRunAttack,
+
     GoalFlag
 };
 

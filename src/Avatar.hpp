@@ -3,9 +3,9 @@
 
 enum class AvatarType
 {
-    GREEN,
-    BLUE,
-    RED
+    Biker,
+    Cyborg,
+    Punk
 };
 
 #endif

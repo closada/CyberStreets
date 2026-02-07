@@ -414,12 +414,12 @@
 1770435383 source:d:\cyberstreets\src\main.cpp
 	"Game.hpp"
 
-1770477204 source:d:\cyberstreets\src\game.cpp
+1770497205 source:d:\cyberstreets\src\game.cpp
 	<iostream>
 	<algorithm>
 	"Game.hpp"
 
-1770477092 d:\cyberstreets\src\game.hpp
+1770496131 d:\cyberstreets\src\game.hpp
 	<SFML/Graphics.hpp>
 	"Player.hpp"
 	"Enemy.hpp"
@@ -448,7 +448,7 @@
 1770423007 source:d:\cyberstreets\src\entity.cpp
 	"Entity.hpp"
 
-1770438174 source:d:\cyberstreets\src\player.cpp
+1770477281 source:d:\cyberstreets\src\player.cpp
 	"Player.hpp"
 	<iostream>
 
@@ -459,7 +459,7 @@
 	"HUD.hpp"
 	<stdexcept>
 
-1769380395 d:\cyberstreets\src\menu.hpp
+1770496911 d:\cyberstreets\src\menu.hpp
 	<SFML/Graphics.hpp>
 	<vector>
 	"Avatar.hpp"
@@ -472,7 +472,7 @@
 	<cmath>
 	<iostream>
 
-1768965229 d:\cyberstreets\src\avatar.hpp
+1770496026 d:\cyberstreets\src\avatar.hpp
 
 1770476341 d:\cyberstreets\src\soundmanager.hpp
 	<SFML/Audio.hpp>
@@ -621,7 +621,7 @@
 	<SFML/Graphics.hpp>
 	"ResourceManager.hpp"
 
-1770475882 d:\cyberstreets\src\resourcemanager.hpp
+1770496004 d:\cyberstreets\src\resourcemanager.hpp
 	<SFML/Graphics.hpp>
 	<unordered_map>
 
