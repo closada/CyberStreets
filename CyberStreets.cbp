@@ -43,8 +43,12 @@
 			<Add library="sfml-audio" />
 			<Add directory="C:/SFML-2.5.1/lib" />
 		</Linker>
+		<Unit filename="src/Animation.hpp" />
+		<Unit filename="src/AnimationController.cpp" />
+		<Unit filename="src/AnimationController.hpp" />
 		<Unit filename="src/Avatar.hpp" />
-		<Unit filename="src/Enemy.cpp" />
+		<Unit filename="src/Character.cpp" />
+		<Unit filename="src/Character.hpp" />
 		<Unit filename="src/Enemy.hpp" />
 		<Unit filename="src/Entity.cpp" />
 		<Unit filename="src/Entity.hpp" />
@@ -52,12 +56,14 @@
 		<Unit filename="src/Game.hpp" />
 		<Unit filename="src/Hud.cpp" />
 		<Unit filename="src/Hud.hpp" />
+		<Unit filename="src/InputController.hpp" />
 		<Unit filename="src/Menu.cpp" />
 		<Unit filename="src/Menu.hpp" />
-		<Unit filename="src/Player.cpp" />
 		<Unit filename="src/Player.hpp" />
 		<Unit filename="src/SoundManager.cpp" />
 		<Unit filename="src/SoundManager.hpp" />
+		<Unit filename="src/StrongEnemy.hpp" />
+		<Unit filename="src/WeakEnemy.hpp" />
 		<Unit filename="src/main.cpp" />
 		<Extensions />
 	</Project>

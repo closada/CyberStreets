@@ -7,6 +7,10 @@
 #include "HUD.hpp"
 #include "Menu.hpp"
 #include "SoundManager.hpp"
+#include "InputController.hpp"
+
+#include <memory>
+
 
 #include <vector>
 
@@ -28,8 +32,10 @@ private:
     sf::RenderWindow window;
     HUD hud;
     Menu menu;
-    Player player;
-    std::vector<Enemy> enemies;
+    std::unique_ptr<Player> player;
+    //std::vector<Enemy> enemies;
+    InputController input;
+
     AvatarType selectedAvatar = AvatarType::GREEN;
 
     void processEvents();
@@ -52,6 +58,12 @@ private:
     float levelLeftLimit;
     float levelRightEnd;
 
+    // TEXTURAS - PENDIENTE CREAR ResourceManager
+    sf::Texture playerIdleTex;
+    sf::Texture playerRunTex;
+    sf::Texture playerAttackTex;
+    sf::Texture playerRunAttackTex;
+
 public:
     Game();
     void run();
@@ -59,4 +71,3 @@ public:
 
 
 #endif
-

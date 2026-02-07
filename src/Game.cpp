@@ -3,11 +3,11 @@
 
 #include "Game.hpp"
 
+
 Game::Game()
 : window(sf::VideoMode(800, 600), "Cyber Streets"),
   hud(window.getSize(), 100),
-  menu(window.getSize()),
-  player(400.f, 300.f)
+  menu(window.getSize())
 {
 
 
@@ -24,12 +24,21 @@ Game::Game()
     levelRightEnd = 4000.f;
 
 
-
-    enemies.emplace_back(800.f, 300.f);
-    enemies.emplace_back(900.f, 200.f);
-
-
     menu.setSoundManager(&sound);
+
+    // definiciones de player
+    playerIdleTex.loadFromFile("assets/sprites/player/Biker_idle.png");
+    playerRunTex.loadFromFile("assets/sprites/player/Biker_run.png");
+    playerAttackTex.loadFromFile("assets/sprites/player/Biker_attack.png");
+    playerRunAttackTex.loadFromFile("assets/sprites/player/Biker_run_attack.png");
+
+    player = std::make_unique<Player>(
+        sf::Vector2f(400.f, 300.f),
+        playerIdleTex,
+        playerRunTex,
+        playerAttackTex,
+        playerRunAttackTex
+    );
 }
 
 void Game::run()
@@ -92,14 +101,19 @@ void Game::render()
         // ---- MUNDO ----
         window.setView(camera);
 
-        player.draw(window);
-        player.drawAttack(window);
+        if (player)
+        {
+            player->draw(window);
+            player->drawAttackBox(window);
+        }
 
-        for (auto& enemy : enemies)
+
+
+        /*for (auto& enemy : enemies)
         {
             enemy.draw(window);
             enemy.drawAttack(window);
-        }
+        }*/
 
         // ---- HUD ----
         window.setView(window.getDefaultView());
@@ -119,31 +133,23 @@ void Game::render()
 
 void Game::handleInput()
 {
-    sf::Vector2f dir(0.f, 0.f);
+    if (gameState != GameState::PLAYING || !player)
+        return;
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-        dir.x -= 1.f;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-        dir.x += 1.f;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-        dir.y -= 1.f;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-        dir.y += 1.f;
+    InputCommand cmd = input.pollInput();
 
-    player.move(dir);
+    player->handleMovement(cmd.movement);
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-    {
-        player.attack();
-    }
-
+    if (cmd.attackPressed)
+        player->handleAttack();
 }
+
 
 void Game::updatePlaying()
 {
-    player.update();
-    player.keepInside(camera);
-    hud.update(player.getHealth());
+    player->update(0.f);
+    player->keepInside(camera);
+    hud.update(player->getHealth());
 
 
     // CAMARA
@@ -152,7 +158,7 @@ void Game::updatePlaying()
     // dead zone horizontal
     float deadZone = 120.f;
 
-    float dx = player.getPosition().x - camPos.x;
+    float dx = player->getPosition().x - camPos.x;
 
     if (dx > deadZone)
     {
@@ -163,7 +169,7 @@ void Game::updatePlaying()
     //window.setView(camera);
 
 
-    // enemigos
+    /*// enemigos
     for (auto& enemy : enemies)
     {
         enemy.update();
@@ -235,7 +241,7 @@ void Game::updatePlaying()
     {
         gameState = GameState::GAME_OVER;
         hud.showGameOver(true);
-    }
+    }*/
 }
 
 void Game::updateGameOver()
@@ -261,18 +267,18 @@ void Game::updateMenu()
 
 void Game::startGame()
 {
-    player.setAvatar(selectedAvatar);
+    /*player.setAvatar(selectedAvatar);
 
     enemies.clear();
-    spawnInitialEnemies();
+    spawnInitialEnemies();*/
 
     gameState = GameState::PLAYING;
 }
 
 void Game::spawnInitialEnemies()
 {
-    enemies.clear();
+    /*enemies.clear();
     enemies.emplace_back(500.f, 300.f);
-    enemies.emplace_back(650.f, 300.f);
+    enemies.emplace_back(650.f, 300.f);*/
 }
 

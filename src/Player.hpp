@@ -1,91 +1,32 @@
-#ifndef PLAYER_HPP
-#define PLAYER_HPP
+#pragma once
+#include "Character.hpp"
 
-#include "Entity.hpp"
-#include "Avatar.hpp"
-
-
-enum class Direction
+class Player : public Character
 {
-    LEFT,
-    RIGHT
-};
-
-enum class PlayerState
-{
-    IDLE,
-    MOVING,
-    //ATTACKING,
-    DEAD
-};
-
-class Player : public Entity
-{
-private:
-    static constexpr int ATTACK_FRAMES = 6;
-
-    int health;
-    Direction direction;
-    PlayerState state;
-
-    bool isAttackingPlayer;
-
-    // ataque
-    sf::RectangleShape attackBox;
-    sf::Clock attackClock;
-    const sf::Time attackDuration = sf::milliseconds(200);
-    bool hitDone;
-
-
-    // da√±o
-    sf::Clock damageClock;
-    const sf::Time damageCooldown = sf::milliseconds(500);
-    bool canBeDamaged;
-
-    AvatarType avatar;
-
-    // Sprites
-    sf::Texture idleTex;
-    sf::Texture runTex;
-    sf::Texture attackTex;
-    sf::Texture runAttackTex;
-
 public:
-    Player(float x, float y);
+    Player(
+        const sf::Vector2f& startPos,
+        const sf::Texture& idleTex,
+        const sf::Texture& runTex,
+        const sf::Texture& attackTex,
+        const sf::Texture& runAttackTex
+    );
 
-    void update() override;
-    void draw(sf::RenderWindow& window) override;
+    // --- core ---
+    void update(float dt) override;
 
-    void move(const sf::Vector2f& dir);
-    void attack();
+    // --- input ---
+    void handleMovement(const sf::Vector2f& dir);
+    void handleAttack();
 
+    // --- lÌmites ---
     void keepInside(const sf::View& view);
 
-    void takeDamage(int amount);
-    bool canReceiveDamage() const;
+private:
+    // helpers internos
+    void updateAnimationState();
 
-    int getHealth() const;
-
-    void setColor(const sf::Color& color); // ‚Üê ESTA L√çNEA
-
-    sf::FloatRect getAttackBounds() const;
-    bool isAttacking() const;
-    void drawAttack(sf::RenderWindow& window);
-
-    bool isDead() const;
-
-    void setAvatar(AvatarType avatar);
-    void updateState();
-    void updateTexture();
-    void updateSprite();
-
-    bool canHit() const { return isAttackingPlayer && !hitDone; }
-    void markHit() { hitDone = true; }
-
-protected:
-    void onAnimationFinished() override;
-    void updateAnimation() override;
-
+    // mÈtricas
+    float maxDistanceReached;
 };
 
-#endif

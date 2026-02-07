@@ -1,14 +1,28 @@
 #include "Entity.hpp"
 
-void Entity::draw(sf::RenderWindow& window)
+// -------------------------------------------------
+// Constructor
+// -------------------------------------------------
+Entity::Entity(const sf::Vector2f& startPos)
 {
-    sprite.setPosition(body.getPosition());
-    window.draw(sprite);
+    body.setPosition(startPos);
 }
 
-sf::FloatRect Entity::getBounds() const
+// -------------------------------------------------
+// Draw
+// -------------------------------------------------
+void Entity::draw(sf::RenderWindow& window)
 {
-    return body.getGlobalBounds();
+    animation.setPosition(body.getPosition());
+    animation.draw(window);
+}
+
+// -------------------------------------------------
+// Transform
+// -------------------------------------------------
+void Entity::setPosition(const sf::Vector2f& pos)
+{
+    body.setPosition(pos);
 }
 
 sf::Vector2f Entity::getPosition() const
@@ -16,45 +30,26 @@ sf::Vector2f Entity::getPosition() const
     return body.getPosition();
 }
 
-void Entity::setTexture(const sf::Texture& tex, int frames)
+// -------------------------------------------------
+// Bounds
+// -------------------------------------------------
+sf::FloatRect Entity::getBounds() const
 {
-    texture = tex;
-    sprite.setTexture(texture);
-
-    currentFrameCount = frames;
-    frameCount = frames;
-    currentFrame = 0;
-
-    sprite.setTextureRect({
-        0,
-        0,
-        frameWidth,
-        frameHeight
-    });
-
-    animationClock.restart();
+    return body.getGlobalBounds();
 }
 
-
-void Entity::updateAnimation()
+// -------------------------------------------------
+// Animation access
+// -------------------------------------------------
+AnimationController& Entity::getAnimation()
 {
-    if (animationClock.getElapsedTime().asSeconds() >= frameTime)
-    {
-        currentFrame++;
-
-        if (currentFrame >= frameCount)
-            currentFrame = 0;
-
-        sprite.setTextureRect(sf::IntRect(
-            currentFrame * frameWidth,
-            0,
-            frameWidth,
-            frameHeight
-        ));
-
-        animationClock.restart();
-    }
+    return animation;
 }
 
-
-
+// -------------------------------------------------
+// get animation str
+// -------------------------------------------------
+const std::string& Entity::getCurrentAnimation() const
+{
+    return animation.getCurrentAnimation();
+}
