@@ -16,7 +16,7 @@ Player::Player(const sf::Vector2f& startPos,
 {
     // stats del player
     health = 100;
-    speed  = 4.f;
+    speed  = 240.f;
 
     // tamaño del body (colisión)
     body.setSize({48.f, 48.f});
@@ -63,9 +63,9 @@ void Player::update(float dt)
 // -------------------------------------------------
 // Input
 // -------------------------------------------------
-void Player::handleMovement(const sf::Vector2f& dir)
+void Player::handleMovement(const sf::Vector2f& dir, float dt)
 {
-    move(dir);
+    move(dir, dt);
 }
 
 void Player::handleAttack()

@@ -16,7 +16,7 @@ public:
     void update(float dt) override;
 
     // --- input ---
-    void handleMovement(const sf::Vector2f& dir);
+    void handleMovement(const sf::Vector2f& dir, float dt);
     void handleAttack();
 
     // --- límites ---

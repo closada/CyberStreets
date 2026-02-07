@@ -53,7 +53,7 @@ void Character::update(float dt)
 // -------------------------------------------------
 // Movimiento
 // -------------------------------------------------
-void Character::move(const sf::Vector2f& dir)
+void Character::move(const sf::Vector2f& dir, float dt)
 {
     if (state == CharacterState::Dead)
         return;
@@ -64,7 +64,7 @@ void Character::move(const sf::Vector2f& dir)
         return;
     }
 
-    body.move(dir * speed);
+    body.move(dir * speed * dt);
 
     if (dir.x < 0) direction = Direction::Left;
     if (dir.x > 0) direction = Direction::Right;

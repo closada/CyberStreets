@@ -23,7 +23,7 @@ public:
     virtual void update(float dt) override;
 
     // --- movimiento ---
-    void move(const sf::Vector2f& dir);
+    void move(const sf::Vector2f& dir, float dt);
 
     // --- ataque ---
     void startAttack();

@@ -45,6 +45,9 @@ void Game::run()
 {
     while (window.isOpen())
     {
+        dt = deltaClock.restart().asSeconds();
+
+
         processEvents();
         handleInput();
         update();
@@ -74,7 +77,7 @@ void Game::update()
             break;
 
         case GameState::PLAYING:
-            updatePlaying();
+            updatePlaying(dt);
             break;
 
         case GameState::GAME_OVER:
@@ -138,16 +141,16 @@ void Game::handleInput()
 
     InputCommand cmd = input.pollInput();
 
-    player->handleMovement(cmd.movement);
+    player->handleMovement(cmd.movement, dt);
 
     if (cmd.attackPressed)
         player->handleAttack();
 }
 
 
-void Game::updatePlaying()
+void Game::updatePlaying(float dt)
 {
-    player->update(0.f);
+    player->update(dt);
     player->keepInside(camera);
     hud.update(player->getHealth());
 

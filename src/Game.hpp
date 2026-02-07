@@ -38,13 +38,18 @@ private:
 
     AvatarType selectedAvatar = AvatarType::GREEN;
 
+
+    // control dt motor pc
+    sf::Clock deltaClock;
+    float dt;
+
     void processEvents();
     void update();
     void render();
     void handleInput();
 
     void updateMenu();
-    void updatePlaying();
+    void updatePlaying(float dt);
     void updateGameOver();
     void startGame();
     void spawnInitialEnemies();
