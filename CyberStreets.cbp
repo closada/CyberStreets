@@ -63,6 +63,8 @@
 		<Unit filename="src/Menu.hpp" />
 		<Unit filename="src/Player.cpp" />
 		<Unit filename="src/Player.hpp" />
+		<Unit filename="src/ResourceAliases.hpp" />
+		<Unit filename="src/ResourceManager.hpp" />
 		<Unit filename="src/SoundManager.cpp" />
 		<Unit filename="src/SoundManager.hpp" />
 		<Unit filename="src/StrongEnemy.hpp" />

@@ -9,14 +9,10 @@
 #include "SoundManager.hpp"
 #include "InputController.hpp"
 #include "LevelGoal.hpp"
+#include "ResourceAliases.hpp"
 
 #include <memory>
-
-
 #include <vector>
-
-
-
 
 enum class GameState
 {
@@ -40,6 +36,9 @@ private:
 
     AvatarType selectedAvatar = AvatarType::GREEN;
 
+    // para manejo de sfx en player
+    bool wasPlayerAttacking = false;
+
 
     // control dt motor pc
     sf::Clock deltaClock;
@@ -57,21 +56,17 @@ private:
     void startGame();
     void spawnInitialEnemies();
 
-
     // SFX
     SoundManager sound;
+    SoundBufferManager sounds;
 
     // CAMARA QUE SIGUE AL PLAYER
     sf::View camera;
     float levelLeftLimit;
     float levelRightEnd;
 
-    // TEXTURAS - PENDIENTE CREAR ResourceManager
-    sf::Texture playerIdleTex;
-    sf::Texture playerRunTex;
-    sf::Texture playerAttackTex;
-    sf::Texture playerRunAttackTex;
-
+    // TEXTURAS
+    TextureManager textures;
 
     // LEVEL GOAL
     std::unique_ptr<LevelGoal> levelGoal;

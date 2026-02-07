@@ -1,24 +1,22 @@
 #include "SoundManager.hpp"
-#include <stdexcept>
+#include <iostream>
 
-SoundManager::SoundManager()
+void SoundManager::load(SoundID id, const std::string& path)
 {
-    if (!buffers[SoundID::MENU_MOVE].loadFromFile("assets/sounds/menu_move.wav"))
-        throw std::runtime_error("No se pudo cargar menu_move.wav");
-
-    if (!buffers[SoundID::MENU_CONFIRM].loadFromFile("assets/sounds/menu_confirm.wav"))
-        throw std::runtime_error("No se pudo cargar menu_confirm.wav");
-
-    if (!buffers[SoundID::HIT].loadFromFile("assets/sounds/hit.wav"))
-        throw std::runtime_error("No se pudo cargar hit.wav");
-
-    if (!buffers[SoundID::PLAYER_HIT].loadFromFile("assets/sounds/player_hit.wav"))
-        throw std::runtime_error("No se pudo cargar player_hit.wav");
+    buffers.load(id, path);
 }
 
 void SoundManager::play(SoundID id)
 {
-    sound.setBuffer(buffers[id]);
-    sound.play();
+    try
+    {
+        sound.setBuffer(buffers.get(id));
+        sound.play();
+    }
+    catch (const std::out_of_range&)
+    {
+        std::cerr << "[SoundManager] Sonido no cargado: "
+                  << static_cast<int>(id) << std::endl;
+        // NO se cae el juego
+    }
 }
-

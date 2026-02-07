@@ -22,30 +22,41 @@ Game::Game()
     levelRightEnd = 1000.f;
 
 
+
+    sound.load(SoundID::MENU_MOVE,    "assets/sounds/menu_move.wav");
+    sound.load(SoundID::MENU_CONFIRM, "assets/sounds/menu_confirm.wav");
+    sound.load(SoundID::HIT,          "assets/sounds/hit.wav");
+    sound.load(SoundID::PLAYER_HIT,   "assets/sounds/player_hit.wav");
+
     menu.setSoundManager(&sound);
 
+
+
     // definiciones de player
-    playerIdleTex.loadFromFile("assets/sprites/player/Biker_idle.png");
-    playerRunTex.loadFromFile("assets/sprites/player/Biker_run.png");
-    playerAttackTex.loadFromFile("assets/sprites/player/Biker_attack.png");
-    playerRunAttackTex.loadFromFile("assets/sprites/player/Biker_run_attack.png");
+    textures.load(TextureID::PlayerIdle,      "assets/sprites/player/Biker_idle.png");
+    textures.load(TextureID::PlayerRun,       "assets/sprites/player/Biker_run.png");
+    textures.load(TextureID::PlayerAttack,    "assets/sprites/player/Biker_attack.png");
+    textures.load(TextureID::PlayerRunAttack, "assets/sprites/player/Biker_run_attack.png");
+    textures.load(TextureID::GoalFlag,         "assets/sprites/goal_flag.png");
+
 
     player = std::make_unique<Player>(
         sf::Vector2f(400.f, 300.f),
-        playerIdleTex,
-        playerRunTex,
-        playerAttackTex,
-        playerRunAttackTex
+        textures.get(TextureID::PlayerIdle),
+        textures.get(TextureID::PlayerRun),
+        textures.get(TextureID::PlayerAttack),
+        textures.get(TextureID::PlayerRunAttack)
     );
 
 
-    goalTex.loadFromFile("assets/sprites/goal_flag.png");
+
 
     levelGoal = std::make_unique<LevelGoal>(
         levelRightEnd,
-        300.f,                // piso
-        goalTex
+        520.f,
+        textures.get(TextureID::GoalFlag)
     );
+
 
 }
 
@@ -163,6 +174,20 @@ void Game::updatePlaying(float dt)
 {
     player->update(dt);
     player->keepInside(camera);
+
+
+    // sistema just_pressed para sfx en player
+    bool isAttackingNow = player->isAttacking();
+
+    if (isAttackingNow && !wasPlayerAttacking)
+    {
+        sound.play(SoundID::PLAYER_HIT);
+    }
+
+    wasPlayerAttacking = isAttackingNow;
+
+
+
     levelGoal->update(*player);
 
     if (levelGoal->isReached())
@@ -187,8 +212,18 @@ void Game::updatePlaying(float dt)
         camPos.x += dx - deadZone;
     }
 
+
+    // --- LÍMITE DERECHO DE CÁMARA ---
+    float halfView = camera.getSize().x / 2.f;
+    float maxCamX = levelRightEnd + 20.f - halfView; // los 20.f es para que tenga un "respiro" visual
+
+    if (camPos.x > maxCamX)
+    {
+        camPos.x = maxCamX;
+    }
     camera.setCenter(camPos);
     //window.setView(camera);
+
 
 
     /*// enemigos

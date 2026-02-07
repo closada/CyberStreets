@@ -26,7 +26,7 @@ Player::Player(const sf::Vector2f& startPos,
     animation.addAnimation("idle", idleTex, 4, 0.14f, true);
     animation.addAnimation("run", runTex, 6, 0.10f, true);
     animation.addAnimation("attack", attackTex, 6, 0.06f, false);
-    animation.addAnimation("run_attack", runAttackTex, 6, 0.11f, false);
+    animation.addAnimation("run_attack", runAttackTex, 6, 0.06f, false);
 
 
     animation.play("idle");

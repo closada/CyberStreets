@@ -414,12 +414,12 @@
 1770435383 source:d:\cyberstreets\src\main.cpp
 	"Game.hpp"
 
-1770434880 source:d:\cyberstreets\src\game.cpp
+1770477204 source:d:\cyberstreets\src\game.cpp
 	<iostream>
 	<algorithm>
 	"Game.hpp"
 
-1770434207 d:\cyberstreets\src\game.hpp
+1770477092 d:\cyberstreets\src\game.hpp
 	<SFML/Graphics.hpp>
 	"Player.hpp"
 	"Enemy.hpp"
@@ -428,6 +428,7 @@
 	"SoundManager.hpp"
 	"InputController.hpp"
 	"LevelGoal.hpp"
+	"ResourceAliases.hpp"
 	<memory>
 	<vector>
 
@@ -447,14 +448,14 @@
 1770423007 source:d:\cyberstreets\src\entity.cpp
 	"Entity.hpp"
 
-1770437573 source:d:\cyberstreets\src\player.cpp
+1770438174 source:d:\cyberstreets\src\player.cpp
 	"Player.hpp"
 	<iostream>
 
 1770437051 d:\cyberstreets\src\hud.hpp
 	<SFML/Graphics.hpp>
 
-1770437221 source:d:\cyberstreets\src\hud.cpp
+1770438008 source:d:\cyberstreets\src\hud.cpp
 	"HUD.hpp"
 	<stdexcept>
 
@@ -473,10 +474,10 @@
 
 1768965229 d:\cyberstreets\src\avatar.hpp
 
-1769378212 d:\cyberstreets\src\soundmanager.hpp
+1770476341 d:\cyberstreets\src\soundmanager.hpp
 	<SFML/Audio.hpp>
-	<map>
-	<string>
+	"ResourceManager.hpp"
+	"ResourceAliases.hpp"
 
 1766856864 c:\sfml-2.5.1\include\sfml\audio.hpp
 	<SFML/System.hpp>
@@ -582,9 +583,9 @@
 	<SFML/Audio/Export.hpp>
 	<string>
 
-1769378264 source:d:\cyberstreets\src\soundmanager.cpp
+1770476222 source:d:\cyberstreets\src\soundmanager.cpp
 	"SoundManager.hpp"
-	<stdexcept>
+	<iostream>
 
 1770422937 source:d:\cyberstreets\src\animationcontroller.cpp
 	"AnimationController.hpp"
@@ -608,11 +609,19 @@
 	"InputController.hpp"
 	<SFML/Window/Keyboard.hpp>
 
-1770436690 source:d:\cyberstreets\src\levelgoal.cpp
+1770437989 source:d:\cyberstreets\src\levelgoal.cpp
 	"LevelGoal.hpp"
 	"Player.hpp"
 
 1770436598 d:\cyberstreets\src\levelgoal.hpp
 	<SFML/Graphics.hpp>
 	"AnimationController.hpp"
+
+1770476266 d:\cyberstreets\src\resourcealiases.hpp
+	<SFML/Graphics.hpp>
+	"ResourceManager.hpp"
+
+1770475882 d:\cyberstreets\src\resourcemanager.hpp
+	<SFML/Graphics.hpp>
+	<unordered_map>
 
