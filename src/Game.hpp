@@ -3,13 +3,14 @@
 
 #include <SFML/Graphics.hpp>
 #include "Player.hpp"
-#include "Enemy.hpp"
 #include "HUD.hpp"
 #include "Menu.hpp"
 #include "SoundManager.hpp"
 #include "InputController.hpp"
 #include "LevelGoal.hpp"
 #include "ResourceAliases.hpp"
+#include "LevelManager.hpp"
+
 
 #include <memory>
 #include <vector>
@@ -30,9 +31,10 @@ private:
     sf::RenderWindow window;
     HUD hud;
     Menu menu;
-    std::unique_ptr<Player> player;
-    //std::vector<Enemy> enemies;
     InputController input;
+
+    std::unique_ptr<LevelManager> levelManager;
+
 
     AvatarType selectedAvatar = AvatarType::Biker;
 
@@ -54,7 +56,6 @@ private:
     void updateGameOver();
     void updateLevelCompleted();
     void startGame();
-    void spawnInitialEnemies();
 
     // SFX
     SoundManager sound;
@@ -71,6 +72,8 @@ private:
     // LEVEL GOAL
     std::unique_ptr<LevelGoal> levelGoal;
     sf::Texture goalTex;
+
+
 
 
 public:

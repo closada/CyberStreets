@@ -22,6 +22,18 @@ enum class TextureID
     PunkAttack,
     PunkRunAttack,
 
+
+    // AVATARES
+    BikerAvatar,
+    CyborgAvatar,
+    PunkAvatar,
+
+    // ENEMIE SPRITES
+    EnemyRun,
+    EnemyAttack,
+    EnemyDead,
+
+
     GoalFlag
 };
 

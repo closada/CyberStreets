@@ -414,41 +414,44 @@
 1770435383 source:d:\cyberstreets\src\main.cpp
 	"Game.hpp"
 
-1770497205 source:d:\cyberstreets\src\game.cpp
+1770689006 source:d:\cyberstreets\src\game.cpp
 	<iostream>
 	<algorithm>
 	"Game.hpp"
 
-1770496131 d:\cyberstreets\src\game.hpp
+1770688991 d:\cyberstreets\src\game.hpp
 	<SFML/Graphics.hpp>
 	"Player.hpp"
-	"Enemy.hpp"
 	"HUD.hpp"
 	"Menu.hpp"
 	"SoundManager.hpp"
 	"InputController.hpp"
 	"LevelGoal.hpp"
 	"ResourceAliases.hpp"
+	"LevelManager.hpp"
 	<memory>
 	<vector>
 
-1770437513 d:\cyberstreets\src\player.hpp
+1770676652 d:\cyberstreets\src\player.hpp
 	"Character.hpp"
 
 1770422979 d:\cyberstreets\src\entity.hpp
 	<SFML/Graphics.hpp>
 	"AnimationController.hpp"
 
-1770083268 d:\cyberstreets\src\enemy.hpp
+1770681207 d:\cyberstreets\src\enemy.hpp
+	"Character.hpp"
+	"EnemyConfig.hpp"
+	<SFML/System/Vector2.hpp>
 
-1769559439 source:d:\cyberstreets\src\enemy.cpp
+1770681410 source:d:\cyberstreets\src\enemy.cpp
 	"Enemy.hpp"
 	<cmath>
 
 1770423007 source:d:\cyberstreets\src\entity.cpp
 	"Entity.hpp"
 
-1770477281 source:d:\cyberstreets\src\player.cpp
+1770676968 source:d:\cyberstreets\src\player.cpp
 	"Player.hpp"
 	<iostream>
 
@@ -466,7 +469,7 @@
 	"SoundManager.hpp"
 	<array>
 
-1769380603 source:d:\cyberstreets\src\menu.cpp
+1770497252 source:d:\cyberstreets\src\menu.cpp
 	"Menu.hpp"
 	<stdexcept>
 	<cmath>
@@ -617,11 +620,280 @@
 	<SFML/Graphics.hpp>
 	"AnimationController.hpp"
 
-1770476266 d:\cyberstreets\src\resourcealiases.hpp
+1770686624 d:\cyberstreets\src\resourcealiases.hpp
 	<SFML/Graphics.hpp>
 	"ResourceManager.hpp"
+	<SFML/Audio.hpp>
 
-1770496004 d:\cyberstreets\src\resourcemanager.hpp
+1770679463 d:\cyberstreets\src\resourcemanager.hpp
 	<SFML/Graphics.hpp>
 	<unordered_map>
+
+1770682979 d:\cyberstreets\src\levelloader.hpp
+	"Enemy.hpp"
+	<iostream>
+	<vector>
+	<string>
+
+1770683100 source:d:\cyberstreets\src\levelloader.cpp
+	"LevelLoader.hpp"
+	"nlohmann/json.hpp"
+	<fstream>
+	<stdexcept>
+
+1770674478 d:\cyberstreets\src\nlohmann\json.hpp
+	<algorithm>
+	<cstddef>
+	<functional>
+	<initializer_list>
+	<iosfwd>
+	<iterator>
+	<memory>
+	<string>
+	<utility>
+	<vector>
+	<utility>
+	<algorithm>
+	<array>
+	<forward_list>
+	<iterator>
+	<map>
+	<string>
+	<tuple>
+	<type_traits>
+	<unordered_map>
+	<utility>
+	<valarray>
+	<cstddef>
+	<exception>
+	<numeric>
+	<stdexcept>
+	<string>
+	<vector>
+	<array>
+	<cstddef>
+	<cstdint>
+	<string>
+	<utility>
+	<type_traits>
+	<stdint.h>
+	<stdint.h>
+	<version>
+	<cstdlib>
+	<cassert>
+	<compare>
+	<cstddef>
+	<array>
+	<cstddef>
+	<type_traits>
+	<utility>
+	<limits>
+	<string>
+	<tuple>
+	<type_traits>
+	<utility>
+	<cstddef>
+	<iterator>
+	<cstdint>
+	<map>
+	<memory>
+	<string>
+	<vector>
+	<cstring>
+	<string>
+	<utility>
+	<experimental/filesystem>
+	<filesystem>
+	<optional>
+	<string_view>
+	<optional>
+	<algorithm>
+	<iterator>
+	<memory>
+	<string>
+	<tuple>
+	<type_traits>
+	<utility>
+	<valarray>
+	<vector>
+	<cstddef>
+	<iterator>
+	<tuple>
+	<utility>
+	<ranges>
+	<cstddef>
+	<string>
+	<cstdint>
+	<tuple>
+	<utility>
+	<cstdint>
+	<cstddef>
+	<functional>
+	<algorithm>
+	<array>
+	<cmath>
+	<cstddef>
+	<cstdint>
+	<cstdio>
+	<cstring>
+	<iterator>
+	<limits>
+	<string>
+	<utility>
+	<vector>
+	<bit>
+	<array>
+	<cstddef>
+	<cstring>
+	<iterator>
+	<memory>
+	<numeric>
+	<streambuf>
+	<string>
+	<type_traits>
+	<utility>
+	<cstdio>
+	<istream>
+	<cstddef>
+	<string>
+	<type_traits>
+	<utility>
+	<vector>
+	<array>
+	<clocale>
+	<cstddef>
+	<cstdio>
+	<cstdlib>
+	<initializer_list>
+	<string>
+	<utility>
+	<vector>
+	<cstdint>
+	<utility>
+	<string>
+	<cmath>
+	<cstdint>
+	<functional>
+	<string>
+	<utility>
+	<vector>
+	<cstddef>
+	<limits>
+	<iterator>
+	<type_traits>
+	<cstddef>
+	<iterator>
+	<utility>
+	<type_traits>
+	<algorithm>
+	<cctype>
+	<cerrno>
+	<cstdlib>
+	<iosfwd>
+	<limits>
+	<numeric>
+	<string>
+	<utility>
+	<vector>
+	<initializer_list>
+	<utility>
+	<algorithm>
+	<array>
+	<map>
+	<cmath>
+	<cstdint>
+	<cstring>
+	<limits>
+	<string>
+	<utility>
+	<vector>
+	<algorithm>
+	<cstddef>
+	<iterator>
+	<memory>
+	<string>
+	<vector>
+	<ios>
+	<ostream>
+	<algorithm>
+	<array>
+	<clocale>
+	<cmath>
+	<cstddef>
+	<cstdint>
+	<cstdio>
+	<limits>
+	<string>
+	<iomanip>
+	<type_traits>
+	<utility>
+	<array>
+	<cmath>
+	<cstdint>
+	<cstring>
+	<limits>
+	<type_traits>
+	<functional>
+	<initializer_list>
+	<iterator>
+	<memory>
+	<stdexcept>
+	<type_traits>
+	<utility>
+	<vector>
+	<any>
+	<string_view>
+
+1770679686 d:\cyberstreets\src\enemyconfig.hpp
+	<SFML/Graphics.hpp>
+	<string>
+
+1770680744 d:\cyberstreets\src\enemyconfigloader.hpp
+	<map>
+	<string>
+	<SFML/Graphics.hpp>
+	"EnemyConfig.hpp"
+	"ResourceManager.hpp"
+
+1770680762 source:d:\cyberstreets\src\enemyconfigloader.cpp
+	"EnemyConfigLoader.hpp"
+	"nlohmann/json.hpp"
+	<fstream>
+	<stdexcept>
+
+1770680812 source:d:\cyberstreets\src\enemyfactory.cpp
+	"EnemyFactory.hpp"
+
+1770680793 d:\cyberstreets\src\enemyfactory.hpp
+	<memory>
+	<SFML/Graphics.hpp>
+	"Enemy.hpp"
+	"EnemyConfigLoader.hpp"
+	"ResourceManager.hpp"
+
+1770684054 source:d:\cyberstreets\src\wavemanager.cpp
+	"WaveManager.hpp"
+
+1770683283 d:\cyberstreets\src\wavemanager.hpp
+	"EnemyFactory.hpp"
+	"LevelLoader.hpp"
+	<vector>
+	<memory>
+
+1770687318 source:d:\cyberstreets\src\levelmanager.cpp
+	"LevelManager.hpp"
+	<algorithm>
+
+1770691193 d:\cyberstreets\src\levelmanager.hpp
+	"LevelLoader.hpp"
+	"WaveManager.hpp"
+	"Player.hpp"
+	"ResourceAliases.hpp"
+	"Avatar.hpp"
+	"LevelGoal.hpp"
+	"InputController.hpp"
+	"SoundManager.hpp"
+	"EnemyConfigLoader.hpp"
+	"EnemyFactory.hpp"
+	"ResourceManager.hpp"
 

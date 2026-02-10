@@ -1,0 +1,30 @@
+{
+  "id": 1,
+  "levelLength": 1200,
+  "goalX": 1180,
+  "groundY": 520,
+
+  "waves": [
+    {
+      "type": "Thug",
+      "x": 500,
+      "y": 520,
+      "delay": 1.5,
+      "count": 3
+    },
+    {
+      "type": "Thug",
+      "x": 750,
+      "y": 520,
+      "delay": 4.0,
+      "count": 4
+    },
+    {
+      "type": "Boss",
+      "x": 950,
+      "y": 520,
+      "delay": 8.0,
+      "count": 1
+    }
+  ]
+}

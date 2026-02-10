@@ -1,0 +1,38 @@
+{
+  "thug": {
+    "health": 50,
+    "damage": 10,
+    "attackCooldown": 1.2,
+    "speed": 80,
+    "sprite_run": {
+						"link": "assets/sprites/enemies/thug_run.png",
+						"cant_sprites": 6
+					}
+    "sprite_attack":  {
+						"link": "assets/sprites/enemies/thug_attack.png",
+						"cant_sprites": 6
+					}
+	"sprite_dead": {
+						"link": "assets/sprites/enemies/thug_dead.png",
+						"cant_sprites": 6
+	}
+  },
+  "boss": {
+    "health": 300,
+    "damage": 25,
+    "attackCooldown": 2.0,
+    "speed": 40,
+	"sprite_run": {
+						"link": "assets/sprites/enemies/boss_run.png",
+						"cant_sprites": 6
+					}
+    "sprite_attack":  {
+						"link": "assets/sprites/enemies/boss_attack.png",
+						"cant_sprites": 9
+					}
+	"sprite_dead": {
+						"link": "assets/sprites/enemies/boss_dead.png",
+						"cant_sprites": 6
+	}
+  }
+}

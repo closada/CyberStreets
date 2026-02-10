@@ -24,11 +24,29 @@ public:
 
     float getMaxDistanceReached();
 
+    // logica para HIT y muerte
+    void takeDamage(int amount);
+
+    bool canReceiveDamage() const;
+    bool isDead() const;
+
+    int getHealth() const;
+    int getMaxHealth() const;
+
 private:
     // helpers internos
     void updateAnimationState();
 
     // métricas
     float maxDistanceReached;
+
+    // logica de hit y muerte
+    int maxHealth;
+    int health;
+
+    float damageCooldown;        // tiempo entre golpes
+    float damageCooldownTimer;   // contador
+
+    bool dead;
 };
 

@@ -15,8 +15,15 @@ Player::Player(const sf::Vector2f& startPos,
   maxDistanceReached(0.f)
 {
     // stats del player
-    health = 100;
+    maxHealth = 100;
+    health    = maxHealth;
     speed  = 240.f;
+
+
+    damageCooldown = 0.6f;
+    damageCooldownTimer = 0.f;
+
+    dead = false;
 
     // tamaño del body (colisión)
     body.setSize({48.f, 48.f});
@@ -39,7 +46,16 @@ Player::Player(const sf::Vector2f& startPos,
 // -------------------------------------------------
 void Player::update(float dt)
 {
+
+      if (dead)
+        return;
+
+
     Character::update(dt);
+
+    // cooldown de daño
+    if (damageCooldownTimer > 0.f)
+        damageCooldownTimer -= dt;
 
     updateAnimationState();
 
@@ -82,9 +98,10 @@ void Player::handleAttack()
 // -------------------------------------------------
 void Player::updateAnimationState()
 {
-    if (state == CharacterState::Dead)
+
+    if (dead)
     {
-        animation.play("dead");
+        animation.play("idle");
         return;
     }
 
@@ -138,4 +155,41 @@ void Player::keepInside(const sf::View& view)
 float Player::getMaxDistanceReached()
 {
     return this->maxDistanceReached;
+}
+
+void Player::takeDamage(int amount)
+{
+    if (!canReceiveDamage() || dead)
+        return;
+
+    health -= amount;
+    damageCooldownTimer = damageCooldown;
+
+    if (health <= 0)
+    {
+        health = 0;
+        dead = true;
+        state = CharacterState::Dead;
+    }
+}
+
+
+bool Player::canReceiveDamage() const
+{
+    return damageCooldownTimer <= 0.f;
+}
+
+bool Player::isDead() const
+{
+    return dead;
+}
+
+int Player::getHealth() const
+{
+    return health;
+}
+
+int Player::getMaxHealth() const
+{
+    return maxHealth;
 }

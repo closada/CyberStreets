@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "ResourceManager.hpp"
+#include <SFML/Audio.hpp>
 
 enum class SoundID
 {

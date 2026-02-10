@@ -54,18 +54,17 @@ Game::Game()
     textures.load(TextureID::PunkRunAttack, "assets/sprites/player/Punk_run_attack.png");
 
 
-    levelGoal = std::make_unique<LevelGoal>(
-        levelRightEnd,
-        520.f,
-        textures.get(TextureID::GoalFlag)
-    );
+    // avatares para menu
+    textures.load(TextureID::BikerAvatar,      "assets/sprites/biker_avatar.png");
+    textures.load(TextureID::CyborgAvatar,      "assets/sprites/cyborg_avatar.png");
+    textures.load(TextureID::PunkAvatar,      "assets/sprites/punk_avatar.png");
 
 
     // pasamos los sprites al menu para usarlos
     menu.setAvatarTextures({
-        &textures.get(TextureID::BikerIdle),
-        &textures.get(TextureID::CyborgIdle),
-        &textures.get(TextureID::PunkIdle)
+        &textures.get(TextureID::BikerAvatar),
+        &textures.get(TextureID::CyborgAvatar),
+        &textures.get(TextureID::PunkAvatar)
     });
 
 }
@@ -139,12 +138,8 @@ void Game::render()
         {
             // ---- MUNDO ----
             window.setView(camera);
+            levelManager->draw(window);
 
-            levelGoal->draw(window);
-            player->draw(window);
-            player->drawAttackBox(window);
-
-            // ---- HUD ----
             window.setView(window.getDefaultView());
             hud.draw(window);
             break;
@@ -168,148 +163,39 @@ void Game::render()
 
 void Game::handleInput()
 {
-    if (gameState != GameState::PLAYING || !player)
+    if (gameState != GameState::PLAYING || !levelManager)
         return;
 
     InputCommand cmd = input.pollInput();
-
-    player->handleMovement(cmd.movement, dt);
-
-    if (cmd.attackPressed)
-        player->handleAttack();
+    levelManager->handleInput(cmd, dt);
 }
+
 
 
 void Game::updatePlaying(float dt)
 {
-    player->update(dt);
-    player->keepInside(camera);
+    levelManager->update(dt);
 
-
-    // sistema just_pressed para sfx en player
-    bool isAttackingNow = player->isAttacking();
-
-    if (isAttackingNow && !wasPlayerAttacking)
+    if (levelManager->isPlayerDead())
     {
-        sound.play(SoundID::PLAYER_HIT);
+        gameState = GameState::GAME_OVER;
+        hud.showGameOver(true);
     }
 
-    wasPlayerAttacking = isAttackingNow;
-
-
-
-    levelGoal->update(*player);
-
-    if (levelGoal->isReached())
+    if (levelManager->isLevelCompleted())
     {
         gameState = GameState::LEVEL_COMPLETED;
         hud.showLevelComplete(true);
     }
 
-    hud.update(player->getHealth(), player->getMaxDistanceReached());
-
-
-    // CAMARA
-    sf::Vector2f camPos = camera.getCenter();
-
-    // dead zone horizontal
-    float deadZone = 120.f;
-
-    float dx = player->getPosition().x - camPos.x;
-
-    if (dx > deadZone)
-    {
-        camPos.x += dx - deadZone;
-    }
-
-
-    // --- LÍMITE DERECHO DE CÁMARA ---
-    float halfView = camera.getSize().x / 2.f;
-    float maxCamX = levelRightEnd + 20.f - halfView; // los 20.f es para que tenga un "respiro" visual
-
-    if (camPos.x > maxCamX)
-    {
-        camPos.x = maxCamX;
-    }
-    camera.setCenter(camPos);
-    //window.setView(camera);
-
-
-
-    /*// enemigos
-    for (auto& enemy : enemies)
-    {
-        enemy.update();
-        enemy.updateAI(player.getPosition());
-    }
-
-    // --- SEPARACIÓN ENTRE ENEMIGOS ---
-    for (size_t i = 0; i < enemies.size(); ++i)
-    {
-        for (size_t j = i + 1; j < enemies.size(); ++j)
-        {
-            sf::FloatRect a = enemies[i].getBounds();
-            sf::FloatRect b = enemies[j].getBounds();
-
-            if (a.intersects(b))
-            {
-
-                float overlapY = (a.top + a.height) - b.top;
-
-                // empuje vertical suave (estilo arcade)
-                if (overlapY > 0.f)
-                {
-                    enemies[i].move({0.f, -0.5f});
-                    enemies[j].move({0.f,  0.5f});
-                }
-            }
-        }
-    }
-
-
-    // ataque player enemy
-    if (player.canHit())
-    {
-        for (auto& enemy : enemies)
-        {
-            if (player.getAttackBounds().intersects(enemy.getBounds()))
-            {
-                enemy.takeHit(player.getPosition());
-                player.markHit();
-                sound.play(SoundID::HIT);
-                break;
-            }
-        }
-    }
-
-
-    // ataque enemy player
-    for (auto& enemy : enemies)
-    {
-        if (enemy.isAttacking() &&
-            enemy.getAttackBounds().intersects(player.getBounds()))
-        {
-            if (player.canReceiveDamage())
-            {
-                player.takeDamage(10);
-                sound.play(SoundID::PLAYER_HIT);
-            }
-        }
-    }
-
-    // eliminar enemigos muertos
-    enemies.erase(
-        std::remove_if(enemies.begin(), enemies.end(),
-            [](const Enemy& e) { return e.isDead(); }),
-        enemies.end()
+    hud.update(
+        levelManager->getPlayerHealth(),
+        levelManager->getPlayerMaxDistance()
     );
 
-    if (player.isDead())
-    {
-        gameState = GameState::GAME_OVER;
-        hud.showGameOver(true);
-    }*/
+    camera = levelManager->getCamera();
 }
+
 
 void Game::updateGameOver()
 {
@@ -336,57 +222,17 @@ void Game::updateMenu()
 }
 
 
-
-
 void Game::startGame()
 {
-        TextureID idle, run, attack, runAttack;
+    levelManager = std::make_unique<LevelManager>(
+        "assets/config/levels/level1.json",
+        textures,
+        sound,
+        selectedAvatar
+    );
 
-        switch (selectedAvatar)
-        {
-            case AvatarType::Biker:
-                idle = TextureID::BikerIdle;
-                run  = TextureID::BikerRun;
-                attack = TextureID::BikerAttack;
-                runAttack = TextureID::BikerRunAttack;
-                break;
-
-            case AvatarType::Cyborg:
-                idle = TextureID::CyborgIdle;
-                run  = TextureID::CyborgRun;
-                attack = TextureID::CyborgAttack;
-                runAttack = TextureID::CyborgRunAttack;
-                break;
-
-            case AvatarType::Punk:
-                idle = TextureID::PunkIdle;
-                run  = TextureID::PunkRun;
-                attack = TextureID::PunkAttack;
-                runAttack = TextureID::PunkRunAttack;
-                break;
-        }
-
-        player = std::make_unique<Player>(
-            sf::Vector2f(400.f, 300.f),
-            textures.get(idle),
-            textures.get(run),
-            textures.get(attack),
-            textures.get(runAttack)
-        );
-
-        wasPlayerAttacking = false;
-
-
-    /*enemies.clear();
-    spawnInitialEnemies();*/
-
+    camera = levelManager->getCamera();
     gameState = GameState::PLAYING;
 }
 
-void Game::spawnInitialEnemies()
-{
-    /*enemies.clear();
-    enemies.emplace_back(500.f, 300.f);
-    enemies.emplace_back(650.f, 300.f);*/
-}
 

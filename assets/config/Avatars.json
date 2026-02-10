@@ -1,0 +1,61 @@
+{
+  "biker": {
+	"damage": 10,
+    "sprite_idle": {
+						"link": "assets/sprites/player/Biker_idle.png",
+						"cant_sprites": 4
+					},
+    "sprite_run": {
+						"link": "assets/sprites/player/Biker_run.png",
+						"cant_sprites": 6
+					},
+    "sprite_attack": {
+						"link": "assets/sprites/player/Biker_attack.png",
+						"cant_sprites": 6
+					},
+    "sprite_run_attack": {
+						"link": "assets/sprites/player/Biker_run_attack.png",
+						"cant_sprites": 6
+					}
+  },
+  
+  "cyborg": {
+	"damage": 10,
+    "sprite_idle": {
+						"link": "assets/sprites/player/Cyborg_idle.png",
+						"cant_sprites": 4
+					},
+    "sprite_run": {
+						"link": "assets/sprites/player/Cyborg_run.png",
+						"cant_sprites": 6
+					},
+    "sprite_attack": {
+						"link": "assets/sprites/player/Cyborg_attack.png",
+						"cant_sprites": 6
+					},
+    "sprite_run_attack": {
+						"link": "assets/sprites/player/Cyborg_run_attack.png",
+						"cant_sprites": 6
+					}
+  },
+  
+  "punk": {
+	"damage": 10,
+    "sprite_idle": {
+						"link": "assets/sprites/player/Punk_idle.png",
+						"cant_sprites": 4
+					},
+    "sprite_run": {
+						"link": "assets/sprites/player/Punk_run.png",
+						"cant_sprites": 6
+					},
+    "sprite_attack": {
+						"link": "assets/sprites/player/Punk_attack.png",
+						"cant_sprites": 6
+					},
+    "sprite_run_attack": {
+						"link": "assets/sprites/player/Punk_run_attack.png",
+						"cant_sprites": 6
+					}
+  }
+}
