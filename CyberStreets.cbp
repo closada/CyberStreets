@@ -48,7 +48,13 @@
 		<Unit filename="src/Avatar.hpp" />
 		<Unit filename="src/Character.cpp" />
 		<Unit filename="src/Character.hpp" />
+		<Unit filename="src/Enemy.cpp" />
 		<Unit filename="src/Enemy.hpp" />
+		<Unit filename="src/EnemyConfig.hpp" />
+		<Unit filename="src/EnemyConfigLoader.cpp" />
+		<Unit filename="src/EnemyConfigLoader.hpp" />
+		<Unit filename="src/EnemyFactory.cpp" />
+		<Unit filename="src/EnemyFactory.hpp" />
 		<Unit filename="src/Entity.cpp" />
 		<Unit filename="src/Entity.hpp" />
 		<Unit filename="src/Game.cpp" />
@@ -59,6 +65,10 @@
 		<Unit filename="src/InputController.hpp" />
 		<Unit filename="src/LevelGoal.cpp" />
 		<Unit filename="src/LevelGoal.hpp" />
+		<Unit filename="src/LevelLoader.cpp" />
+		<Unit filename="src/LevelLoader.hpp" />
+		<Unit filename="src/LevelManager.cpp" />
+		<Unit filename="src/LevelManager.hpp" />
 		<Unit filename="src/Menu.cpp" />
 		<Unit filename="src/Menu.hpp" />
 		<Unit filename="src/Player.cpp" />
@@ -67,9 +77,10 @@
 		<Unit filename="src/ResourceManager.hpp" />
 		<Unit filename="src/SoundManager.cpp" />
 		<Unit filename="src/SoundManager.hpp" />
-		<Unit filename="src/StrongEnemy.hpp" />
-		<Unit filename="src/WeakEnemy.hpp" />
+		<Unit filename="src/WaveManager.cpp" />
+		<Unit filename="src/WaveManager.hpp" />
 		<Unit filename="src/main.cpp" />
+		<Unit filename="src/nlohmann/json.hpp" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
