@@ -1,61 +1,79 @@
 {
   "biker": {
 	"damage": 10,
+	"maxHealth": 100,
+	"speed": 240,
     "sprite_idle": {
 						"link": "assets/sprites/player/Biker_idle.png",
-						"cant_sprites": 4
+						"cant_sprites": 4,
+						"duration_frames": 0.14
 					},
     "sprite_run": {
 						"link": "assets/sprites/player/Biker_run.png",
-						"cant_sprites": 6
+						"cant_sprites": 6,
+						"duration_frames": 0.10
 					},
     "sprite_attack": {
 						"link": "assets/sprites/player/Biker_attack.png",
-						"cant_sprites": 6
+						"cant_sprites": 6,
+						"duration_frames": 0.06
 					},
     "sprite_run_attack": {
 						"link": "assets/sprites/player/Biker_run_attack.png",
-						"cant_sprites": 6
+						"cant_sprites": 6,
+						"duration_frames": 0.06
 					}
   },
   
   "cyborg": {
 	"damage": 10,
+	"maxHealth": 100,
+	"speed": 240,
     "sprite_idle": {
 						"link": "assets/sprites/player/Cyborg_idle.png",
-						"cant_sprites": 4
+						"cant_sprites": 4,
+						"duration_frames": 0.14
 					},
     "sprite_run": {
 						"link": "assets/sprites/player/Cyborg_run.png",
-						"cant_sprites": 6
+						"cant_sprites": 6,
+						"duration_frames": 0.10
 					},
     "sprite_attack": {
 						"link": "assets/sprites/player/Cyborg_attack.png",
-						"cant_sprites": 6
+						"cant_sprites": 6,
+						"duration_frames": 0.06
 					},
     "sprite_run_attack": {
 						"link": "assets/sprites/player/Cyborg_run_attack.png",
-						"cant_sprites": 6
+						"cant_sprites": 6,
+						"duration_frames": 0.06
 					}
   },
   
   "punk": {
 	"damage": 10,
+	"maxHealth": 100,
+	"speed": 240,
     "sprite_idle": {
 						"link": "assets/sprites/player/Punk_idle.png",
-						"cant_sprites": 4
+						"cant_sprites": 4,
+						"duration_frames": 0.14
 					},
     "sprite_run": {
 						"link": "assets/sprites/player/Punk_run.png",
-						"cant_sprites": 6
+						"cant_sprites": 6,
+						"duration_frames": 0.10
 					},
     "sprite_attack": {
 						"link": "assets/sprites/player/Punk_attack.png",
-						"cant_sprites": 6
+						"cant_sprites": 6,
+						"duration_frames": 0.06
 					},
     "sprite_run_attack": {
 						"link": "assets/sprites/player/Punk_run_attack.png",
-						"cant_sprites": 6
+						"cant_sprites": 6,
+						"duration_frames": 0.06
 					}
   }
 }

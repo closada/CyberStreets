@@ -45,7 +45,11 @@
 		</Linker>
 		<Unit filename="src/AnimationController.cpp" />
 		<Unit filename="src/AnimationController.hpp" />
-		<Unit filename="src/Avatar.hpp" />
+		<Unit filename="src/AvatarConfig.hpp" />
+		<Unit filename="src/AvatarConfigLoader.cpp" />
+		<Unit filename="src/AvatarConfigLoader.hpp" />
+		<Unit filename="src/AvatarFactory.cpp" />
+		<Unit filename="src/AvatarFactory.hpp" />
 		<Unit filename="src/Character.cpp" />
 		<Unit filename="src/Character.hpp" />
 		<Unit filename="src/Enemy.cpp" />

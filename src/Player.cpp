@@ -6,6 +6,7 @@
 // Constructor
 // -------------------------------------------------
 Player::Player(const sf::Vector2f& startPos,
+    const AvatarConfig& config,
     const sf::Texture& idleTex,
     const sf::Texture& runTex,
     const sf::Texture& attackTex,
@@ -15,9 +16,10 @@ Player::Player(const sf::Vector2f& startPos,
   maxDistanceReached(0.f)
 {
     // stats del player
-    maxHealth = 100;
+    damage = config.damage;
+    maxHealth = config.maxHealth;
     health    = maxHealth;
-    speed  = 240.f;
+    speed  = config.speed;
 
 
     damageCooldown = 0.6f;
@@ -30,10 +32,43 @@ Player::Player(const sf::Vector2f& startPos,
     body.setOrigin(body.getSize() / 2.f);
 
     // animaciones
-    animation.addAnimation("idle", idleTex, 4, 0.14f, true);
+    /*animation.addAnimation("idle", idleTex, 4, 0.14f, true);
     animation.addAnimation("run", runTex, 6, 0.10f, true);
     animation.addAnimation("attack", attackTex, 6, 0.06f, false);
-    animation.addAnimation("run_attack", runAttackTex, 6, 0.06f, false);
+    animation.addAnimation("run_attack", runAttackTex, 6, 0.06f, false);*/
+
+    animation.addAnimation(
+        "idle",
+        idleTex,
+        config.idleFrames,
+        config.idleDuration,
+        true
+    );
+
+    animation.addAnimation(
+        "run",
+        runTex,
+        config.runFrames,
+        config.runDuration,
+        true
+    );
+
+    animation.addAnimation(
+        "attack",
+        attackTex,
+        config.attackFrames,
+        config.attackDuration,
+        false
+    );
+
+    animation.addAnimation(
+        "run_attack",
+        runAttackTex,
+        config.runAttackFrames,
+        config.runAttackDuration,
+        false
+    );
+
 
 
     animation.play("idle");

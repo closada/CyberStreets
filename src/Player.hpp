@@ -1,11 +1,13 @@
 #pragma once
 #include "Character.hpp"
+#include "AvatarConfig.hpp"
 
 class Player : public Character
 {
 public:
     Player(
         const sf::Vector2f& startPos,
+        const AvatarConfig& config,
         const sf::Texture& idleTex,
         const sf::Texture& runTex,
         const sf::Texture& attackTex,
@@ -46,6 +48,7 @@ private:
 
     float damageCooldown;        // tiempo entre golpes
     float damageCooldownTimer;   // contador
+    float damage;
 
     bool dead;
 };

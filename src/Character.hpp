@@ -58,5 +58,7 @@ protected:
     bool attacking;
     bool hitDone;
 
+    int damage;
+
     sf::RectangleShape attackBox;
 };
