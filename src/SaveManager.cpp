@@ -14,6 +14,7 @@ void SaveManager::saveProgress(const std::string& path, const GameConfig& config
 
     // Solo actualizamos el progreso
     j["last_level_completed"] = config.lastLevelCompleted;
+    j["score"] = config.score;
 
     std::ofstream outputFile(path);
     outputFile << j.dump(4);

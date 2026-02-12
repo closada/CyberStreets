@@ -123,6 +123,58 @@ HUD::HUD(const sf::Vector2u& windowSize, int maxHealth)
     );
 
 
+
+    // -------- PAUSE OVERLAY --------
+    pauseTitleText.setFont(font);
+    pauseTitleText.setString("PAUSA");
+    pauseTitleText.setCharacterSize(48);
+    pauseTitleText.setFillColor(sf::Color::White);
+    pauseTitleText.setStyle(sf::Text::Bold);
+    sf::FloatRect boundspause = pauseTitleText.getLocalBounds();
+    pauseTitleText.setOrigin(boundspause.left + boundspause.width/2.f, boundspause.top + boundspause.height/2.f);
+    pauseTitleText.setPosition(windowSize.x / 2.f, windowSize.y / 2.f - 60.f);
+
+    pauseScoreText.setFont(font);
+    pauseScoreText.setCharacterSize(24);
+    pauseScoreText.setFillColor(sf::Color::Yellow);
+    pauseScoreText.setStyle(sf::Text::Bold);
+    pauseScoreText.setOrigin(0.f,0.f); // se ajustará dinámicamente
+    pauseScoreText.setPosition(windowSize.x / 2.f, windowSize.y / 2.f);
+
+    pauseMenuHintText.setFont(font);
+    pauseMenuHintText.setCharacterSize(18);
+    pauseMenuHintText.setFillColor(sf::Color(180,180,180));
+    pauseMenuHintText.setString("M - MENU");
+    sf::FloatRect hintBounds = pauseMenuHintText.getLocalBounds();
+    pauseMenuHintText.setOrigin(hintBounds.left + hintBounds.width/2.f, hintBounds.top + hintBounds.height/2.f);
+    pauseMenuHintText.setPosition(windowSize.x / 2.f, windowSize.y / 2.f + 60.f);
+
+
+    // --- LEVEL SCORE ---
+    levelScoreText.setFont(font);
+    levelScoreText.setCharacterSize(24);
+    levelScoreText.setFillColor(sf::Color::White);
+    levelScoreText.setStyle(sf::Text::Bold);
+
+    // centramos horizontalmente, posición vertical relativa al texto de GAME OVER / NIVEL COMPLETADO
+    levelScoreText.setPosition(windowSize.x / 2.f, windowSize.y / 2.f + 60.f);
+
+
+    // --- TEXTO PRESIONE ENTER ---
+    continueHintText.setFont(font);
+    continueHintText.setCharacterSize(18);
+    continueHintText.setFillColor(sf::Color(200, 200, 200));
+    continueHintText.setString("Presione ENTER para continuar");
+
+    // centramos horizontalmente, abajo de los textos principales
+    sf::FloatRect hintBounds2 = continueHintText.getLocalBounds();
+    continueHintText.setOrigin(hintBounds2.left + hintBounds2.width / 2.f, hintBounds2.top + hintBounds2.height / 2.f);
+
+    // posición vertical un poco debajo del texto de game over / nivel completado
+    continueHintText.setPosition(400.f, 400.f); // lo ajustamos dinámicamente si querés
+
+    showContinueHint(false);
+
 }
 
 
@@ -172,32 +224,81 @@ void HUD::draw(sf::RenderWindow& window)
     window.draw(gameOverText);
     window.draw(levelCompleteText);
 
+    window.draw(continueHintText);
+
+
+    // dibujamos el score del nivel si el texto está visible
+    if(gameOverText.getFillColor() != sf::Color::Transparent || levelCompleteText.getFillColor() != sf::Color::Transparent)
+        window.draw(levelScoreText);
+
     if (showAllCompleted)
+    {
         window.draw(allCompletedText);
+        window.draw(levelScoreText);
+    }
+
 
 }
 
 
-void HUD::showGameOver(bool show)
+void HUD::showGameOver(bool show, int levelScore)
 {
     if (show)
+    {
         gameOverText.setFillColor(sf::Color::Red);
+        levelScoreText.setString("Score: " + std::to_string(levelScore) + " m");
+
+        // re-centrar horizontal
+        sf::FloatRect bounds = levelScoreText.getLocalBounds();
+        levelScoreText.setOrigin(bounds.left + bounds.width / 2.f, bounds.top + bounds.height / 2.f);
+    }
     else
         gameOverText.setFillColor(sf::Color::Transparent);
 }
 
-
-void HUD::showLevelComplete(bool show)
+void HUD::showLevelComplete(bool show, int levelScore)
 {
     if (show)
+    {
         levelCompleteText.setFillColor(sf::Color::Yellow);
+        levelScoreText.setString("Score: " + std::to_string(levelScore) + " m");
+
+        sf::FloatRect bounds = levelScoreText.getLocalBounds();
+        levelScoreText.setOrigin(bounds.left + bounds.width / 2.f, bounds.top + bounds.height / 2.f);
+    }
     else
         levelCompleteText.setFillColor(sf::Color::Transparent);
 }
 
-void HUD::showAllLevelsCompleted(bool value)
+
+void HUD::showAllLevelsCompleted(bool value, int socre)
 {
     showAllCompleted = value;
+
+    levelScoreText.setString("Score: " + std::to_string(socre) + " m");
+
+    // re-centrar horizontal
+    sf::FloatRect bounds = levelScoreText.getLocalBounds();
+    levelScoreText.setOrigin(bounds.left + bounds.width / 2.f, bounds.top + bounds.height / 2.f);
 }
 
+void HUD::drawPauseOverlay(float meters, sf::RenderWindow& window)
+{
+    int metersShow = static_cast<int>(meters / 10.f); // ajustá escala
+    pauseScoreText.setString("Score: " + std::to_string(static_cast<int>(metersShow)) + " m");
+    sf::FloatRect scoreBounds = pauseScoreText.getLocalBounds();
+    pauseScoreText.setOrigin(scoreBounds.left + scoreBounds.width/2.f, scoreBounds.top + scoreBounds.height/2.f);
+
+    window.draw(pauseTitleText);
+    window.draw(pauseScoreText);
+    window.draw(pauseMenuHintText);
+}
+
+void HUD::showContinueHint(bool show)
+{
+    if(show)
+        continueHintText.setFillColor(sf::Color::White);
+    else
+        continueHintText.setFillColor(sf::Color::Transparent);
+}
 

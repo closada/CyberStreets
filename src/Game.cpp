@@ -104,7 +104,11 @@ void Game::update()
             break;
 
         case GameState::PLAYING:
-            updatePlaying(dt);
+            if(!isPaused)
+            {
+                updatePlaying(dt);
+                ActualLevelScore =  static_cast<int>(levelManager->getPlayerMaxDistance() / 10.f);
+            }
             break;
 
         case GameState::GAME_OVER:
@@ -113,6 +117,15 @@ void Game::update()
         case GameState::LEVEL_COMPLETED:
             updateLevelCompleted();
             break;
+    }
+
+    // Actualizamos HUD siempre para mostrar metros aunque esté pausado
+    if(gameState == GameState::PLAYING)
+    {
+        hud.update(
+            levelManager->getPlayerHealth(),
+            levelManager->getPlayerMaxDistance()
+        );
     }
 }
 
@@ -141,6 +154,13 @@ void Game::render()
 
             window.setView(window.getDefaultView());
             hud.draw(window);
+
+            if(isPaused)
+            {
+                float meters = levelManager->getPlayerMaxDistance();
+                hud.drawPauseOverlay(meters, window);
+            }
+
             break;
         }
         case GameState::GAME_OVER:
@@ -162,6 +182,33 @@ void Game::render()
 
 void Game::handleInput()
 {
+
+    if (gameState == GameState::PLAYING)
+    {
+         // Siempre revisamos pausa
+        static bool pPrev = false;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::P))
+        {
+            if (!pPrev) // edge detection
+                isPaused = !isPaused;
+            pPrev = true;
+        }
+        else
+        {
+            pPrev = false;
+        }
+
+        if (isPaused)
+        {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
+            {
+                gameState = GameState::MENU;
+                isPaused = false;
+            }
+            return; // NO actualizamos ni manejamos inputs del player
+        }
+    }
+
     if (gameState != GameState::PLAYING || !levelManager)
         return;
 
@@ -178,7 +225,9 @@ void Game::updatePlaying(float dt)
     if (levelManager->isPlayerDead())
     {
         gameState = GameState::GAME_OVER;
-        hud.showGameOver(true);
+        hud.showGameOver(true, ActualLevelScore);
+
+
     }
 
     if (levelManager->isLevelCompleted())
@@ -186,17 +235,19 @@ void Game::updatePlaying(float dt)
         if (gameConfig.lastLevelCompleted < gameConfig.levels.size() - 1)
         {
             gameConfig.lastLevelCompleted++;
+            gameConfig.score = gameConfig.score + ActualLevelScore;
             SaveManager::saveProgress(pathConfig, gameConfig);
             gameState = GameState::LEVEL_COMPLETED;
-            hud.showLevelComplete(true);
+            hud.showLevelComplete(true, ActualLevelScore);
         }
         else
         {
             // era el último nivel
             gameConfig.lastLevelCompleted++;
+            gameConfig.score = gameConfig.score + ActualLevelScore;
             SaveManager::saveProgress(pathConfig, gameConfig);
             gameState = GameState::ALL_LEVELS_COMPLETED;
-            hud.showAllLevelsCompleted(true);
+            hud.showAllLevelsCompleted(true, gameConfig.score);
         }
     }
 
@@ -212,15 +263,36 @@ void Game::updatePlaying(float dt)
 
 void Game::updateGameOver()
 {
-    // por ahora no hacemos nada
-    // más adelante: ENTER para volver al menú
+    // Mostramos el mensaje de "Presione ENTER"
+    hud.showContinueHint(true);
+
+    // Detectar ENTER
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+    {
+        hud.showGameOver(false, 0); // ocultamos game over
+        hud.showContinueHint(false);
+
+        // Reiniciamos el nivel actual
+        startGame(); // startGame carga el nivel según gameConfig.lastLevelCompleted
+    }
 }
+
 
 
 void Game::updateLevelCompleted()
 {
-        // enter para volver al menu
+    hud.showContinueHint(true);
+
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+    {
+        hud.showLevelComplete(false, 0); // ocultamos "nivel completado"
+        hud.showContinueHint(false);
+
+        // Arrancamos siguiente nivel
+        startGame();
+    }
 }
+
 
 void Game::updateMenu()
 {
@@ -243,7 +315,7 @@ void Game::startGame()
     if (nextLevelIndex >= gameConfig.levels.size())
     {
         gameState = GameState::ALL_LEVELS_COMPLETED;
-        hud.showAllLevelsCompleted(true);
+        hud.showAllLevelsCompleted(true, gameConfig.score);
         return;
     }
 

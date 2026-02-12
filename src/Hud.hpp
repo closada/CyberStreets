@@ -27,15 +27,29 @@ private:
 
     int maxHealth;
 
+    // TEXTOS PARA PAUSA
+    sf::Text pauseTitleText;
+    sf::Text pauseScoreText;
+    sf::Text pauseMenuHintText;
+
+    // DE SCORE
+    sf::Text levelScoreText;
+
+    sf::Text continueHintText; // texto para "Presione ENTER"
+
 public:
     HUD(const sf::Vector2u& windowSize, int maxHealth = 100);
 
     void update(int currentHealth, float maxDistance);
     void draw(sf::RenderWindow& window);
 
-    void showGameOver(bool show);
-    void showLevelComplete(bool show);
-    void showAllLevelsCompleted(bool value);
+    void showGameOver(bool show, int levelScore);
+    void showLevelComplete(bool show, int levelScore);
+    void showAllLevelsCompleted(bool value, int score);
+
+    void drawPauseOverlay(float meters, sf::RenderWindow& window);
+
+    void showContinueHint(bool show);
 };
 
 #endif

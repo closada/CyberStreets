@@ -90,6 +90,10 @@ private:
     // TEXTURAS
     ResourceManager<sf::Texture, std::string> textures;
 
+    // PARA FUNCIONALIDAD DE JUEGO PAUSADO
+    bool isPaused = false;
+
+    int ActualLevelScore = 0;
 
 
 public:
