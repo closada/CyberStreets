@@ -414,12 +414,12 @@
 1770435383 source:d:\cyberstreets\src\main.cpp
 	"Game.hpp"
 
-1770918478 source:d:\cyberstreets\src\game.cpp
+1770919334 source:d:\cyberstreets\src\game.cpp
 	<iostream>
 	<algorithm>
 	"Game.hpp"
 
-1770912857 d:\cyberstreets\src\game.hpp
+1770919272 d:\cyberstreets\src\game.hpp
 	<SFML/Graphics.hpp>
 	"Player.hpp"
 	"HUD.hpp"
@@ -435,6 +435,7 @@
 	"AvatarConfigLoader.hpp"
 	"EnemyFactory.hpp"
 	"AvatarFactory.hpp"
+	"MusicManager.hpp"
 	<memory>
 	<vector>
 
@@ -888,7 +889,7 @@
 	<vector>
 	<memory>
 
-1770918018 source:d:\cyberstreets\src\levelmanager.cpp
+1770919325 source:d:\cyberstreets\src\levelmanager.cpp
 	"LevelManager.hpp"
 	<algorithm>
 	<iostream>
@@ -954,4 +955,12 @@
 	"SaveManager.hpp"
 	"nlohmann/json.hpp"
 	<fstream>
+
+1770919204 d:\cyberstreets\src\musicmanager.hpp
+	<SFML/Audio.hpp>
+	<string>
+
+1770919221 source:d:\cyberstreets\src\musicmanager.cpp
+	"MusicManager.hpp"
+	<iostream>
 

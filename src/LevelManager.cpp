@@ -84,7 +84,6 @@ LevelManager::LevelManager(
         }
     }
 
-
     std::cout << "Constructor LevelManager Finaliza correctamente!" << std::endl;
 
 }

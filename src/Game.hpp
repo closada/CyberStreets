@@ -17,6 +17,8 @@
 #include "EnemyFactory.hpp"
 #include "AvatarFactory.hpp"
 
+#include "MusicManager.hpp"
+
 
 #include <memory>
 #include <vector>
@@ -49,6 +51,7 @@ private:
 
     std::unique_ptr<LevelManager> levelManager;
 
+    MusicManager musicManager;
 
     std::string selectedAvatarId;
 

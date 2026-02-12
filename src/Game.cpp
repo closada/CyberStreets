@@ -62,6 +62,14 @@ Game::Game()
     }
 
     menu->setAvatars(avatarMenuData, avatarTextures, window.getSize());
+
+
+    // INICIAMOS MUSICA EN LOOP!!
+    if (musicManager.load(gameConfig.music))
+    {
+        musicManager.play(true); // loop infinito
+    }
+
 }
 
 
