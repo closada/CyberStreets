@@ -411,7 +411,7 @@
 	<SFML/Graphics/Drawable.hpp>
 	<SFML/Window/GlResource.hpp>
 
-1770435383 source:d:\cyberstreets\src\main.cpp
+1770925127 source:d:\cyberstreets\src\main.cpp
 	"Game.hpp"
 
 1770920387 source:d:\cyberstreets\src\game.cpp
@@ -603,7 +603,7 @@
 1770922487 source:d:\cyberstreets\src\animationcontroller.cpp
 	"AnimationController.hpp"
 
-1770922822 source:d:\cyberstreets\src\character.cpp
+1770922955 source:d:\cyberstreets\src\character.cpp
 	"Character.hpp"
 
 1770922670 d:\cyberstreets\src\character.hpp
@@ -965,4 +965,11 @@
 1770919221 source:d:\cyberstreets\src\musicmanager.cpp
 	"MusicManager.hpp"
 	<iostream>
+
+1770926004 source:d:\cyberstreets\src\testsgame.cpp
+	"Player.hpp"
+	"Enemy.hpp"
+	"AvatarConfig.hpp"
+	"EnemyConfig.hpp"
+	<SFML/Graphics.hpp>
 
