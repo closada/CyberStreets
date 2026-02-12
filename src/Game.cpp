@@ -5,53 +5,66 @@
 
 
 Game::Game()
-: window(sf::VideoMode(800, 600), "Cyber Streets"),
+: gameState(GameState::MENU),
+  window(sf::VideoMode(800, 600), ""),
   hud(window.getSize(), 100),
-  menu(window.getSize())
+  //menu(window.getSize(), sound, font),
+  enemyConfigLoader(textures),
+  avatarConfigLoader(textures)
 {
+    window.setFramerateLimit(60);
 
+    // ---- Cargar config ----
     pathConfig = "assets/config/config.json";
     gameConfig = GameConfigLoader::loadFromFile(pathConfig);
 
-    gameState = GameState::MENU;
-
-    window.setFramerateLimit(60);
+    window.setTitle(gameConfig.name);
 
 
-    // definiciones de camara
-    camera = window.getDefaultView();
+    std::cout << "Typography path: " << gameConfig.typography << std::endl;
+
+    if (!font.loadFromFile(gameConfig.typography))
+        throw std::runtime_error("No se pudo cargar tipografia");
 
 
+    menu = std::make_unique<Menu>(window.getSize(), sound, font);
 
+
+    // ---- Cargar sonidos ----
     sound.load(SoundID::MENU_MOVE,    "assets/sounds/menu_move.wav");
     sound.load(SoundID::MENU_CONFIRM, "assets/sounds/menu_confirm.wav");
     sound.load(SoundID::HIT,          "assets/sounds/hit.wav");
     sound.load(SoundID::PLAYER_HIT,   "assets/sounds/player_hit.wav");
 
-    menu.setSoundManager(&sound);
+    textures.load("goalFlag", "assets/sprites/goal_flag.png");
 
+    // ---- Load configs ----
+    enemyConfigLoader.loadFromFile("assets/config/enemyTypes.json");
+    avatarConfigLoader.loadFromFile("assets/config/Avatars.json");
 
+    // ---- Factories ----
+    enemyFactory = std::make_unique<EnemyFactory>(enemyConfigLoader, textures);
+    avatarFactory = std::make_unique<AvatarFactory>(avatarConfigLoader, textures);
 
-    // definiciones de flag
-    textures.load("goalFlag",         "assets/sprites/goal_flag.png");
+    // ---- Cargar avatares en menú ----
+    std::vector<std::pair<std::string, std::string>> avatarMenuData;
+    std::unordered_map<std::string, sf::Texture*> avatarTextures;
 
+    for (const auto& pair : avatarConfigLoader.getAll())
+    {
+        const std::string& id = pair.first;
+        const AvatarConfig& cfg = pair.second;
 
-    // avatares para menu
-    textures.load("bikerAvatar",      "assets/sprites/biker_avatar.png");
-    textures.load("cyborgAvatar",      "assets/sprites/cyborg_avatar.png");
-    textures.load("punkAvatar",      "assets/sprites/punk_avatar.png");
+        std::string texId = id + "_avatar";
+        textures.load(texId, cfg.avatarImg);
 
+        avatarMenuData.push_back({ id, id });
+        avatarTextures[id] = &textures.get(texId);
+    }
 
-    // pasamos los sprites al menu para usarlos
-    std::array<sf::Texture*, 3> avatarTex = {
-        &textures.get("bikerAvatar"),
-        &textures.get("cyborgAvatar"),
-        &textures.get("punkAvatar")
-    };
-
-    menu.setAvatarTextures(avatarTex);
-
+    menu->setAvatars(avatarMenuData, avatarTextures, window.getSize());
 }
+
 
 void Game::run()
 {
@@ -76,7 +89,7 @@ void Game::processEvents()
             window.close();
 
         if (gameState == GameState::MENU)
-            menu.handleEvent(event);
+            menu->handleEvent(event);
     }
 }
 
@@ -86,6 +99,8 @@ void Game::update()
     {
         case GameState::MENU:
             updateMenu();
+            if(menu->wantsToExit())
+                exit(0);
             break;
 
         case GameState::PLAYING:
@@ -114,7 +129,7 @@ void Game::render()
         case GameState::MENU:
         {
             window.setView(window.getDefaultView());
-            menu.draw(window);
+            menu->draw(window);
             break;
         }
 
@@ -200,13 +215,13 @@ void Game::updateLevelCompleted()
 
 void Game::updateMenu()
 {
-    menu.update();
+    menu->update();
 
-    if (menu.wantsToStartGame())
+    if (menu->wantsToStartGame())
     {
-        selectedAvatar = menu.getSelectedAvatar();
+        selectedAvatarId = menu->getSelectedAvatarId();
         startGame();
-        menu.reset();
+        menu->reset();
     }
 }
 
@@ -214,14 +229,7 @@ void Game::updateMenu()
 void Game::startGame()
 {
 
-    std::string avatarId;
-
-    switch(selectedAvatar)
-    {
-        case AvatarType::Biker:  avatarId = "biker"; break;
-        case AvatarType::Cyborg: avatarId = "cyborg"; break;
-        case AvatarType::Punk:   avatarId = "punk"; break;
-    }
+    std::string avatarId = selectedAvatarId;
 
 
     int nextLevelIndex = gameConfig.lastLevelCompleted;
@@ -231,8 +239,11 @@ void Game::startGame()
         levelFile,
         textures,
         sound,
+        *enemyFactory,
+        *avatarFactory,
         avatarId
     );
+
 
     camera = levelManager->getCamera();
     gameState = GameState::PLAYING;

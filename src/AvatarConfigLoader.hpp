@@ -1,6 +1,6 @@
 #pragma once
 
-#include <map>
+#include <unordered_map>
 #include <string>
 #include <SFML/Graphics.hpp>
 
@@ -19,8 +19,9 @@ public:
     const AvatarConfig& getConfig(const std::string& avatarId) const;
     bool hasConfig(const std::string& avatarId) const;
 
+    const std::unordered_map<std::string, AvatarConfig>& getAll() const;
+
 private:
-    std::map<std::string, AvatarConfig> configs;
+    std::unordered_map<std::string, AvatarConfig> configs;
     ResourceManager<sf::Texture, std::string>& textures;
 };
-

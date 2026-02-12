@@ -108,3 +108,8 @@ bool AvatarConfigLoader::hasConfig(const std::string& avatarId) const
     return configs.find(avatarId) != configs.end();
 }
 
+const std::unordered_map<std::string, AvatarConfig>&
+AvatarConfigLoader::getAll() const
+{
+    return configs;
+}

@@ -12,6 +12,11 @@
 #include "LevelManager.hpp"
 #include "GameConfigLoader.hpp"
 #include "SaveManager.hpp"
+#include "EnemyConfigLoader.hpp"
+#include "AvatarConfigLoader.hpp"
+#include "EnemyFactory.hpp"
+#include "AvatarFactory.hpp"
+
 
 #include <memory>
 #include <vector>
@@ -30,8 +35,12 @@ private:
     GameState gameState;
 
     sf::RenderWindow window;
+
+    // PARA FONT
+    sf::Font font;
+
     HUD hud;
-    Menu menu;
+    std::unique_ptr<Menu> menu;
     InputController input;
     GameConfig gameConfig;
 
@@ -40,10 +49,19 @@ private:
     std::unique_ptr<LevelManager> levelManager;
 
 
-    AvatarType selectedAvatar = AvatarType::Biker;
+    std::string selectedAvatarId;
 
     // para manejo de sfx en player
     bool wasPlayerAttacking = false;
+
+
+        // LOADERS!
+    EnemyConfigLoader enemyConfigLoader;
+    AvatarConfigLoader avatarConfigLoader;
+
+    std::unique_ptr<EnemyFactory> enemyFactory;
+    std::unique_ptr<AvatarFactory> avatarFactory;
+
 
 
     // control dt motor pc
@@ -70,6 +88,7 @@ private:
 
     // TEXTURAS
     ResourceManager<sf::Texture, std::string> textures;
+
 
 
 public:

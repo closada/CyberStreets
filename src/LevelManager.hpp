@@ -6,10 +6,8 @@
 #include "LevelGoal.hpp"
 #include "InputController.hpp"
 #include "SoundManager.hpp"
-#include "EnemyConfigLoader.hpp"
 #include "EnemyFactory.hpp"
 #include "ResourceManager.hpp"
-#include "AvatarConfigLoader.hpp"
 #include "AvatarFactory.hpp"
 #include "AvatarConfig.hpp"
 
@@ -22,6 +20,8 @@ public:
         const std::string& levelPath,
         ResourceManager<sf::Texture, std::string>& textures,
         SoundManager& sounds,
+        EnemyFactory& enemyFactory,
+        AvatarFactory& avatarFactory,
         const std::string& avatarId
     );
 
@@ -48,15 +48,6 @@ private:
 
     // nivel
     LevelData levelData;
-
-
-    EnemyConfigLoader enemyConfigLoader;
-    AvatarConfigLoader avatarConfigLoader;
-
-
-    EnemyFactory enemyFactory;
-    AvatarFactory avatarFactory;
-
 
     // core
     std::unique_ptr<Player> player;

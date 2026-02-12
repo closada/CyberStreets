@@ -2,40 +2,6 @@
 #include <SFML/Graphics.hpp>
 #include <unordered_map>
 
-enum class TextureID
-{
-    // BIKER
-    BikerIdle,
-    BikerRun,
-    BikerAttack,
-    BikerRunAttack,
-
-    // CYBORG
-    CyborgIdle,
-    CyborgRun,
-    CyborgAttack,
-    CyborgRunAttack,
-
-    // PUNK
-    PunkIdle,
-    PunkRun,
-    PunkAttack,
-    PunkRunAttack,
-
-
-    // AVATARES
-    BikerAvatar,
-    CyborgAvatar,
-    PunkAvatar,
-
-    // ENEMIE SPRITES
-    EnemyRun,
-    EnemyAttack,
-    EnemyDead,
-
-
-    GoalFlag
-};
 
 template <typename Resource, typename ID>
 class ResourceManager

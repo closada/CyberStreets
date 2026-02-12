@@ -13,22 +13,30 @@ enum class MenuState
     AVATAR_SELECT
 };
 
+struct AvatarEntry
+{
+    std::string id;        // "biker"
+    std::string name;      // "Biker"
+    sf::Texture* texture;
+    sf::Sprite sprite;
+};
+
 class Menu
 {
 private:
     MenuState state;
-    sf::Font font;
+    sf::Font& font;
     std::vector<sf::Text> options;
     int selectedIndex;
 
-    int avatarIndex;
-    AvatarType selectedAvatar;
+    //AvatarType selectedAvatar;
 
     bool startGameRequested;
 
     // textos
     sf::Text titleText;
     sf::Text hintText;
+    sf::Text avatarNameText;
 
     // flechas
     sf::Text leftArrow;
@@ -38,16 +46,19 @@ private:
     sf::Clock animClock;
 
     //avatares
-    std::array<sf::Texture*, 3> avatarTextures;
-    sf::Sprite avatars[3];
-    sf::Text avatarNameText;
+    std::vector<AvatarEntry> avatars;
+    int avatarIndex = 0;
+    std::string selectedAvatarId;
+
 
 
     // sfx
-    SoundManager* sound;
+    SoundManager& sound;
+
+
 
 public:
-    Menu(const sf::Vector2u& windowSize);
+    Menu(const sf::Vector2u& windowSize, SoundManager& sound, sf::Font& font);
 
     void moveUp();
     void moveDown();
@@ -58,14 +69,17 @@ public:
     void draw(sf::RenderWindow& window);
 
     bool wantsToStartGame() const;
-    AvatarType getSelectedAvatar() const;
+    const std::string& getSelectedAvatarId() const;
     void reset();
 
     void handleEvent(const sf::Event& event);
 
-    void setSoundManager(SoundManager* s);
+    bool wantsToExit() const;
+    bool exit;
 
-    void setAvatarTextures(const std::array<sf::Texture*, 3>& textures);
+    void setAvatars(const std::vector<std::pair<std::string, std::string>>& avatarData,
+                      const std::unordered_map<std::string, sf::Texture*>& textures,
+                      const sf::Vector2u& windowSize);
 
 };
 

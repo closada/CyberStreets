@@ -414,12 +414,12 @@
 1770435383 source:d:\cyberstreets\src\main.cpp
 	"Game.hpp"
 
-1770831166 source:d:\cyberstreets\src\game.cpp
+1770906091 source:d:\cyberstreets\src\game.cpp
 	<iostream>
 	<algorithm>
 	"Game.hpp"
 
-1770876248 d:\cyberstreets\src\game.hpp
+1770906732 d:\cyberstreets\src\game.hpp
 	<SFML/Graphics.hpp>
 	"Player.hpp"
 	"HUD.hpp"
@@ -431,6 +431,10 @@
 	"LevelManager.hpp"
 	"GameConfigLoader.hpp"
 	"SaveManager.hpp"
+	"EnemyConfigLoader.hpp"
+	"AvatarConfigLoader.hpp"
+	"EnemyFactory.hpp"
+	"AvatarFactory.hpp"
 	<memory>
 	<vector>
 
@@ -465,14 +469,14 @@
 	"HUD.hpp"
 	<stdexcept>
 
-1770496911 d:\cyberstreets\src\menu.hpp
+1770904867 d:\cyberstreets\src\menu.hpp
 	<SFML/Graphics.hpp>
 	<vector>
 	"Avatar.hpp"
 	"SoundManager.hpp"
 	<array>
 
-1770497252 source:d:\cyberstreets\src\menu.cpp
+1770906511 source:d:\cyberstreets\src\menu.cpp
 	"Menu.hpp"
 	<stdexcept>
 	<cmath>
@@ -628,7 +632,7 @@
 	"ResourceManager.hpp"
 	<SFML/Audio.hpp>
 
-1770679463 d:\cyberstreets\src\resourcemanager.hpp
+1770902435 d:\cyberstreets\src\resourcemanager.hpp
 	<SFML/Graphics.hpp>
 	<unordered_map>
 
@@ -884,12 +888,12 @@
 	<vector>
 	<memory>
 
-1770873382 source:d:\cyberstreets\src\levelmanager.cpp
+1770905136 source:d:\cyberstreets\src\levelmanager.cpp
 	"LevelManager.hpp"
 	<algorithm>
 	<iostream>
 
-1770871956 d:\cyberstreets\src\levelmanager.hpp
+1770903603 d:\cyberstreets\src\levelmanager.hpp
 	"LevelLoader.hpp"
 	"WaveManager.hpp"
 	"Player.hpp"
@@ -897,24 +901,22 @@
 	"LevelGoal.hpp"
 	"InputController.hpp"
 	"SoundManager.hpp"
-	"EnemyConfigLoader.hpp"
 	"EnemyFactory.hpp"
 	"ResourceManager.hpp"
-	"AvatarConfigLoader.hpp"
 	"AvatarFactory.hpp"
 	"AvatarConfig.hpp"
 
 1770874323 d:\cyberstreets\src\avatarconfig.hpp
 	<string>
 
-1770874568 source:d:\cyberstreets\src\avatarconfigloader.cpp
+1770904150 source:d:\cyberstreets\src\avatarconfigloader.cpp
 	"AvatarConfigLoader.hpp"
 	"nlohmann/json.hpp"
 	<fstream>
 	<stdexcept>
 
-1770768408 d:\cyberstreets\src\avatarconfigloader.hpp
-	<map>
+1770904145 d:\cyberstreets\src\avatarconfigloader.hpp
+	<unordered_map>
 	<string>
 	<SFML/Graphics.hpp>
 	"AvatarConfig.hpp"
@@ -947,7 +949,7 @@
 	<string>
 	"GameConfig.hpp"
 
-1770876229 source:d:\cyberstreets\src\savemanager.cpp
+1770876338 source:d:\cyberstreets\src\savemanager.cpp
 	"SaveManager.hpp"
 	"nlohmann/json.hpp"
 	<fstream>

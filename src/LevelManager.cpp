@@ -6,30 +6,18 @@ LevelManager::LevelManager(
     const std::string& levelPath,
     ResourceManager<sf::Texture, std::string>& textures,
     SoundManager& sounds,
+    EnemyFactory& enemyFactory,
+    AvatarFactory& avatarFactory,
     const std::string& avatarId
 )
 
 : textures(textures),
   sound(sounds),
   levelData(LevelLoader::loadFromFile(levelPath)),
-  enemyConfigLoader(textures),
-  avatarConfigLoader(textures),
-  enemyFactory(enemyConfigLoader, textures),
-  avatarFactory(avatarConfigLoader, textures),
   waveManager(levelData, enemyFactory, enemies)
 {
 
-    std::cout << "se ingreso al constructor de levelManager." << std::endl;
-
-    // cargar configs de enemigos
-    enemyConfigLoader.loadFromFile("assets/config/enemyTypes.json");
-
-    std::cout << "Listo loader de enemyConfigLoader" << std::endl;
-
-    // cargar configs de avatares
-    avatarConfigLoader.loadFromFile("assets/config/Avatars.json");
-
-    std::cout << "Listo loader de avatarConfigLoader" << std::endl;
+    //std::cout << "se ingreso al constructor de levelManager." << std::endl;
 
     // --- CÁMARA ---
     camera = sf::View(sf::FloatRect(0, 0, 800, 600));
@@ -55,14 +43,21 @@ LevelManager::LevelManager(
         std::cerr << "No se pudo cargar background: " << levelData.backgroundPath << std::endl;
 
     // calcular cuántos tiles horizontales necesitamos para cubrir levelLength
-    int numBgTiles = static_cast<int>(levelData.levelLength / backgroundTexture.getSize().x) + 2;
-
-    for (int i = 0; i < numBgTiles; ++i)
+    if (backgroundTexture.getSize().x > 0)
     {
-        sf::Sprite sprite(backgroundTexture);
-        sprite.setPosition(i * backgroundTexture.getSize().x, 0.f); // top de la pantalla
-        backgroundTiles.push_back(sprite);
+        int numBgTiles = static_cast<int>(levelData.levelLength / backgroundTexture.getSize().x) + 2;
+
+        for (int i = 0; i < numBgTiles; ++i)
+        {
+            sf::Sprite sprite(backgroundTexture);
+            sprite.setPosition(i * backgroundTexture.getSize().x, 0.f); // top de la pantalla
+            backgroundTiles.push_back(sprite);
+        }
+
     }
+
+
+
 
     // --- Floor / Tiles ---
     if (!floorTexture.loadFromFile(levelData.floorPath))
