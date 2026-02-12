@@ -21,6 +21,10 @@ private:
     sf::Text distanceText;
     sf::Text pauseHintText;
 
+
+    sf::Text allCompletedText;
+    bool showAllCompleted = false;
+
     int maxHealth;
 
 public:
@@ -31,6 +35,7 @@ public:
 
     void showGameOver(bool show);
     void showLevelComplete(bool show);
+    void showAllLevelsCompleted(bool value);
 };
 
 #endif

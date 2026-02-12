@@ -26,7 +26,8 @@ enum class GameState
     MENU,
     PLAYING,
     GAME_OVER,
-    LEVEL_COMPLETED
+    LEVEL_COMPLETED,
+    ALL_LEVELS_COMPLETED
 };
 
 class Game

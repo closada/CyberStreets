@@ -143,9 +143,9 @@ void Game::render()
             hud.draw(window);
             break;
         }
-
         case GameState::GAME_OVER:
         case GameState::LEVEL_COMPLETED:
+        case GameState::ALL_LEVELS_COMPLETED:
         {
             window.setView(window.getDefaultView());
             hud.draw(window);
@@ -183,14 +183,23 @@ void Game::updatePlaying(float dt)
 
     if (levelManager->isLevelCompleted())
     {
-        gameState = GameState::LEVEL_COMPLETED;
         if (gameConfig.lastLevelCompleted < gameConfig.levels.size() - 1)
+        {
             gameConfig.lastLevelCompleted++;
-
-        SaveManager::saveProgress(pathConfig, gameConfig);
-
-        hud.showLevelComplete(true);
+            SaveManager::saveProgress(pathConfig, gameConfig);
+            gameState = GameState::LEVEL_COMPLETED;
+            hud.showLevelComplete(true);
+        }
+        else
+        {
+            // era el último nivel
+            gameConfig.lastLevelCompleted++;
+            SaveManager::saveProgress(pathConfig, gameConfig);
+            gameState = GameState::ALL_LEVELS_COMPLETED;
+            hud.showAllLevelsCompleted(true);
+        }
     }
+
 
     hud.update(
         levelManager->getPlayerHealth(),
@@ -228,11 +237,16 @@ void Game::updateMenu()
 
 void Game::startGame()
 {
-
-    std::string avatarId = selectedAvatarId;
-
-
     int nextLevelIndex = gameConfig.lastLevelCompleted;
+
+    // Si no hay más niveles
+    if (nextLevelIndex >= gameConfig.levels.size())
+    {
+        gameState = GameState::ALL_LEVELS_COMPLETED;
+        hud.showAllLevelsCompleted(true);
+        return;
+    }
+
     std::string levelFile = gameConfig.levels[nextLevelIndex].file;
 
     levelManager = std::make_unique<LevelManager>(
@@ -241,12 +255,12 @@ void Game::startGame()
         sound,
         *enemyFactory,
         *avatarFactory,
-        avatarId
+        selectedAvatarId
     );
-
 
     camera = levelManager->getCamera();
     gameState = GameState::PLAYING;
 }
+
 
 

@@ -414,12 +414,12 @@
 1770435383 source:d:\cyberstreets\src\main.cpp
 	"Game.hpp"
 
-1770906091 source:d:\cyberstreets\src\game.cpp
+1770908721 source:d:\cyberstreets\src\game.cpp
 	<iostream>
 	<algorithm>
 	"Game.hpp"
 
-1770906732 d:\cyberstreets\src\game.hpp
+1770908251 d:\cyberstreets\src\game.hpp
 	<SFML/Graphics.hpp>
 	"Player.hpp"
 	"HUD.hpp"
@@ -462,7 +462,7 @@
 	"Player.hpp"
 	<iostream>
 
-1770437051 d:\cyberstreets\src\hud.hpp
+1770908774 d:\cyberstreets\src\hud.hpp
 	<SFML/Graphics.hpp>
 
 1770438008 source:d:\cyberstreets\src\hud.cpp

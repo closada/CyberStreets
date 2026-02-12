@@ -70,6 +70,7 @@ HUD::HUD(const sf::Vector2u& windowSize, int maxHealth)
     distanceText.setFillColor(sf::Color::White);
     distanceText.setString("Record: 0 m");
 
+
     // centrado arriba
     sf::FloatRect dBounds = distanceText.getLocalBounds();
     distanceText.setOrigin(
@@ -99,6 +100,28 @@ HUD::HUD(const sf::Vector2u& windowSize, int maxHealth)
         windowSize.x - 20.f,
         20.f
     );
+
+
+    // TEXTO TODOS LOS NIVELES COMPLETADOS!
+    allCompletedText.setFont(font);
+    allCompletedText.setString("FELICITACIONES!\nCOMPLETASTE TODOS LOS NIVELES");
+    allCompletedText.setCharacterSize(20);
+    allCompletedText.setFillColor(sf::Color::Yellow);
+
+
+        // centrar origen
+    sf::FloatRect bounds3 = allCompletedText.getLocalBounds();
+    allCompletedText.setOrigin(
+        bounds3.left + bounds3.width / 2.f,
+        bounds3.top + bounds3.height / 2.f
+    );
+
+    // centrar en pantalla
+    allCompletedText.setPosition(
+        windowSize.x / 2.f,
+        windowSize.y / 2.f
+    );
+
 
 }
 
@@ -148,6 +171,10 @@ void HUD::draw(sf::RenderWindow& window)
 
     window.draw(gameOverText);
     window.draw(levelCompleteText);
+
+    if (showAllCompleted)
+        window.draw(allCompletedText);
+
 }
 
 
@@ -167,4 +194,10 @@ void HUD::showLevelComplete(bool show)
     else
         levelCompleteText.setFillColor(sf::Color::Transparent);
 }
+
+void HUD::showAllLevelsCompleted(bool value)
+{
+    showAllCompleted = value;
+}
+
 

@@ -4,10 +4,6 @@
         {
             "file": "assets/config/levels/level1.json",
             "id": 1
-        },
-        {
-            "file": "assets/config/levels/level2.json",
-            "id": 2
         }
     ],
     "music": "assets/music/theme.mp3",
