@@ -3,13 +3,16 @@
 #include "WaveManager.hpp"
 #include "Player.hpp"
 #include "ResourceAliases.hpp"
-#include "Avatar.hpp"
 #include "LevelGoal.hpp"
 #include "InputController.hpp"
 #include "SoundManager.hpp"
 #include "EnemyConfigLoader.hpp"
 #include "EnemyFactory.hpp"
 #include "ResourceManager.hpp"
+#include "AvatarConfigLoader.hpp"
+#include "AvatarFactory.hpp"
+#include "AvatarConfig.hpp"
+
 
 
 class LevelManager
@@ -17,9 +20,9 @@ class LevelManager
 public:
     LevelManager(
         const std::string& levelPath,
-        TextureManager& textures,
+        ResourceManager<sf::Texture, std::string>& textures,
         SoundManager& sounds,
-        AvatarType avatar
+        const std::string& avatarId
     );
 
     void handleInput(const InputCommand& cmd, float dt);
@@ -39,14 +42,21 @@ public:
 private:
 
 
-    ResourceManager<sf::Texture, std::string>& enemyTextures;
-
-    TextureManager& textures;
-    EnemyFactory enemyFactory;
-    EnemyConfigLoader enemyConfigLoader;
+    // refs
+    ResourceManager<sf::Texture, std::string>& textures;
+    SoundManager& sound;
 
     // nivel
     LevelData levelData;
+
+
+    EnemyConfigLoader enemyConfigLoader;
+    AvatarConfigLoader avatarConfigLoader;
+
+
+    EnemyFactory enemyFactory;
+    AvatarFactory avatarFactory;
+
 
     // core
     std::unique_ptr<Player> player;
@@ -60,7 +70,7 @@ private:
     float levelRightEnd;
     bool wasPlayerAttacking = false;
 
-    // refs
-    SoundManager& sound;
+
+
 };
 

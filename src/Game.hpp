@@ -63,17 +63,9 @@ private:
 
     // CAMARA QUE SIGUE AL PLAYER
     sf::View camera;
-    float levelLeftLimit;
-    float levelRightEnd;
 
     // TEXTURAS
-    TextureManager textures;
-
-    // LEVEL GOAL
-    std::unique_ptr<LevelGoal> levelGoal;
-    sf::Texture goalTex;
-
-
+    ResourceManager<sf::Texture, std::string> textures;
 
 
 public:

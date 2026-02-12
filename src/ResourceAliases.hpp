@@ -12,5 +12,4 @@ enum class SoundID
     PLAYER_HIT
 };
 
-using TextureManager = ResourceManager<sf::Texture, TextureID>;
 using SoundBufferManager = ResourceManager<sf::SoundBuffer, SoundID>;

@@ -25,8 +25,6 @@ Player::Player(const sf::Vector2f& startPos,
     damageCooldown = 0.6f;
     damageCooldownTimer = 0.f;
 
-    dead = false;
-
     // tamaño del body (colisión)
     body.setSize({48.f, 48.f});
     body.setOrigin(body.getSize() / 2.f);
@@ -82,7 +80,7 @@ Player::Player(const sf::Vector2f& startPos,
 void Player::update(float dt)
 {
 
-      if (dead)
+      if (isDead())
         return;
 
 
@@ -92,17 +90,18 @@ void Player::update(float dt)
     if (damageCooldownTimer > 0.f)
         damageCooldownTimer -= dt;
 
+
     updateAnimationState();
 
 
     // DEBUG
-    std::cout
+   /* std::cout
         << "[Player] state= "
         << (state == CharacterState::Idle ? "Idle" :
             state == CharacterState::Moving ? "Moving" : "Dead")
         << " // attacking= " << (isAttacking() ? "YES" : "NO")
         << " // animation= " << getCurrentAnimation()
-        << std::endl;
+        << std::endl;*/
 
 
     // métrica de distancia (solo crece)
@@ -121,12 +120,10 @@ void Player::handleMovement(const sf::Vector2f& dir, float dt)
 
 void Player::handleAttack()
 {
-    if (!isAttacking())
-    {
-        startAttack();
-        //animation.play("attack", true);
-    }
+    startAttack();
+
 }
+
 
 // -------------------------------------------------
 // Animaciones según estado
@@ -134,7 +131,7 @@ void Player::handleAttack()
 void Player::updateAnimationState()
 {
 
-    if (dead)
+    if (isDead())
     {
         animation.play("idle");
         return;
@@ -194,37 +191,16 @@ float Player::getMaxDistanceReached()
 
 void Player::takeDamage(int amount)
 {
-    if (!canReceiveDamage() || dead)
+    if (!canReceiveDamage() || isDead())
         return;
 
-    health -= amount;
-    damageCooldownTimer = damageCooldown;
+    Character::takeDamage(amount);
 
-    if (health <= 0)
-    {
-        health = 0;
-        dead = true;
-        state = CharacterState::Dead;
-    }
+    damageCooldownTimer = damageCooldown;
 }
 
 
 bool Player::canReceiveDamage() const
 {
-    return damageCooldownTimer <= 0.f;
-}
-
-bool Player::isDead() const
-{
-    return dead;
-}
-
-int Player::getHealth() const
-{
-    return health;
-}
-
-int Player::getMaxHealth() const
-{
-    return maxHealth;
+    return !attacking && damageCooldownTimer <= 0.f;
 }

@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include <stdexcept>
+#include <iostream>
 
 using json = nlohmann::json;
 
@@ -11,6 +12,8 @@ EnemyConfigLoader::EnemyConfigLoader(
 )
 : textures(enemyTextures)
 {
+
+    std::cout << "prueba constructor enemyConfigLoader." << std::endl;
 }
 
 void EnemyConfigLoader::loadFromFile(const std::string& filePath)
@@ -69,6 +72,8 @@ void EnemyConfigLoader::loadFromFile(const std::string& filePath)
 
         configs.emplace(enemyId, config);
     }
+
+    std::cout << "prueba loadFromFile enemyConfigLoader." << std::endl;
 }
 
 const EnemyConfig& EnemyConfigLoader::getConfig(const std::string& enemyId) const

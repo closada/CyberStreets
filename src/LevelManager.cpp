@@ -1,23 +1,35 @@
 #include "LevelManager.hpp"
 #include <algorithm>
+#include <iostream>
 
 LevelManager::LevelManager(
     const std::string& levelPath,
-    ResourceManager<sf::Texture, std::string>& enemyTextures,
+    ResourceManager<sf::Texture, std::string>& textures,
     SoundManager& sounds,
-    AvatarType avatar
+    const std::string& avatarId
 )
-: enemyTextures(enemyTextures),
+
+: textures(textures),
   sound(sounds),
-  enemyConfigLoader(this->enemyTextures),
-  enemyFactory(enemyConfigLoader, this->enemyTextures),
   levelData(LevelLoader::loadFromFile(levelPath)),
+  enemyConfigLoader(textures),
+  avatarConfigLoader(textures),
+  enemyFactory(enemyConfigLoader, textures),
+  avatarFactory(avatarConfigLoader, textures),
   waveManager(levelData, enemyFactory, enemies)
 {
 
-    // cargar configs de enemigos
-    enemyConfigLoader.loadFromFile("assets/config/enemies/enemyTypes.json");
+    std::cout << "se ingreso al constructor de levelManager." << std::endl;
 
+    // cargar configs de enemigos
+    enemyConfigLoader.loadFromFile("assets/config/enemyTypes.json");
+
+    std::cout << "Listo loader de enemyConfigLoader" << std::endl;
+
+    // cargar configs de avatares
+    avatarConfigLoader.loadFromFile("assets/config/Avatars.json");
+
+    std::cout << "Listo loader de avatarConfigLoader" << std::endl;
 
     // --- CÁMARA ---
     camera = sf::View(sf::FloatRect(0, 0, 800, 600));
@@ -27,43 +39,17 @@ LevelManager::LevelManager(
     levelGoal = std::make_unique<LevelGoal>(
         levelData.goalX,
         levelData.groundY,
-        textures.get(TextureID::GoalFlag)
+        textures.get("goalFlag")
     );
 
     // --- PLAYER ---
-    TextureID idle, run, attack, runAttack;
-
-    switch (avatar)
-    {
-        case AvatarType::Biker:
-            idle = TextureID::BikerIdle;
-            run  = TextureID::BikerRun;
-            attack = TextureID::BikerAttack;
-            runAttack = TextureID::BikerRunAttack;
-            break;
-
-        case AvatarType::Cyborg:
-            idle = TextureID::CyborgIdle;
-            run  = TextureID::CyborgRun;
-            attack = TextureID::CyborgAttack;
-            runAttack = TextureID::CyborgRunAttack;
-            break;
-
-        case AvatarType::Punk:
-            idle = TextureID::PunkIdle;
-            run  = TextureID::PunkRun;
-            attack = TextureID::PunkAttack;
-            runAttack = TextureID::PunkRunAttack;
-            break;
-    }
-
-    player = std::make_unique<Player>(
-        sf::Vector2f(400.f, levelData.groundY),
-        textures.get(idle),
-        textures.get(run),
-        textures.get(attack),
-        textures.get(runAttack)
+    player = avatarFactory.createPlayer(
+        avatarId,
+        sf::Vector2f(400.f, levelData.groundY)
     );
+
+    std::cout << "Constructor LevelManager Finaliza correctamente!" << std::endl;
+
 }
 
 void LevelManager::handleInput(const InputCommand& cmd, float dt)
@@ -74,14 +60,18 @@ void LevelManager::handleInput(const InputCommand& cmd, float dt)
     player->handleMovement(cmd.movement, dt);
 
     if (cmd.attackPressed)
+    {
         player->handleAttack();
+    }
+
+
 }
 
 void LevelManager::update(float dt)
 {
     // --- PLAYER ---
     player->update(dt);
-    player->keepInside(camera);
+
 
     bool isAttackingNow = player->isAttacking();
     if (isAttackingNow && !wasPlayerAttacking)
@@ -119,7 +109,8 @@ void LevelManager::update(float dt)
         {
             if (player->getAttackBounds().intersects(e->getBounds()))
             {
-                e->takeDamage(10);
+                std::cout << "el player ataca a enemigo: " << player->getDamage() << std::endl;
+                e->takeDamage(player->getDamage());
                 player->markHit();
                 sound.play(SoundID::HIT);
                 break;
@@ -135,7 +126,8 @@ void LevelManager::update(float dt)
         {
             if (player->canReceiveDamage())
             {
-                player->takeDamage(10);
+                std::cout << "el player puede recibir daño: " << e->getDamage() << std::endl;
+                player->takeDamage(e->getDamage());
                 sound.play(SoundID::PLAYER_HIT);
             }
         }
@@ -153,6 +145,35 @@ void LevelManager::update(float dt)
 
     // --- GOAL ---
     levelGoal->update(*player);
+
+
+    // --- CAMERA ---
+    sf::Vector2f camPos = camera.getCenter();
+
+    // dead zone horizontal
+    float deadZone = 120.f;
+
+    float dx = player->getPosition().x - camPos.x;
+
+    if (dx > deadZone)
+    {
+        camPos.x += dx - deadZone;
+    }
+
+    // límite derecho
+    float halfView = camera.getSize().x / 2.f;
+    float maxCamX = levelRightEnd + 20.f - halfView;
+
+    if (camPos.x > maxCamX)
+    {
+        camPos.x = maxCamX;
+    }
+
+    camera.setCenter(camPos);
+
+    // ACTUALIZAMOS PLAYER POST ACTUALIZACION CAMARA
+    player->keepInside(camera);
+
 }
 
 void LevelManager::draw(sf::RenderWindow& window)

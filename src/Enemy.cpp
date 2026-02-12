@@ -10,11 +10,12 @@ Enemy::Enemy(
 )
 : Character(startPos)
 , config(config)
-, health(config.maxHealth)
 , attackCooldownTimer(0.f)
-, dead(false)
 {
-    speed = config.speed;
+    maxHealth = config.maxHealth;
+    health    = maxHealth;
+    speed     = config.speed;
+    damage    = config.damage;
 
     // body
     body.setSize({48.f, 48.f});
@@ -52,7 +53,7 @@ Enemy::Enemy(
 // -------------------------------------------------
 void Enemy::update(float dt)
 {
-    if (dead)
+    if (isDead())
         return;
 
     Character::update(dt);
@@ -66,7 +67,7 @@ void Enemy::update(float dt)
 // -------------------------------------------------
 void Enemy::updateAI(const sf::Vector2f& playerPos, float dt)
 {
-    if (dead || isAttacking())
+    if (isDead() || isAttacking())
         return;
 
     sf::Vector2f pos   = body.getPosition();
@@ -101,7 +102,7 @@ void Enemy::updateAI(const sf::Vector2f& playerPos, float dt)
 // -------------------------------------------------
 void Enemy::updateAnimationState()
 {
-    if (dead)
+    if (isDead())
     {
         animation.play("dead");
         return;
@@ -122,27 +123,16 @@ void Enemy::takeDamage(int amount)
     if (!canReceiveDamage())
         return;
 
-    health -= amount;
-
-    if (health <= 0)
-    {
-        health = 0;
-        dead = true;
-        state = CharacterState::Dead;
-    }
+    Character::takeDamage(amount);
 }
 
 bool Enemy::canReceiveDamage() const
 {
-    return !dead;
+    return !isDead();
 }
 
-bool Enemy::isDead() const
-{
-    return dead;
-}
 
 int Enemy::getDamage() const
 {
-    return config.damage;
+    return damage;
 }

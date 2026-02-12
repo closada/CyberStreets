@@ -16,13 +16,14 @@
     "sprite_attack": {
 						"link": "assets/sprites/player/Biker_attack.png",
 						"cant_sprites": 6,
-						"duration_frames": 0.06
+						"duration_frames": 0.04
 					},
     "sprite_run_attack": {
 						"link": "assets/sprites/player/Biker_run_attack.png",
 						"cant_sprites": 6,
-						"duration_frames": 0.06
-					}
+						"duration_frames": 0.04
+					},
+	"avatar": "assets/sprites/biker_avatar.png"
   },
   
   "cyborg": {
@@ -42,13 +43,14 @@
     "sprite_attack": {
 						"link": "assets/sprites/player/Cyborg_attack.png",
 						"cant_sprites": 6,
-						"duration_frames": 0.06
+						"duration_frames": 0.04
 					},
     "sprite_run_attack": {
 						"link": "assets/sprites/player/Cyborg_run_attack.png",
 						"cant_sprites": 6,
-						"duration_frames": 0.06
-					}
+						"duration_frames": 0.04
+					},
+	"avatar": "assets/sprites/cyborg_avatar.png"
   },
   
   "punk": {
@@ -68,12 +70,13 @@
     "sprite_attack": {
 						"link": "assets/sprites/player/Punk_attack.png",
 						"cant_sprites": 6,
-						"duration_frames": 0.06
+						"duration_frames": 0.04
 					},
     "sprite_run_attack": {
 						"link": "assets/sprites/player/Punk_run_attack.png",
 						"cant_sprites": 6,
-						"duration_frames": 0.06
-					}
+						"duration_frames": 0.04
+					},
+	"avatar": "assets/sprites/punk_avatar.png"
   }
 }

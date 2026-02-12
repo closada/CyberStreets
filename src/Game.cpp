@@ -16,10 +16,6 @@ Game::Game()
 
     // definiciones de camara
     camera = window.getDefaultView();
-    levelLeftLimit = camera.getCenter().x - camera.getSize().x / 2.f;
-
-    // donde termina el nivel
-    levelRightEnd = 1000.f;
 
 
 
@@ -33,39 +29,23 @@ Game::Game()
 
 
     // definiciones de flag
-    textures.load(TextureID::GoalFlag,         "assets/sprites/goal_flag.png");
-
-    // Biker
-    textures.load(TextureID::BikerIdle,      "assets/sprites/player/Biker_idle.png");
-    textures.load(TextureID::BikerRun,       "assets/sprites/player/Biker_run.png");
-    textures.load(TextureID::BikerAttack,    "assets/sprites/player/Biker_attack.png");
-    textures.load(TextureID::BikerRunAttack, "assets/sprites/player/Biker_run_attack.png");
-
-    // Cyborg
-    textures.load(TextureID::CyborgIdle,      "assets/sprites/player/Cyborg_idle.png");
-    textures.load(TextureID::CyborgRun,       "assets/sprites/player/Cyborg_run.png");
-    textures.load(TextureID::CyborgAttack,    "assets/sprites/player/Cyborg_attack.png");
-    textures.load(TextureID::CyborgRunAttack, "assets/sprites/player/Cyborg_run_attack.png");
-
-    // Punk
-    textures.load(TextureID::PunkIdle,      "assets/sprites/player/Punk_idle.png");
-    textures.load(TextureID::PunkRun,       "assets/sprites/player/Punk_run.png");
-    textures.load(TextureID::PunkAttack,    "assets/sprites/player/Punk_attack.png");
-    textures.load(TextureID::PunkRunAttack, "assets/sprites/player/Punk_run_attack.png");
+    textures.load("goalFlag",         "assets/sprites/goal_flag.png");
 
 
     // avatares para menu
-    textures.load(TextureID::BikerAvatar,      "assets/sprites/biker_avatar.png");
-    textures.load(TextureID::CyborgAvatar,      "assets/sprites/cyborg_avatar.png");
-    textures.load(TextureID::PunkAvatar,      "assets/sprites/punk_avatar.png");
+    textures.load("bikerAvatar",      "assets/sprites/biker_avatar.png");
+    textures.load("cyborgAvatar",      "assets/sprites/cyborg_avatar.png");
+    textures.load("punkAvatar",      "assets/sprites/punk_avatar.png");
 
 
     // pasamos los sprites al menu para usarlos
-    menu.setAvatarTextures({
-        &textures.get(TextureID::BikerAvatar),
-        &textures.get(TextureID::CyborgAvatar),
-        &textures.get(TextureID::PunkAvatar)
-    });
+    std::array<sf::Texture*, 3> avatarTex = {
+        &textures.get("bikerAvatar"),
+        &textures.get("cyborgAvatar"),
+        &textures.get("punkAvatar")
+    };
+
+    menu.setAvatarTextures(avatarTex);
 
 }
 
@@ -224,11 +204,21 @@ void Game::updateMenu()
 
 void Game::startGame()
 {
+
+    std::string avatarId;
+
+    switch(selectedAvatar)
+    {
+        case AvatarType::Biker:  avatarId = "biker"; break;
+        case AvatarType::Cyborg: avatarId = "cyborg"; break;
+        case AvatarType::Punk:   avatarId = "punk"; break;
+    }
+
     levelManager = std::make_unique<LevelManager>(
         "assets/config/levels/level1.json",
         textures,
         sound,
-        selectedAvatar
+        avatarId
     );
 
     camera = levelManager->getCamera();

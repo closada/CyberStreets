@@ -30,10 +30,9 @@ public:
     void takeDamage(int amount);
 
     bool canReceiveDamage() const;
-    bool isDead() const;
 
-    int getHealth() const;
-    int getMaxHealth() const;
+    void stopAttack();
+
 
 private:
     // helpers internos
@@ -42,14 +41,9 @@ private:
     // métricas
     float maxDistanceReached;
 
-    // logica de hit y muerte
-    int maxHealth;
-    int health;
 
     float damageCooldown;        // tiempo entre golpes
     float damageCooldownTimer;   // contador
-    float damage;
 
-    bool dead;
 };
 

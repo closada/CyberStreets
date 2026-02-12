@@ -23,7 +23,6 @@ public:
 
     void takeDamage(int amount);
     bool canReceiveDamage() const;
-    bool isDead() const;
 
 private:
     void updateAnimationState();
@@ -31,7 +30,5 @@ private:
 private:
     EnemyConfig config;
 
-    int health;
     float attackCooldownTimer;
-    bool dead;
 };

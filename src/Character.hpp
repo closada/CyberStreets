@@ -37,6 +37,10 @@ public:
     // --- vida ---
     void takeDamage(int amount);
     int  getHealth() const;
+    int getMaxHealth() const;
+    float getSpeed() const;
+    int getDamage() const;
+
     bool isDead() const;
 
     // para debug de ataque
@@ -51,14 +55,17 @@ protected:
     Direction direction;
 
     // stats
+    int maxHealth;
     int health;
     float speed;
+    int damage;
+
 
     // ataque
     bool attacking;
-    bool hitDone;
+    bool attackQueued;
 
-    int damage;
+    bool hitDone;
 
     sf::RectangleShape attackBox;
 };

@@ -414,12 +414,12 @@
 1770435383 source:d:\cyberstreets\src\main.cpp
 	"Game.hpp"
 
-1770689006 source:d:\cyberstreets\src\game.cpp
+1770831166 source:d:\cyberstreets\src\game.cpp
 	<iostream>
 	<algorithm>
 	"Game.hpp"
 
-1770688991 d:\cyberstreets\src\game.hpp
+1770830810 d:\cyberstreets\src\game.hpp
 	<SFML/Graphics.hpp>
 	"Player.hpp"
 	"HUD.hpp"
@@ -432,26 +432,27 @@
 	<memory>
 	<vector>
 
-1770676652 d:\cyberstreets\src\player.hpp
+1770866681 d:\cyberstreets\src\player.hpp
 	"Character.hpp"
+	"AvatarConfig.hpp"
 
 1770422979 d:\cyberstreets\src\entity.hpp
 	<SFML/Graphics.hpp>
 	"AnimationController.hpp"
 
-1770681207 d:\cyberstreets\src\enemy.hpp
+1770815378 d:\cyberstreets\src\enemy.hpp
 	"Character.hpp"
 	"EnemyConfig.hpp"
 	<SFML/System/Vector2.hpp>
 
-1770681410 source:d:\cyberstreets\src\enemy.cpp
+1770868166 source:d:\cyberstreets\src\enemy.cpp
 	"Enemy.hpp"
 	<cmath>
 
 1770423007 source:d:\cyberstreets\src\entity.cpp
 	"Entity.hpp"
 
-1770676968 source:d:\cyberstreets\src\player.cpp
+1770868203 source:d:\cyberstreets\src\player.cpp
 	"Player.hpp"
 	<iostream>
 
@@ -593,10 +594,10 @@
 1770422937 source:d:\cyberstreets\src\animationcontroller.cpp
 	"AnimationController.hpp"
 
-1770424275 source:d:\cyberstreets\src\character.cpp
+1770868143 source:d:\cyberstreets\src\character.cpp
 	"Character.hpp"
 
-1770423932 d:\cyberstreets\src\character.hpp
+1770867869 d:\cyberstreets\src\character.hpp
 	"Entity.hpp"
 
 1770436738 d:\cyberstreets\src\animationcontroller.hpp
@@ -620,7 +621,7 @@
 	<SFML/Graphics.hpp>
 	"AnimationController.hpp"
 
-1770686624 d:\cyberstreets\src\resourcealiases.hpp
+1770830134 d:\cyberstreets\src\resourcealiases.hpp
 	<SFML/Graphics.hpp>
 	"ResourceManager.hpp"
 	<SFML/Audio.hpp>
@@ -855,11 +856,12 @@
 	"EnemyConfig.hpp"
 	"ResourceManager.hpp"
 
-1770680762 source:d:\cyberstreets\src\enemyconfigloader.cpp
+1770857332 source:d:\cyberstreets\src\enemyconfigloader.cpp
 	"EnemyConfigLoader.hpp"
 	"nlohmann/json.hpp"
 	<fstream>
 	<stdexcept>
+	<iostream>
 
 1770680812 source:d:\cyberstreets\src\enemyfactory.cpp
 	"EnemyFactory.hpp"
@@ -874,26 +876,55 @@
 1770684054 source:d:\cyberstreets\src\wavemanager.cpp
 	"WaveManager.hpp"
 
-1770683283 d:\cyberstreets\src\wavemanager.hpp
+1770828978 d:\cyberstreets\src\wavemanager.hpp
 	"EnemyFactory.hpp"
 	"LevelLoader.hpp"
 	<vector>
 	<memory>
 
-1770687318 source:d:\cyberstreets\src\levelmanager.cpp
+1770867832 source:d:\cyberstreets\src\levelmanager.cpp
 	"LevelManager.hpp"
 	<algorithm>
+	<iostream>
 
-1770691193 d:\cyberstreets\src\levelmanager.hpp
+1770829166 d:\cyberstreets\src\levelmanager.hpp
 	"LevelLoader.hpp"
 	"WaveManager.hpp"
 	"Player.hpp"
 	"ResourceAliases.hpp"
-	"Avatar.hpp"
 	"LevelGoal.hpp"
 	"InputController.hpp"
 	"SoundManager.hpp"
 	"EnemyConfigLoader.hpp"
 	"EnemyFactory.hpp"
+	"ResourceManager.hpp"
+	"AvatarConfigLoader.hpp"
+	"AvatarFactory.hpp"
+	"AvatarConfig.hpp"
+
+1770769933 d:\cyberstreets\src\avatarconfig.hpp
+	<string>
+
+1770770236 source:d:\cyberstreets\src\avatarconfigloader.cpp
+	"AvatarConfigLoader.hpp"
+	"nlohmann/json.hpp"
+	<fstream>
+	<stdexcept>
+
+1770768408 d:\cyberstreets\src\avatarconfigloader.hpp
+	<map>
+	<string>
+	<SFML/Graphics.hpp>
+	"AvatarConfig.hpp"
+	"ResourceManager.hpp"
+
+1770768728 source:d:\cyberstreets\src\avatarfactory.cpp
+	"AvatarFactory.hpp"
+
+1770768696 d:\cyberstreets\src\avatarfactory.hpp
+	<memory>
+	<SFML/Graphics.hpp>
+	"Player.hpp"
+	"AvatarConfigLoader.hpp"
 	"ResourceManager.hpp"
 

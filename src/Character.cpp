@@ -7,15 +7,18 @@ Character::Character(const sf::Vector2f& startPos)
 : Entity(startPos),
   state(CharacterState::Idle),
   direction(Direction::Right),
+  maxHealth(0),
   health(0),
   speed(0.f),
+  damage(0),
   attacking(false),
-  hitDone(false)
+  hitDone(false),
+  attackQueued(false)
 {
-    // attack box genérico
     attackBox.setSize({32.f, 20.f});
     attackBox.setOrigin(16.f, 10.f);
 }
+
 
 // -------------------------------------------------
 // Update
@@ -34,14 +37,23 @@ void Character::update(float dt)
     if (attacking)
     {
         updateAttackBox();
+
+        if (animation.isFinished())
+        {
+            if (attackQueued)
+            {
+                attackQueued = false;
+                hitDone = false;
+                animation.play("attack", true);
+            }
+            else
+            {
+                attacking = false;
+                hitDone = false;
+            }
+        }
     }
 
-    // reset automático cuando termina la animación de ataque
-    if (attacking && animation.isFinished())
-    {
-        attacking = false;
-        hitDone = false;
-    }
 
     if (direction == Direction::Left)
         animation.setScale({-3.f, 3.f});
@@ -77,11 +89,18 @@ void Character::move(const sf::Vector2f& dir, float dt)
 // -------------------------------------------------
 void Character::startAttack()
 {
-    if (attacking || state == CharacterState::Dead)
+    if (state == CharacterState::Dead)
         return;
 
-    attacking = true;
-    hitDone = false;
+    if (!attacking)
+    {
+        attacking = true;
+        hitDone = false;
+    }
+    else
+    {
+        attackQueued = true;
+    }
 }
 
 bool Character::isAttacking() const
@@ -124,6 +143,21 @@ void Character::takeDamage(int amount)
 int Character::getHealth() const
 {
     return health;
+}
+
+int Character::getMaxHealth() const
+{
+    return maxHealth;
+}
+
+float Character::getSpeed() const
+{
+    return speed;
+}
+
+int Character::getDamage() const
+{
+    return damage;
 }
 
 bool Character::isDead() const
