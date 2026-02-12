@@ -15,10 +15,13 @@ LevelData LevelLoader::loadFromFile(const std::string& path)
     file >> j;
 
     LevelData level;
-    level.id          = j["id"];
-    level.levelLength = j["levelLength"];
-    level.goalX       = j["goalX"];
-    level.groundY     = j["groundY"];
+    level.id                = j["id"];
+    level.levelLength       = j["levelLength"];
+    level.goalX             = j["goalX"];
+    level.groundY           = j["groundY"];
+    level.backgroundPath    = j["background"];
+    level.floorPath         = j["floor"];
+
 
     for (const auto& w : j["waves"])
     {

@@ -48,6 +48,47 @@ LevelManager::LevelManager(
         sf::Vector2f(400.f, levelData.groundY)
     );
 
+
+    // --- LOGICA BACKGROUND Y TILESET PISO
+    // --- Background ---
+    if (!backgroundTexture.loadFromFile(levelData.backgroundPath))
+        std::cerr << "No se pudo cargar background: " << levelData.backgroundPath << std::endl;
+
+    // calcular cuántos tiles horizontales necesitamos para cubrir levelLength
+    int numBgTiles = static_cast<int>(levelData.levelLength / backgroundTexture.getSize().x) + 2;
+
+    for (int i = 0; i < numBgTiles; ++i)
+    {
+        sf::Sprite sprite(backgroundTexture);
+        sprite.setPosition(i * backgroundTexture.getSize().x, 0.f); // top de la pantalla
+        backgroundTiles.push_back(sprite);
+    }
+
+    // --- Floor / Tiles ---
+    if (!floorTexture.loadFromFile(levelData.floorPath))
+        std::cerr << "No se pudo cargar floor: " << levelData.floorPath << std::endl;
+
+    // límite superior del piso (desde donde empieza el tileset)
+    float minY = 600.f * 0.53f;
+    floorTopY = minY;
+
+    // calcular cuántos tiles horizontales necesitamos
+    int numTilesX = static_cast<int>(levelData.levelLength / floorTexture.getSize().x) + 1;
+
+    // calcular cuántas filas de tiles verticales necesitamos (hasta el bottom de la pantalla)
+    int numTilesY = static_cast<int>((camera.getSize().y - floorTopY) / floorTexture.getSize().y) + 1;
+
+    for (int y = 0; y < numTilesY; ++y)
+    {
+        for (int x = 0; x < numTilesX; ++x)
+        {
+            sf::Sprite tile(floorTexture);
+            tile.setPosition(x * floorTexture.getSize().x, floorTopY + y * floorTexture.getSize().y);
+            floorTiles.push_back(tile);
+        }
+    }
+
+
     std::cout << "Constructor LevelManager Finaliza correctamente!" << std::endl;
 
 }
@@ -180,13 +221,38 @@ void LevelManager::draw(sf::RenderWindow& window)
 {
     window.setView(camera);
 
+    sf::Vector2f camPos = camera.getCenter();
+    sf::Vector2f viewSize = camera.getSize();
+    float leftView = camPos.x - viewSize.x / 2.f;
+
+    // --- Fondo repetido ---
+    for (auto& bg : backgroundTiles)
+    {
+        if (bg.getPosition().x + bg.getGlobalBounds().width >= leftView &&
+            bg.getPosition().x <= leftView + viewSize.x)
+        {
+            window.draw(bg);
+        }
+    }
+
+    // --- Piso / Tiles ---
+    for (auto& tile : floorTiles)
+    {
+        if (tile.getPosition().x + tile.getGlobalBounds().width >= leftView &&
+            tile.getPosition().x <= leftView + viewSize.x)
+        {
+            window.draw(tile);
+        }
+    }
+
+    // --- GOAL, PLAYER, ENEMIGOS ---
     levelGoal->draw(window);
     player->draw(window);
     player->drawAttackBox(window);
-
     for (auto& e : enemies)
         e->draw(window);
 }
+
 
 
 bool LevelManager::isGameOver() const

@@ -71,6 +71,19 @@ private:
     bool wasPlayerAttacking = false;
 
 
+    // PARA BACKGROUND Y PISO
+    // --- BACKGROUND ---
+    sf::Texture backgroundTexture;
+    std::vector<sf::Sprite> backgroundTiles;
+
+    // --- FLOOR / TILES ---
+    sf::Texture floorTexture;
+    std::vector<sf::Sprite> floorTiles; // fila de tiles
+    float floorTopY; // límite vertical donde empieza el piso
+
+
+
+
 
 };
 

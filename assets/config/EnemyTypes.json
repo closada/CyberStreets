@@ -1,6 +1,6 @@
 {
   "thug": {
-    "health": 50,
+    "health": 30,
     "damage": 10,
     "attackCooldown": 1.2,
     "speed": 80,
@@ -18,7 +18,7 @@
 	}
   },
   "boss": {
-    "health": 100,
+    "health": 50,
     "damage": 25,
     "attackCooldown": 2.0,
     "speed": 40,

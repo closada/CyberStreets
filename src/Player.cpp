@@ -170,8 +170,8 @@ void Player::keepInside(const sf::View& view)
     float top    = vc.y - vs.y / 2.f + half.y;
     float bottom = vc.y + vs.y / 2.f - ( 3.3f * half.y);
 
-    // límite vertical superior (solo hasta 3/4 de la pantalla)
-    float minY = top + vs.y * 0.35f;
+    // límite vertical superior
+    float minY = top + vs.y * 0.45f;
 
     if (pos.x < left)   pos.x = left;
     if (pos.x > right)  pos.x = right;

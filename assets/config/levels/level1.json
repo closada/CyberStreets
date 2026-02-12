@@ -1,6 +1,8 @@
 {
   "id": 1,
   "levelLength": 1200,
+  "background": "assets/background/bg_blue/6.png",
+  "floor": "assets/tilesets/texture_16px 82.png",
   "goalX": 1180,
   "groundY": 520,
 
