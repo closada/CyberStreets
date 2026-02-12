@@ -23,6 +23,25 @@ void WaveManager::update(float dt)
         if (wave.finished)
             continue;
 
+        // ----------------------------
+        // Esperar start_delay
+        // ----------------------------
+        if (!wave.started)
+        {
+            wave.startTimer += dt;
+
+            if (wave.startTimer >= wave.data.start_delay)
+            {
+                wave.started = true;
+                wave.timer = 0.f; // reseteamos timer de spawn
+            }
+
+            continue; // hasta que no arranque, no hace nada más
+        }
+
+        // ----------------------------
+        // Spawn normal
+        // ----------------------------
         wave.timer += dt;
 
         if (wave.timer >= wave.data.delay &&
@@ -43,6 +62,7 @@ void WaveManager::update(float dt)
             wave.finished = true;
     }
 }
+
 
 bool WaveManager::isFinished() const
 {

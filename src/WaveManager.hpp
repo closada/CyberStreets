@@ -8,6 +8,8 @@
 struct WaveState
 {
     EnemyWave data;
+    float startTimer = 0.f;
+    bool started = false;
     float timer = 0.f;
     int spawned = 0;
     bool finished = false;

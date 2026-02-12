@@ -28,12 +28,16 @@ void LevelGoal::update(const Player& player)
     // Actualizamos bounds desde el sprite animado
     triggerBounds = animation.getSprite().getGlobalBounds();
 
-    if (reached)
-        return;
+//    if (reached)
+//        return;
 
     if (player.getBounds().intersects(triggerBounds))
     {
         reached = true;
+    }
+    else
+    {
+        reached = false;
     }
 }
 

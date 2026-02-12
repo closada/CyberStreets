@@ -23,11 +23,12 @@ LevelData LevelLoader::loadFromFile(const std::string& path)
     for (const auto& w : j["waves"])
     {
         EnemyWave wave;
-        wave.enemyId = w["type"];
-        wave.x       = w["x"];
-        wave.y       = w["y"];
-        wave.delay   = w["delay"];
-        wave.count   = w["count"];
+        wave.enemyId        = w["type"];
+        wave.x              = w["x"];
+        wave.y              = w["y"];
+        wave.delay          = w["delay"];
+        wave.start_delay    = w["start_delay"];
+        wave.count          = w["count"];
 
         level.waves.push_back(wave);
     }

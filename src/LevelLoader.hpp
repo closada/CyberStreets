@@ -11,6 +11,7 @@ struct EnemyWave
     std::string enemyId;   // "Thug", "Boss", etc
     float x;
     float y;
+    float start_delay;
     float delay;
     int count;
 };
