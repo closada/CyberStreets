@@ -88,10 +88,15 @@
 		<Unit filename="src/SaveManager.hpp" />
 		<Unit filename="src/SoundManager.cpp" />
 		<Unit filename="src/SoundManager.hpp" />
+		<Unit filename="src/TestsGame.cpp" />
 		<Unit filename="src/WaveManager.cpp" />
 		<Unit filename="src/WaveManager.hpp" />
 		<Unit filename="src/main.cpp" />
 		<Unit filename="src/nlohmann/json.hpp" />
+		<Unit filename="src/tau/compilers.h" />
+		<Unit filename="src/tau/misc.h" />
+		<Unit filename="src/tau/tau.h" />
+		<Unit filename="src/tau/types.h" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
