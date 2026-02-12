@@ -414,7 +414,7 @@
 1770435383 source:d:\cyberstreets\src\main.cpp
 	"Game.hpp"
 
-1770919334 source:d:\cyberstreets\src\game.cpp
+1770920387 source:d:\cyberstreets\src\game.cpp
 	<iostream>
 	<algorithm>
 	"Game.hpp"
@@ -470,7 +470,7 @@
 	"HUD.hpp"
 	<stdexcept>
 
-1770904867 d:\cyberstreets\src\menu.hpp
+1770920279 d:\cyberstreets\src\menu.hpp
 	<SFML/Graphics.hpp>
 	<vector>
 	"Avatar.hpp"
@@ -485,8 +485,9 @@
 
 1770496026 d:\cyberstreets\src\avatar.hpp
 
-1770476341 d:\cyberstreets\src\soundmanager.hpp
+1770919914 d:\cyberstreets\src\soundmanager.hpp
 	<SFML/Audio.hpp>
+	<vector>
 	"ResourceManager.hpp"
 	"ResourceAliases.hpp"
 
@@ -594,9 +595,10 @@
 	<SFML/Audio/Export.hpp>
 	<string>
 
-1770476222 source:d:\cyberstreets\src\soundmanager.cpp
+1770919982 source:d:\cyberstreets\src\soundmanager.cpp
 	"SoundManager.hpp"
 	<iostream>
+	<algorithm>
 
 1770422937 source:d:\cyberstreets\src\animationcontroller.cpp
 	"AnimationController.hpp"

@@ -5,7 +5,7 @@
 
 #include <iostream>
 
-Menu::Menu(const sf::Vector2u& windowSize, SoundManager& sound, sf::Font& font)
+Menu::Menu(const sf::Vector2u& windowSize, SoundManager& sound, sf::Font& font, const std::string& gameTitle)
 : sound(sound),
   font(font),
   selectedIndex(0),
@@ -18,6 +18,23 @@ Menu::Menu(const sf::Vector2u& windowSize, SoundManager& sound, sf::Font& font)
     avatarIndex = 0;
     exit = false;
 
+
+
+
+    // ---------- GAME TITLE ----------
+    gameTitleText.setFont(font);
+    gameTitleText.setString(gameTitle);
+    gameTitleText.setCharacterSize(48);
+
+    // Celeste arcade neón
+    gameTitleText.setFillColor(sf::Color(0, 200, 255));
+
+    sf::FloatRect gb = gameTitleText.getLocalBounds();
+    gameTitleText.setOrigin(gb.left + gb.width / 2.f,
+                            gb.top + gb.height / 2.f);
+
+    gameTitleText.setPosition(windowSize.x / 2.f,
+                              windowSize.y / 2.f - 150.f);
 
 
     // ---------- TITULO AVATAR ----------
@@ -105,6 +122,18 @@ void Menu::draw(sf::RenderWindow& window)
 
     if (state == MenuState::MAIN)
     {
+        gameTitleText.setPosition(center.x, center.y - 150.f);
+
+        float t = animClock.getElapsedTime().asSeconds();
+        float alpha = 200 + std::sin(t * 3.f) * 55.f;
+
+        gameTitleText.setFillColor(
+            sf::Color(0, 255, 255, static_cast<sf::Uint8>(alpha))
+        );
+
+        window.draw(gameTitleText);
+
+
         options[0].setPosition(center.x, center.y - 40.f);
         options[1].setPosition(center.x, center.y + 10.f);
 

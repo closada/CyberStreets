@@ -38,6 +38,8 @@ private:
     sf::Text hintText;
     sf::Text avatarNameText;
 
+    sf::Text gameTitleText;
+
     // flechas
     sf::Text leftArrow;
     sf::Text rightArrow;
@@ -58,7 +60,11 @@ private:
 
 
 public:
-    Menu(const sf::Vector2u& windowSize, SoundManager& sound, sf::Font& font);
+    Menu(const sf::Vector2u& windowSize,
+     SoundManager& sound,
+     sf::Font& font,
+     const std::string& gameTitle);
+
 
     void moveUp();
     void moveDown();

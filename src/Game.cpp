@@ -27,7 +27,7 @@ Game::Game()
         throw std::runtime_error("No se pudo cargar tipografia");
 
 
-    menu = std::make_unique<Menu>(window.getSize(), sound, font);
+    menu = std::make_unique<Menu>(window.getSize(), sound, font, gameConfig.name);
 
 
     // ---- Cargar sonidos ----
