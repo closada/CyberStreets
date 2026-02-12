@@ -10,7 +10,8 @@
 #include "LevelGoal.hpp"
 #include "ResourceAliases.hpp"
 #include "LevelManager.hpp"
-
+#include "GameConfigLoader.hpp"
+#include "SaveManager.hpp"
 
 #include <memory>
 #include <vector>
@@ -32,6 +33,9 @@ private:
     HUD hud;
     Menu menu;
     InputController input;
+    GameConfig gameConfig;
+
+    std::string pathConfig;
 
     std::unique_ptr<LevelManager> levelManager;
 

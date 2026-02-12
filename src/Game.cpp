@@ -9,6 +9,10 @@ Game::Game()
   hud(window.getSize(), 100),
   menu(window.getSize())
 {
+
+    pathConfig = "assets/config/config.json";
+    gameConfig = GameConfigLoader::loadFromFile(pathConfig);
+
     gameState = GameState::MENU;
 
     window.setFramerateLimit(60);
@@ -165,6 +169,11 @@ void Game::updatePlaying(float dt)
     if (levelManager->isLevelCompleted())
     {
         gameState = GameState::LEVEL_COMPLETED;
+        if (gameConfig.lastLevelCompleted < gameConfig.levels.size() - 1)
+            gameConfig.lastLevelCompleted++;
+
+        SaveManager::saveProgress(pathConfig, gameConfig);
+
         hud.showLevelComplete(true);
     }
 
@@ -214,8 +223,12 @@ void Game::startGame()
         case AvatarType::Punk:   avatarId = "punk"; break;
     }
 
+
+    int nextLevelIndex = gameConfig.lastLevelCompleted;
+    std::string levelFile = gameConfig.levels[nextLevelIndex].file;
+
     levelManager = std::make_unique<LevelManager>(
-        "assets/config/levels/level1.json",
+        levelFile,
         textures,
         sound,
         avatarId

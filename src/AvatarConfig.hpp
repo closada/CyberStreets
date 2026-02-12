@@ -22,5 +22,7 @@ struct AvatarConfig
     std::string runAttackTexId;
     int runAttackFrames;
     float runAttackDuration;
+
+    std::string avatarImg;
 };
 

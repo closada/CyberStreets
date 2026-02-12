@@ -29,6 +29,10 @@ void AvatarConfigLoader::loadFromFile(const std::string& filePath)
         config.damage = value["damage"];
         config.maxHealth = value["maxHealth"];
         config.speed = value["speed"];
+        config.avatarImg = value["avatar"];
+
+        // se carga la textura
+        textures.load("avatarImg." + avatarId, config.avatarImg);
 
         // ---------- IDLE ----------
         {

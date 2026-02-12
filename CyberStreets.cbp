@@ -63,6 +63,9 @@
 		<Unit filename="src/Entity.hpp" />
 		<Unit filename="src/Game.cpp" />
 		<Unit filename="src/Game.hpp" />
+		<Unit filename="src/GameConfig.hpp" />
+		<Unit filename="src/GameConfigLoader.cpp" />
+		<Unit filename="src/GameConfigLoader.hpp" />
 		<Unit filename="src/Hud.cpp" />
 		<Unit filename="src/Hud.hpp" />
 		<Unit filename="src/InputController.cpp" />
@@ -79,6 +82,8 @@
 		<Unit filename="src/Player.hpp" />
 		<Unit filename="src/ResourceAliases.hpp" />
 		<Unit filename="src/ResourceManager.hpp" />
+		<Unit filename="src/SaveManager.cpp" />
+		<Unit filename="src/SaveManager.hpp" />
 		<Unit filename="src/SoundManager.cpp" />
 		<Unit filename="src/SoundManager.hpp" />
 		<Unit filename="src/WaveManager.cpp" />
