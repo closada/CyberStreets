@@ -21,7 +21,7 @@ LevelData LevelLoader::loadFromFile(const std::string& path)
     level.groundY           = j["groundY"];
     level.backgroundPath    = j["background"];
     level.floorPath         = j["floor"];
-
+    level.levelGoalPath     = j["level_goal"];
 
     for (const auto& w : j["waves"])
     {

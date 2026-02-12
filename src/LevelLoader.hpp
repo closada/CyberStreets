@@ -26,6 +26,7 @@ struct LevelData
 
     std::string backgroundPath;
     std::string floorPath;
+    std::string levelGoalPath;
 
     std::vector<EnemyWave> waves;
 };

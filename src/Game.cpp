@@ -31,12 +31,11 @@ Game::Game()
 
 
     // ---- Cargar sonidos ----
-    sound.load(SoundID::MENU_MOVE,    "assets/sounds/menu_move.wav");
-    sound.load(SoundID::MENU_CONFIRM, "assets/sounds/menu_confirm.wav");
-    sound.load(SoundID::HIT,          "assets/sounds/hit.wav");
-    sound.load(SoundID::PLAYER_HIT,   "assets/sounds/player_hit.wav");
+    sound.load(SoundID::MENU_MOVE, gameConfig.sounds["menu_move"]);
+    sound.load(SoundID::MENU_CONFIRM, gameConfig.sounds["menu_confirm"]);
+    sound.load(SoundID::HIT, gameConfig.sounds["hit"]);
+    sound.load(SoundID::PLAYER_HIT, gameConfig.sounds["player_hit"]);
 
-    textures.load("goalFlag", "assets/sprites/goal_flag.png");
 
     // ---- Load configs ----
     enemyConfigLoader.loadFromFile("assets/config/enemyTypes.json");
@@ -114,8 +113,12 @@ void Game::update()
         case GameState::GAME_OVER:
             updateGameOver();
             break;
+
         case GameState::LEVEL_COMPLETED:
             updateLevelCompleted();
+            break;
+
+        case GameState::ALL_LEVELS_COMPLETED:
             break;
     }
 
@@ -232,7 +235,7 @@ void Game::updatePlaying(float dt)
 
     if (levelManager->isLevelCompleted())
     {
-        if (gameConfig.lastLevelCompleted < gameConfig.levels.size() - 1)
+        if (gameConfig.lastLevelCompleted < static_cast<int> (gameConfig.levels.size()) - 1)
         {
             gameConfig.lastLevelCompleted++;
             gameConfig.score = gameConfig.score + ActualLevelScore;
@@ -312,7 +315,7 @@ void Game::startGame()
     int nextLevelIndex = gameConfig.lastLevelCompleted;
 
     // Si no hay más niveles
-    if (nextLevelIndex >= gameConfig.levels.size())
+    if (nextLevelIndex >= static_cast<int> (gameConfig.levels.size()))
     {
         gameState = GameState::ALL_LEVELS_COMPLETED;
         hud.showAllLevelsCompleted(true, gameConfig.score);

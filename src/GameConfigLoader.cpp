@@ -31,6 +31,13 @@ GameConfig GameConfigLoader::loadFromFile(const std::string& path)
         config.levels.push_back(entry);
     }
 
+    // los distintos items de sonido
+    for (auto it = j["sounds"].begin(); it != j["sounds"].end(); ++it)
+    {
+        config.sounds[it.key()] = it.value();
+    }
+
+
     return config;
 }
 

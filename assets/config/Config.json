@@ -9,5 +9,11 @@
     "music": "assets/music/theme.mp3",
     "name": "CyberStreets",
     "score": 220,
-    "typografy": "assets/PressStart2P-Regular.ttf"
+    "typografy": "assets/PressStart2P-Regular.ttf",
+	"sounds": {
+    "menu_move": "assets/sounds/menu_move.wav",
+    "menu_confirm": "assets/sounds/menu_confirm.wav",
+    "hit": "assets/sounds/hit.wav",
+    "player_hit": "assets/sounds/player_hit.wav"
+  }
 }

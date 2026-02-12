@@ -1,6 +1,9 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <unordered_map>
+
+
 
 struct LevelEntry
 {
@@ -17,5 +20,7 @@ struct GameConfig
     std::string music;
 
     std::vector<LevelEntry> levels;
+    std::unordered_map<std::string, std::string> sounds;
+
 };
 

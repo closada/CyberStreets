@@ -24,6 +24,7 @@ LevelManager::LevelManager(
     levelRightEnd = levelData.levelLength;
 
     // --- GOAL ---
+    textures.load("goalFlag", levelData.levelGoalPath);
     levelGoal = std::make_unique<LevelGoal>(
         levelData.goalX,
         levelData.groundY,
