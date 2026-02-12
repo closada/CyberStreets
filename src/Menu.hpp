@@ -27,6 +27,9 @@ private:
     MenuState state;
     sf::Font& font;
     std::vector<sf::Text> options;
+    // sfx
+    SoundManager& sound;
+
     int selectedIndex;
 
     //AvatarType selectedAvatar;
@@ -51,12 +54,6 @@ private:
     std::vector<AvatarEntry> avatars;
     int avatarIndex = 0;
     std::string selectedAvatarId;
-
-
-
-    // sfx
-    SoundManager& sound;
-
 
 
 public:

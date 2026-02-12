@@ -17,6 +17,8 @@ Character::Character(const sf::Vector2f& startPos)
 {
     attackBox.setSize({32.f, 20.f});
     attackBox.setOrigin(16.f, 10.f);
+    const int impactFrame = 3; // si tu animación tiene 6 frames y el golpe está en el frame 3
+
 }
 
 
@@ -38,18 +40,24 @@ void Character::update(float dt)
     {
         updateAttackBox();
 
-        if (animation.isFinished())
-        {
-            if (attackQueued)
+            if (animation.isFinished())
             {
-                attackQueued = false;
-                hitDone = false;
-                animation.play("attack", true);
+                // momento del impacto
+            if (!hitDone && animation.getCurrentFrame() == impactFrame)
+            {
+                hitDone = true;
+                // aplicar daño y sonido
             }
-            else
+
+            // cuando termina animación
+            if (animation.isFinished())
             {
                 attacking = false;
                 hitDone = false;
+
+                // si botón sigue presionado, arrancamos otra animación
+                if (attackButtonHeld)
+                    startAttack();
             }
         }
     }
@@ -96,11 +104,13 @@ void Character::startAttack()
     {
         attacking = true;
         hitDone = false;
+
+        animation.play("attack", true);
     }
-    else
+    /*else
     {
         attackQueued = true;
-    }
+    }*/
 }
 
 bool Character::isAttacking() const
@@ -175,8 +185,8 @@ void Character::drawAttackBox(sf::RenderWindow& window)
 
     sf::RectangleShape debugBox = attackBox;
     debugBox.setFillColor(sf::Color::Transparent);
-    debugBox.setOutlineColor(sf::Color::Red);
-    debugBox.setOutlineThickness(1.f);
+    //debugBox.setOutlineColor(sf::Color::Red);
+    //debugBox.setOutlineThickness(1.f);
 
     window.draw(debugBox);
 }

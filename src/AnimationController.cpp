@@ -162,3 +162,10 @@ const std::string& AnimationController::getCurrentAnimation() const
     return currentAnimation;
 }
 
+// -------------------------------------------------
+// Devuelve el frame actual
+// -------------------------------------------------
+int AnimationController::getCurrentFrame() const
+{
+    return currentFrame;
+}

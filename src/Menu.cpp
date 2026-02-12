@@ -6,11 +6,11 @@
 #include <iostream>
 
 Menu::Menu(const sf::Vector2u& windowSize, SoundManager& sound, sf::Font& font, const std::string& gameTitle)
-: sound(sound),
-  font(font),
+: font(font),
+  sound(sound),
   selectedIndex(0),
-  avatarIndex(0),
   startGameRequested(false),
+  avatarIndex(0),
   exit(false)
 {
     startGameRequested = false;
@@ -152,7 +152,7 @@ void Menu::draw(sf::RenderWindow& window)
 
         for (size_t i = 0; i < avatars.size(); ++i)
         {
-            if (i == avatarIndex)
+            if (i == static_cast<size_t> (avatarIndex))
             {
                 float scale = 1.15f + std::sin(t * 4.f) * 0.05f;
                 avatars[i].sprite.setScale(scale, scale);

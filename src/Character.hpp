@@ -67,5 +67,11 @@ protected:
 
     bool hitDone;
 
+    const int impactFrame = 3; // si tu animación tiene 6 frames y el golpe está en el frame 3
+
+
     sf::RectangleShape attackBox;
+public:
+     bool attackButtonHeld = false;
+
 };

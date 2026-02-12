@@ -34,6 +34,8 @@ public:
     void stopAttack();
 
 
+
+
 private:
     // helpers internos
     void updateAnimationState();
@@ -44,6 +46,7 @@ private:
 
     float damageCooldown;        // tiempo entre golpes
     float damageCooldownTimer;   // contador
+
 
 };
 

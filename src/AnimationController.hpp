@@ -28,6 +28,7 @@ public:
     void draw(sf::RenderWindow& window);
 
     const std::string& getCurrentAnimation() const;
+    int getCurrentFrame() const;
 
     const sf::Sprite& getSprite() const { return sprite; }
 

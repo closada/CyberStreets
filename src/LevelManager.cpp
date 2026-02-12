@@ -94,7 +94,7 @@ void LevelManager::handleInput(const InputCommand& cmd, float dt)
         return;
 
     player->handleMovement(cmd.movement, dt);
-
+    player->attackButtonHeld = cmd.attackPressed;
     if (cmd.attackPressed)
     {
         player->handleAttack();

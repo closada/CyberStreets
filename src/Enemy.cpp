@@ -110,9 +110,12 @@ void Enemy::updateAnimationState()
 
     if (isAttacking())
     {
-        animation.play("attack");
+        if (animation.getCurrentAnimation() != "attack")
+            animation.play("attack");
+
         return;
     }
+
 
     animation.play("run");
 }

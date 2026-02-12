@@ -139,13 +139,16 @@ void Player::updateAnimationState()
 
     if (isAttacking())
     {
-        if (state == CharacterState::Moving)
-            animation.play("run_attack");
-        else
-            animation.play("attack");
+        std::string desired = (state == CharacterState::Moving)
+            ? "run_attack"
+            : "attack";
+
+        if (animation.getCurrentAnimation() != desired)
+            animation.play(desired);
 
         return;
     }
+
 
 
     if (state == CharacterState::Moving)

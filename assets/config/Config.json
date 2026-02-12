@@ -8,12 +8,12 @@
     ],
     "music": "assets/music/theme.ogg",
     "name": "CyberStreets",
-    "score": 220,
-    "typografy": "assets/PressStart2P-Regular.ttf",
-	"sounds": {
-    "menu_move": "assets/sounds/menu_move.wav",
-    "menu_confirm": "assets/sounds/menu_confirm.wav",
-    "hit": "assets/sounds/hit.wav",
-    "player_hit": "assets/sounds/player_hit.wav"
-  }
+    "score": 0,
+    "sounds": {
+        "hit": "assets/sounds/hit.wav",
+        "menu_confirm": "assets/sounds/menu_confirm.wav",
+        "menu_move": "assets/sounds/menu_move.wav",
+        "player_hit": "assets/sounds/player_hit.wav"
+    },
+    "typografy": "assets/PressStart2P-Regular.ttf"
 }
